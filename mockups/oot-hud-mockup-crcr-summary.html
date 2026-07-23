@@ -259,13 +259,21 @@ td.jobCell { text-align: center; padding: 2px; }
 }
 .dark-mode .paper { box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.5), 0px 2px 2px 0px rgba(0,0,0,0.4), 0px 1px 5px 0px rgba(0,0,0,0.3); }
 
-.oot-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-.oot-table th { text-align: left; padding: 8px 16px; font-weight: 600; border-bottom: 2px solid var(--border-color); font-size: 0.875rem; color: var(--text-color); }
+.oot-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; table-layout: fixed; }
+.oot-table th { text-align: left; padding: 8px 16px; font-weight: 600; border-bottom: 2px solid var(--border-color); font-size: 0.875rem; color: var(--text-color); vertical-align: middle; }
 .oot-table th.r, .oot-table td.r { text-align: right; }
 .oot-table th.c, .oot-table td.c { text-align: center; }
-.oot-table td { padding: 6px 16px; border-bottom: 1px solid var(--border-color); }
+.oot-table td { padding: 10px 16px; border-bottom: 1px solid var(--border-color); vertical-align: middle; line-height: 1.4; }
+.oot-table tbody tr { height: 48px; }
 .oot-table tbody tr:hover { background: rgba(0,0,0,0.04); }
 .dark-mode .oot-table tbody tr:hover { background: rgba(255,255,255,0.04); }
+.oot-table colgroup .col-status { width: 28px; }
+.oot-table colgroup .col-repo { width: 32%; }
+.oot-table colgroup .col-level { width: 60px; }
+.oot-table colgroup .col-rate { width: 10%; }
+.oot-table colgroup .col-num { width: 8%; }
+.oot-table colgroup .col-dur { width: 10%; }
+.oot-table colgroup .col-last { width: 9%; }
 
 .accordion { border: 1px solid var(--border-color); border-radius: 4px; margin-top: 16px; overflow: hidden; }
 .accordion-header {
@@ -312,12 +320,13 @@ td.jobCell { text-align: center; padding: 2px; }
 .status-dot.stale { background: #9e9e9e; box-shadow: 0 0 0 2px #eee; }
 
 /* Event type tabs inline with repo name */
-.event-tabs { display: inline-flex; gap: 4px; margin-left: 8px; vertical-align: middle; }
+.event-tabs { display: inline-flex; gap: 4px; margin-left: 8px; vertical-align: middle; flex-shrink: 0; }
 .event-tab {
   display: inline-block; padding: 1px 7px; border-radius: 3px;
   font-size: 0.6875rem; font-weight: 500; text-decoration: none;
   border: 1px solid var(--border-color); color: #888;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
+  line-height: 1.4; white-space: nowrap;
 }
 .event-tab:hover { border-color: var(--link-color); color: var(--link-color); background: rgba(0,100,207,0.06); }
 .dark-mode .event-tab:hover { background: rgba(74,144,226,0.1); }
@@ -482,9 +491,14 @@ td.jobCell { text-align: center; padding: 2px; }
     <div class="section-divider"><h3>L4 Backends (merge-gating)</h3></div>
     <div class="paper">
       <table class="oot-table">
+        <colgroup>
+          <col class="col-status"><col class="col-repo"><col class="col-level">
+          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num">
+          <col class="col-dur"><col class="col-last">
+        </colgroup>
         <thead>
           <tr>
-            <th style="width: 28px;"></th>
+            <th></th>
             <th>Backend Repository</th>
             <th class="c">Level</th>
             <th class="r">Pass Rate</th>
@@ -511,9 +525,14 @@ td.jobCell { text-align: center; padding: 2px; }
     <div class="section-divider"><h3>L3 Backends (check runs on PR)</h3></div>
     <div class="paper" style="margin-bottom: 20px;">
       <table class="oot-table">
+        <colgroup>
+          <col class="col-status"><col class="col-repo"><col class="col-level">
+          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num">
+          <col class="col-dur"><col class="col-last">
+        </colgroup>
         <thead>
           <tr>
-            <th style="width: 28px;"></th>
+            <th></th>
             <th>Backend Repository</th>
             <th class="c">Level</th>
             <th class="r">Pass Rate</th>
@@ -569,9 +588,14 @@ td.jobCell { text-align: center; padding: 2px; }
     <div class="section-divider"><h3>L2 Backends (callback-only)</h3></div>
     <div class="paper" style="margin-bottom: 20px;">
       <table class="oot-table">
+        <colgroup>
+          <col class="col-status"><col class="col-repo"><col class="col-level">
+          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num">
+          <col class="col-dur"><col class="col-last">
+        </colgroup>
         <thead>
           <tr>
-            <th style="width: 28px;"></th>
+            <th></th>
             <th>Backend Repository</th>
             <th class="c">Level</th>
             <th class="r">Pass Rate</th>
