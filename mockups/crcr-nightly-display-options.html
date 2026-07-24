@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRCR Summary — Nightly/Periodic Display Options</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.5; }
+
+  .page-header { background: #161b22; border-bottom: 1px solid #30363d; padding: 16px 24px; text-align: center; }
+  .page-header h1 { font-size: 20px; color: #f0f6fc; }
+  .page-header p { font-size: 13px; color: #8b949e; margin-top: 4px; }
+
+  .option-section { max-width: 1100px; margin: 32px auto; padding: 0 24px; }
+  .option-label { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .option-label h2 { font-size: 18px; color: #f0f6fc; }
+  .option-label .badge { font-size: 11px; background: #238636; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .option-desc { font-size: 13px; color: #8b949e; margin-bottom: 16px; }
+  .pros-cons { display: flex; gap: 24px; margin-bottom: 16px; font-size: 12px; }
+  .pros-cons div { flex: 1; }
+  .pros-cons h4 { color: #3fb950; margin-bottom: 4px; font-size: 12px; }
+  .pros-cons .cons h4 { color: #f85149; }
+  .pros-cons li { margin-left: 16px; color: #8b949e; }
+
+  .demo-box { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
+
+  .divider { border: none; border-top: 1px solid #21262d; margin: 40px auto; max-width: 1100px; }
+
+  /* === Option A: Page-level tabs === */
+  .page-tabs { display: flex; gap: 0; border-bottom: 2px solid #30363d; margin-bottom: 20px; }
+  .page-tabs button { background: none; border: none; color: #8b949e; padding: 10px 20px; font-size: 14px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+  .page-tabs button.active { color: #f0f6fc; border-bottom-color: #1f6feb; font-weight: 600; }
+  .page-tabs button:hover:not(.active) { color: #c9d1d9; }
+  .page-tabs .tab-count { font-size: 11px; background: #30363d; padding: 1px 6px; border-radius: 10px; margin-left: 6px; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* === Option B: Health matrix === */
+  .health-matrix { width: 100%; border-collapse: collapse; }
+  .health-matrix th { text-align: left; padding: 10px 12px; font-size: 12px; color: #8b949e; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #30363d; }
+  .health-matrix td { padding: 10px 12px; border-bottom: 1px solid #21262d; font-size: 14px; }
+  .health-matrix .repo-name { font-weight: 600; color: #58a6ff; }
+  .health-matrix .repo-name a { color: inherit; text-decoration: none; }
+  .health-matrix .repo-name a:hover { text-decoration: underline; }
+  .health-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+  .health-dot .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .health-dot .dot.green { background: #3fb950; }
+  .health-dot .dot.orange { background: #d29922; }
+  .health-dot .dot.red { background: #f85149; }
+  .health-dot .dot.gray { background: #484f58; }
+  .health-dot .pct { color: #8b949e; font-size: 12px; }
+  .health-dot .na { color: #484f58; font-size: 12px; font-style: italic; }
+
+  /* === Option C: Inline expandable === */
+  .repo-card { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+  .repo-card-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; }
+  .repo-card-header:hover { background: #161b22; }
+  .repo-card-header .repo-info { display: flex; align-items: center; gap: 12px; }
+  .repo-card-header .repo-title { font-weight: 600; color: #58a6ff; font-size: 14px; }
+  .repo-card-header .level-badge { font-size: 11px; background: #30363d; color: #8b949e; padding: 2px 8px; border-radius: 10px; }
+  .repo-card-header .event-pills { display: flex; gap: 6px; }
+  .event-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 3px 10px; border-radius: 12px; border: 1px solid #30363d; }
+  .event-pill .pill-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .event-pill.healthy .pill-dot { background: #3fb950; }
+  .event-pill.healthy { border-color: #238636; color: #3fb950; }
+  .event-pill.degraded .pill-dot { background: #d29922; }
+  .event-pill.degraded { border-color: #9e6a03; color: #d29922; }
+  .event-pill.na .pill-dot { background: #484f58; }
+  .event-pill.na { color: #484f58; }
+  .repo-card-details { padding: 0 16px 16px 16px; display: none; }
+  .repo-card-details.open { display: block; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .detail-cell { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px; }
+  .detail-cell h5 { font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .detail-cell .val { font-size: 18px; font-weight: 700; }
+  .detail-cell .val.green { color: #3fb950; }
+  .detail-cell .val.orange { color: #d29922; }
+  .detail-cell .val.gray { color: #484f58; }
+  .detail-cell .sub { font-size: 11px; color: #8b949e; margin-top: 2px; }
+
+  /* === Option D: Three-column cards === */
+  .column-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .column-card { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; }
+  .column-card-header { padding: 12px 16px; border-bottom: 1px solid #30363d; display: flex; align-items: center; gap: 8px; }
+  .column-card-header h3 { font-size: 14px; color: #f0f6fc; }
+  .column-card-header .col-icon { font-size: 16px; }
+  .column-card-header .col-count { font-size: 11px; background: #30363d; color: #8b949e; padding: 1px 6px; border-radius: 10px; margin-left: auto; }
+  .column-card-body { padding: 12px 16px; }
+  .col-repo-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #21262d; }
+  .col-repo-row:last-child { border-bottom: none; }
+  .col-repo-name { font-size: 13px; color: #58a6ff; font-weight: 500; }
+  .col-status { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .col-status .status-text { font-weight: 600; }
+  .col-status .status-text.green { color: #3fb950; }
+  .col-status .status-text.orange { color: #d29922; }
+
+  /* === Option E: Swimlane timeline === */
+  .swimlane-container { overflow-x: auto; }
+  .swimlane-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+  .swimlane-table th { text-align: left; padding: 8px 10px; font-size: 11px; color: #8b949e; font-weight: 600; border-bottom: 1px solid #30363d; white-space: nowrap; }
+  .swimlane-table td { padding: 8px 10px; border-bottom: 1px solid #21262d; }
+  .swimlane-table .repo-col { font-size: 13px; color: #58a6ff; font-weight: 600; white-space: nowrap; width: 200px; }
+  .swimlane-table .type-col { font-size: 12px; color: #8b949e; width: 70px; }
+  .run-cells { display: flex; gap: 3px; }
+  .run-cell { width: 20px; height: 20px; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; cursor: pointer; }
+  .run-cell.pass { background: #238636; color: #fff; }
+  .run-cell.fail { background: #da3633; color: #fff; }
+  .run-cell.timeout { background: #9e6a03; color: #fff; }
+  .run-cell.running { background: #1f6feb; color: #fff; animation: pulse 1.5s infinite; }
+  .run-cell:hover { opacity: 0.8; transform: scale(1.2); }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .date-header { font-size: 10px; text-align: center; }
+
+  /* === Option F: Stacked summary + detail === */
+  .stacked-section { margin-bottom: 20px; }
+  .stacked-header { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+  .stacked-header h3 { font-size: 15px; color: #f0f6fc; }
+  .stacked-header .event-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .stacked-header .event-icon.pr-icon { background: #1f6feb22; color: #58a6ff; }
+  .stacked-header .event-icon.nightly-icon { background: #8b5cf622; color: #a78bfa; }
+  .stacked-header .event-icon.periodic-icon { background: #3b82f622; color: #60a5fa; }
+  .mini-table { width: 100%; border-collapse: collapse; }
+  .mini-table th { text-align: left; padding: 8px 12px; font-size: 11px; color: #8b949e; font-weight: 600; border-bottom: 1px solid #30363d; }
+  .mini-table td { padding: 8px 12px; border-bottom: 1px solid #21262d; font-size: 13px; }
+  .mini-table .repo-link { color: #58a6ff; text-decoration: none; font-weight: 500; }
+  .mini-table .repo-link:hover { text-decoration: underline; }
+  .pass-rate-bar { display: inline-flex; align-items: center; gap: 6px; }
+  .pass-rate-bar .bar { width: 60px; height: 6px; background: #21262d; border-radius: 3px; overflow: hidden; }
+  .pass-rate-bar .bar-fill { height: 100%; border-radius: 3px; }
+  .pass-rate-bar .bar-fill.green { background: #3fb950; }
+  .pass-rate-bar .bar-fill.orange { background: #d29922; }
+  .pass-rate-bar .bar-fill.red { background: #f85149; }
+  .pass-rate-bar .bar-pct { font-size: 12px; color: #8b949e; min-width: 36px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>CRCR Summary — Nightly/Periodic Display Options</h1>
+  <p>6 different approaches for displaying nightly and periodic CI alongside PR results</p>
+</div>
+
+<!-- ===== OPTION A: Page-Level Tabs ===== -->
+<div class="option-section">
+  <div class="option-label">
+    <h2>Option A: Page-Level Tabs</h2>
+    <span class="badge">Recommended</span>
+  </div>
+  <p class="option-desc">Three tabs at the top of the page — users click to switch between PR, Nightly, and Periodic views. Each tab shows the same table layout but filtered by event type. Familiar pattern from GitHub, Jira, etc.</p>
+  <div class="pros-cons">
+    <div>
+      <h4>Pros</h4>
+      <ul>
+        <li>Clean, uncluttered — one view at a time</li>
+        <li>Familiar UI pattern (GitHub tabs)</li>
+        <li>Each tab can have its own stat cards</li>
+        <li>Easy to deep-link (?tab=nightly)</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>Cons</h4>
+      <ul>
+        <li>Can't see all event types at once</li>
+        <li>Extra click to switch views</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="page-tabs" id="tabsA">
+      <button class="active" onclick="switchTab('A','pr')">Pull Requests <span class="tab-count">5</span></button>
+      <button onclick="switchTab('A','nightly')">Nightly <span class="tab-count">3</span></button>
+      <button onclick="switchTab('A','periodic')">Periodic <span class="tab-count">2</span></button>
+    </div>
+
+    <div class="tab-content active" id="A-pr">
+      <table class="mini-table">
+        <thead><tr><th>Repository</th><th>Level</th><th>Pass Rate</th><th>Last Run</th></tr></thead>
+        <tbody>
+          <tr><td><a class="repo-link" href="#">intel/intel-extension-for-pytorch</a></td><td>L4</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:100%"></span></span><span class="bar-pct">100%</span></span></td><td style="color:#8b949e;font-size:12px">2 hours ago</td></tr>
+          <tr><td><a class="repo-link" href="#">TorchedHat/pytorch-redhat-ci</a></td><td>L3</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill orange" style="width:89%"></span></span><span class="bar-pct">89.6%</span></span></td><td style="color:#8b949e;font-size:12px">4 hours ago</td></tr>
+          <tr><td><a class="repo-link" href="#">amd/aotriton</a></td><td>L3</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:95%"></span></span><span class="bar-pct">95.2%</span></span></td><td style="color:#8b949e;font-size:12px">6 hours ago</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-content" id="A-nightly">
+      <table class="mini-table">
+        <thead><tr><th>Repository</th><th>Level</th><th>Pass Rate</th><th>Last Run</th><th>Source SHA</th></tr></thead>
+        <tbody>
+          <tr><td><a class="repo-link" href="#">TorchedHat/pytorch-redhat-ci</a></td><td>L1</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill orange" style="width:83%"></span></span><span class="bar-pct">83.3%</span></span></td><td style="color:#8b949e;font-size:12px">8 hours ago</td><td style="font-family:monospace;font-size:12px;color:#8b949e">a1b2c3d</td></tr>
+          <tr><td><a class="repo-link" href="#">intel/intel-extension-for-pytorch</a></td><td>L4</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:100%"></span></span><span class="bar-pct">100%</span></span></td><td style="color:#8b949e;font-size:12px">12 hours ago</td><td style="font-family:monospace;font-size:12px;color:#8b949e">e5f6a7b</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-content" id="A-periodic">
+      <table class="mini-table">
+        <thead><tr><th>Repository</th><th>Level</th><th>Pass Rate</th><th>Last Run</th><th>Cadence</th></tr></thead>
+        <tbody>
+          <tr><td><a class="repo-link" href="#">intel/intel-extension-for-pytorch</a></td><td>L4</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:97%"></span></span><span class="bar-pct">97.1%</span></span></td><td style="color:#8b949e;font-size:12px">3 hours ago</td><td style="color:#8b949e;font-size:12px">Every 6h</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ===== OPTION B: Health Matrix ===== -->
+<div class="option-section">
+  <div class="option-label">
+    <h2>Option B: Health Matrix</h2>
+  </div>
+  <p class="option-desc">A single unified table where each row is a repo and columns show health status for PR, Nightly, and Periodic. Everything visible at a glance — colored dots indicate health.</p>
+  <div class="pros-cons">
+    <div>
+      <h4>Pros</h4>
+      <ul>
+        <li>Everything visible at once — no tab switching</li>
+        <li>Quick at-a-glance health check</li>
+        <li>Compact and information-dense</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>Cons</h4>
+      <ul>
+        <li>Can feel dense with many repos</li>
+        <li>Less room for per-event-type details</li>
+        <li>Many "N/A" cells if repos don't run all types</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <table class="health-matrix">
+      <thead>
+        <tr>
+          <th>Repository</th>
+          <th>Level</th>
+          <th style="text-align:center">PR</th>
+          <th style="text-align:center">Nightly</th>
+          <th style="text-align:center">Periodic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="repo-name"><a href="#">intel/intel-extension-for-pytorch</a></td>
+          <td>L4</td>
+          <td style="text-align:center"><span class="health-dot"><span class="dot green"></span><span class="pct">100%</span></span></td>
+          <td style="text-align:center"><span class="health-dot"><span class="dot green"></span><span class="pct">100%</span></span></td>
+          <td style="text-align:center"><span class="health-dot"><span class="dot green"></span><span class="pct">97.1%</span></span></td>
+        </tr>
+        <tr>
+          <td class="repo-name"><a href="#">TorchedHat/pytorch-redhat-ci</a></td>
+          <td>L3</td>
+          <td style="text-align:center"><span class="health-dot"><span class="dot orange"></span><span class="pct">89.6%</span></span></td>
+          <td style="text-align:center"><span class="health-dot"><span class="dot orange"></span><span class="pct">83.3%</span></span></td>
+          <td style="text-align:center"><span class="health-dot"><span class="na">—</span></span></td>
+        </tr>
+        <tr>
+          <td class="repo-name"><a href="#">amd/aotriton</a></td>
+          <td>L3</td>
+          <td style="text-align:center"><span class="health-dot"><span class="dot green"></span><span class="pct">95.2%</span></span></td>
+          <td style="text-align:center"><span class="health-dot"><span class="na">—</span></span></td>
+          <td style="text-align:center"><span class="health-dot"><span class="na">—</span></span></td>
+        </tr>
+        <tr>
+          <td class="repo-name"><a href="#">pytorch/crcr-test</a></td>
+          <td>L2</td>
+          <td style="text-align:center"><span class="health-dot"><span class="dot green"></span><span class="pct">96.2%</span></span></td>
+          <td style="text-align:center"><span class="health-dot"><span class="na">—</span></span></td>
+          <td style="text-align:center"><span class="health-dot"><span class="na">—</span></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ===== OPTION C: Expandable Repo Cards ===== -->
+<div class="option-section">
+  <div class="option-label">
+    <h2>Option C: Expandable Repo Cards</h2>
+  </div>
+  <p class="option-desc">Each repo is a card with event-type pills visible at a glance. Click to expand and see detailed stats for each event type (PR, Nightly, Periodic) in a 3-column grid.</p>
+  <div class="pros-cons">
+    <div>
+      <h4>Pros</h4>
+      <ul>
+        <li>Overview pills visible without clicking</li>
+        <li>Details on demand — doesn't overwhelm</li>
+        <li>Natural grouping by repo</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>Cons</h4>
+      <ul>
+        <li>Requires interaction to see details</li>
+        <li>Expanded state takes more vertical space</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="repo-card">
+      <div class="repo-card-header" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="repo-info">
+          <span class="repo-title">intel/intel-extension-for-pytorch</span>
+          <span class="level-badge">L4</span>
+        </div>
+        <div class="event-pills">
+          <span class="event-pill healthy"><span class="pill-dot"></span>PR 100%</span>
+          <span class="event-pill healthy"><span class="pill-dot"></span>Nightly 100%</span>
+          <span class="event-pill healthy"><span class="pill-dot"></span>Periodic 97.1%</span>
+        </div>
+      </div>
+      <div class="repo-card-details">
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <h5>Pull Requests</h5>
+            <div class="val green">100%</div>
+            <div class="sub">12/12 jobs passed · 2h ago</div>
+          </div>
+          <div class="detail-cell">
+            <h5>Nightly</h5>
+            <div class="val green">100%</div>
+            <div class="sub">8/8 jobs passed · 12h ago</div>
+          </div>
+          <div class="detail-cell">
+            <h5>Periodic</h5>
+            <div class="val green">97.1%</div>
+            <div class="sub">34/35 jobs passed · 3h ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-card-header" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="repo-info">
+          <span class="repo-title">TorchedHat/pytorch-redhat-ci</span>
+          <span class="level-badge">L3</span>
+        </div>
+        <div class="event-pills">
+          <span class="event-pill degraded"><span class="pill-dot"></span>PR 89.6%</span>
+          <span class="event-pill degraded"><span class="pill-dot"></span>Nightly 83.3%</span>
+          <span class="event-pill na"><span class="pill-dot"></span>Periodic —</span>
+        </div>
+      </div>
+      <div class="repo-card-details">
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <h5>Pull Requests</h5>
+            <div class="val orange">89.6%</div>
+            <div class="sub">43/48 jobs passed · 4h ago</div>
+          </div>
+          <div class="detail-cell">
+            <h5>Nightly</h5>
+            <div class="val orange">83.3%</div>
+            <div class="sub">5/6 jobs passed · 8h ago</div>
+          </div>
+          <div class="detail-cell">
+            <h5>Periodic</h5>
+            <div class="val gray">N/A</div>
+            <div class="sub">Not configured</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-card-header" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="repo-info">
+          <span class="repo-title">pytorch/crcr-test</span>
+          <span class="level-badge">L2</span>
+        </div>
+        <div class="event-pills">
+          <span class="event-pill healthy"><span class="pill-dot"></span>PR 96.2%</span>
+          <span class="event-pill na"><span class="pill-dot"></span>Nightly —</span>
+          <span class="event-pill na"><span class="pill-dot"></span>Periodic —</span>
+        </div>
+      </div>
+      <div class="repo-card-details">
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <h5>Pull Requests</h5>
+            <div class="val green">96.2%</div>
+            <div class="sub">51/53 jobs passed · 1h ago</div>
+          </div>
+          <div class="detail-cell">
+            <h5>Nightly</h5>
+            <div class="val gray">N/A</div>
+            <div class="sub">Not configured</div>
+          </div>
+          <div class="detail-cell">
+            <h5>Periodic</h5>
+            <div class="val gray">N/A</div>
+            <div class="sub">Not configured</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ===== OPTION D: Three-Column Cards ===== -->
+<div class="option-section">
+  <div class="option-label">
+    <h2>Option D: Side-by-Side Columns</h2>
+  </div>
+  <p class="option-desc">Three columns side by side — Pull Requests, Nightly, Periodic — each listing repos that participate in that event type. Like a Kanban board for CI health.</p>
+  <div class="pros-cons">
+    <div>
+      <h4>Pros</h4>
+      <ul>
+        <li>Clear visual separation of event types</li>
+        <li>Easy to see which repos participate in which</li>
+        <li>No wasted space on N/A entries</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>Cons</h4>
+      <ul>
+        <li>Same repo appears in multiple columns</li>
+        <li>Horizontal space constrained on narrow screens</li>
+        <li>Harder to compare a single repo across types</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="column-layout">
+      <div class="column-card">
+        <div class="column-card-header">
+          <span class="col-icon">🔀</span>
+          <h3>Pull Requests</h3>
+          <span class="col-count">5 repos</span>
+        </div>
+        <div class="column-card-body">
+          <div class="col-repo-row"><span class="col-repo-name">intel/intel-extension-for-pytorch</span><span class="col-status"><span class="status-text green">100%</span></span></div>
+          <div class="col-repo-row"><span class="col-repo-name">TorchedHat/pytorch-redhat-ci</span><span class="col-status"><span class="status-text orange">89.6%</span></span></div>
+          <div class="col-repo-row"><span class="col-repo-name">amd/aotriton</span><span class="col-status"><span class="status-text green">95.2%</span></span></div>
+          <div class="col-repo-row"><span class="col-repo-name">pytorch/crcr-test</span><span class="col-status"><span class="status-text green">96.2%</span></span></div>
+        </div>
+      </div>
+
+      <div class="column-card">
+        <div class="column-card-header">
+          <span class="col-icon">🌙</span>
+          <h3>Nightly</h3>
+          <span class="col-count">2 repos</span>
+        </div>
+        <div class="column-card-body">
+          <div class="col-repo-row"><span class="col-repo-name">intel/intel-extension-for-pytorch</span><span class="col-status"><span class="status-text green">100%</span></span></div>
+          <div class="col-repo-row"><span class="col-repo-name">TorchedHat/pytorch-redhat-ci</span><span class="col-status"><span class="status-text orange">83.3%</span></span></div>
+        </div>
+      </div>
+
+      <div class="column-card">
+        <div class="column-card-header">
+          <span class="col-icon">🔄</span>
+          <h3>Periodic</h3>
+          <span class="col-count">1 repo</span>
+        </div>
+        <div class="column-card-body">
+          <div class="col-repo-row"><span class="col-repo-name">intel/intel-extension-for-pytorch</span><span class="col-status"><span class="status-text green">97.1%</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ===== OPTION E: Swimlane Timeline ===== -->
+<div class="option-section">
+  <div class="option-label">
+    <h2>Option E: Swimlane Timeline</h2>
+  </div>
+  <p class="option-desc">A timeline view showing recent runs as colored cells. Each repo has sub-rows for PR, Nightly, and Periodic. Great for spotting trends, intermittent failures, and run frequency at a glance.</p>
+  <div class="pros-cons">
+    <div>
+      <h4>Pros</h4>
+      <ul>
+        <li>Shows trends over time (flaky vs. persistent failures)</li>
+        <li>Run frequency immediately visible</li>
+        <li>Matches main HUD grid mental model</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>Cons</h4>
+      <ul>
+        <li>Takes more horizontal space</li>
+        <li>More complex to implement</li>
+        <li>May feel unfamiliar to some users</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="swimlane-container">
+      <table class="swimlane-table">
+        <thead>
+          <tr>
+            <th>Repository</th>
+            <th>Type</th>
+            <th class="date-header">Jul 18</th>
+            <th class="date-header">Jul 19</th>
+            <th class="date-header">Jul 20</th>
+            <th class="date-header">Jul 21</th>
+            <th class="date-header">Jul 22</th>
+            <th class="date-header">Jul 23</th>
+            <th class="date-header">Jul 24</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="repo-col" rowspan="3">intel/intel-extension-for-pytorch</td>
+            <td class="type-col">PR</td>
+            <td><div class="run-cells"><span class="run-cell pass" title="PR #1234 — 12/12 passed">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell fail" title="PR #1240 — 2 failed">X</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell running" title="Running...">⟳</span></div></td>
+          </tr>
+          <tr>
+            <td class="type-col">Nightly</td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+          </tr>
+          <tr>
+            <td class="type-col">Periodic</td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell fail">X</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell timeout">T</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span><span class="run-cell pass">O</span><span class="run-cell running">⟳</span></div></td>
+          </tr>
+          <tr style="height:8px"><td colspan="9"></td></tr>
+          <tr>
+            <td class="repo-col" rowspan="2">TorchedHat/pytorch-redhat-ci</td>
+            <td class="type-col">PR</td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell fail">X</span><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell fail">X</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+          </tr>
+          <tr>
+            <td class="type-col">Nightly</td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell fail">X</span></div></td>
+            <td><div class="run-cells"><span class="run-cell fail">X</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell pass">O</span></div></td>
+            <td><div class="run-cells"><span class="run-cell fail">X</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ===== OPTION F: Stacked Sections ===== -->
+<div class="option-section">
+  <div class="option-label">
+    <h2>Option F: Stacked Sections with Visual Bars</h2>
+  </div>
+  <p class="option-desc">Three vertically stacked sections on the same page — each with a distinct colored header. All visible without switching, with progress bars for pass rates. Each section only shows repos that participate in that event type.</p>
+  <div class="pros-cons">
+    <div>
+      <h4>Pros</h4>
+      <ul>
+        <li>All event types visible by scrolling</li>
+        <li>No N/A entries — only relevant repos shown</li>
+        <li>Progress bars add visual clarity</li>
+        <li>Clear visual distinction between sections</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>Cons</h4>
+      <ul>
+        <li>Longer page — requires scrolling</li>
+        <li>Same repo duplicated across sections</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="stacked-section">
+      <div class="stacked-header">
+        <div class="event-icon pr-icon">🔀</div>
+        <h3>Pull Request CI</h3>
+      </div>
+      <table class="mini-table">
+        <thead><tr><th>Repository</th><th>Level</th><th>Pass Rate</th><th>Jobs</th><th>Last Run</th></tr></thead>
+        <tbody>
+          <tr><td><a class="repo-link" href="#">intel/intel-extension-for-pytorch</a></td><td>L4</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:100%"></span></span><span class="bar-pct">100%</span></span></td><td style="font-size:12px;color:#8b949e">12/12</td><td style="font-size:12px;color:#8b949e">2h ago</td></tr>
+          <tr><td><a class="repo-link" href="#">TorchedHat/pytorch-redhat-ci</a></td><td>L3</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill orange" style="width:89%"></span></span><span class="bar-pct">89.6%</span></span></td><td style="font-size:12px;color:#8b949e">43/48</td><td style="font-size:12px;color:#8b949e">4h ago</td></tr>
+          <tr><td><a class="repo-link" href="#">amd/aotriton</a></td><td>L3</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:95%"></span></span><span class="bar-pct">95.2%</span></span></td><td style="font-size:12px;color:#8b949e">20/21</td><td style="font-size:12px;color:#8b949e">6h ago</td></tr>
+          <tr><td><a class="repo-link" href="#">pytorch/crcr-test</a></td><td>L2</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:96%"></span></span><span class="bar-pct">96.2%</span></span></td><td style="font-size:12px;color:#8b949e">51/53</td><td style="font-size:12px;color:#8b949e">1h ago</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stacked-section">
+      <div class="stacked-header">
+        <div class="event-icon nightly-icon">🌙</div>
+        <h3>Nightly CI</h3>
+      </div>
+      <table class="mini-table">
+        <thead><tr><th>Repository</th><th>Level</th><th>Pass Rate</th><th>Jobs</th><th>Source SHA</th><th>Last Run</th></tr></thead>
+        <tbody>
+          <tr><td><a class="repo-link" href="#">intel/intel-extension-for-pytorch</a></td><td>L4</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:100%"></span></span><span class="bar-pct">100%</span></span></td><td style="font-size:12px;color:#8b949e">8/8</td><td style="font-family:monospace;font-size:12px;color:#8b949e">e5f6a7b</td><td style="font-size:12px;color:#8b949e">12h ago</td></tr>
+          <tr><td><a class="repo-link" href="#">TorchedHat/pytorch-redhat-ci</a></td><td>L1</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill orange" style="width:83%"></span></span><span class="bar-pct">83.3%</span></span></td><td style="font-size:12px;color:#8b949e">5/6</td><td style="font-family:monospace;font-size:12px;color:#8b949e">a1b2c3d</td><td style="font-size:12px;color:#8b949e">8h ago</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stacked-section">
+      <div class="stacked-header">
+        <div class="event-icon periodic-icon">🔄</div>
+        <h3>Periodic CI</h3>
+      </div>
+      <table class="mini-table">
+        <thead><tr><th>Repository</th><th>Level</th><th>Pass Rate</th><th>Jobs</th><th>Cadence</th><th>Last Run</th></tr></thead>
+        <tbody>
+          <tr><td><a class="repo-link" href="#">intel/intel-extension-for-pytorch</a></td><td>L4</td><td><span class="pass-rate-bar"><span class="bar"><span class="bar-fill green" style="width:97%"></span></span><span class="bar-pct">97.1%</span></span></td><td style="font-size:12px;color:#8b949e">34/35</td><td style="font-size:12px;color:#8b949e">Every 6h</td><td style="font-size:12px;color:#8b949e">3h ago</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div style="height:60px"></div>
+
+<script>
+function switchTab(group, tab) {
+  document.querySelectorAll(`#tabs${group} button`).forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`[id^="${group}-"]`).forEach(c => c.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(`${group}-${tab}`).classList.add('active');
+}
+</script>
+</body>
+</html>
