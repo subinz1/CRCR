@@ -377,11 +377,25 @@ td.jobCell { text-align: center; padding: 2px; }
 }
 .relay-health-card:hover { background: rgba(0,0,0,0.04); }
 .dark-mode .relay-health-card:hover { background: rgba(255,255,255,0.04); }
+.relay-health-card.degraded { border-left-color: #ed6c02; }
 .relay-health-card.unhealthy { border-left-color: #d32f2f; }
 .relay-health-card .stat-label { font-size: 0.6875rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.04em; }
 .relay-health-card .stat-value { font-size: 1.75rem; font-weight: 700; line-height: 1.3; }
 .relay-health-card .stat-sub { font-size: 0.6875rem; color: #888; }
 .relay-health-card .relay-repo { font-size: 0.625rem; color: #666; margin-top: 4px; }
+.health-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; font-weight: 600; margin-top: 4px;
+}
+.health-badge .health-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.health-badge.healthy .health-dot { background: #2e7d32; box-shadow: 0 0 0 2px rgba(46,125,50,0.2); }
+.health-badge.healthy { color: #2e7d32; }
+.health-badge.degraded .health-dot { background: #ed6c02; box-shadow: 0 0 0 2px rgba(237,108,2,0.2); }
+.health-badge.degraded { color: #ed6c02; }
+.dark-mode .health-badge.healthy { color: #66bb6a; }
+.dark-mode .health-badge.healthy .health-dot { background: #66bb6a; box-shadow: 0 0 0 2px rgba(102,187,106,0.2); }
+.dark-mode .health-badge.degraded { color: #ffa726; }
+.dark-mode .health-badge.degraded .health-dot { background: #ffa726; box-shadow: 0 0 0 2px rgba(255,167,38,0.2); }
 
 @media (max-width: 900px) {
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -457,10 +471,11 @@ td.jobCell { text-align: center; padding: 2px; }
 
     <!-- Stat cards — Row 1: CRCR relay health (all from pytorch/crcr-test) -->
     <div class="stat-grid">
-      <a href="oot-hud-mockup-crcr-backend.html" class="relay-health-card">
-        <span class="stat-label">CRCR-test Pass Rate</span>
-        <span class="stat-value good">96.2%</span>
-        <span class="stat-sub">51 / 53 jobs passed &middot; pytorch/crcr-test</span>
+      <a href="oot-hud-mockup-crcr-backend.html" class="relay-health-card degraded">
+        <span class="stat-label">CRCR Relay Health</span>
+        <span class="stat-value warn">Degraded</span>
+        <span class="health-badge degraded"><span class="health-dot"></span>96.2% &mdash; 51 / 53 jobs passed</span>
+        <span class="stat-sub">pytorch/crcr-test &middot; last 7 days</span>
       </a>
       <div class="stat-card">
         <span class="stat-label">Total Probe Runs</span>
@@ -493,7 +508,7 @@ td.jobCell { text-align: center; padding: 2px; }
       <table class="oot-table">
         <colgroup>
           <col class="col-status"><col class="col-repo"><col class="col-level">
-          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num">
+          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num"><col class="col-num">
           <col class="col-dur"><col class="col-last">
         </colgroup>
         <thead>
@@ -501,6 +516,7 @@ td.jobCell { text-align: center; padding: 2px; }
             <th></th>
             <th>Backend Repository</th>
             <th class="c">Level</th>
+            <th class="r">Health</th>
             <th class="r">Pass Rate</th>
             <th class="r">Success</th>
             <th class="r">Failures</th>
@@ -514,8 +530,9 @@ td.jobCell { text-align: center; padding: 2px; }
             <td class="c"><span class="status-dot active" title="Active"></span></td>
             <td><a href="oot-hud-mockup-crcr-backend.html">pytorch-labs/cambricon-pytorch</a></td>
             <td class="c"><span class="chip chip-outlined level-l4">L4</span></td>
-            <td class="r"><span class="chip chip-success">96.1%</span></td>
-            <td class="r">49</td><td class="r" style="font-weight: 500;">2</td><td class="r">51</td>
+            <td class="r"><span class="chip chip-success">Healthy</span></td>
+            <td class="r">100%</td>
+            <td class="r">51</td><td class="r">0</td><td class="r">51</td>
             <td class="r">33s</td><td class="r" style="color: #888;">5m ago</td>
           </tr>
         </tbody>
@@ -527,7 +544,7 @@ td.jobCell { text-align: center; padding: 2px; }
       <table class="oot-table">
         <colgroup>
           <col class="col-status"><col class="col-repo"><col class="col-level">
-          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num">
+          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num"><col class="col-num">
           <col class="col-dur"><col class="col-last">
         </colgroup>
         <thead>
@@ -535,6 +552,7 @@ td.jobCell { text-align: center; padding: 2px; }
             <th></th>
             <th>Backend Repository</th>
             <th class="c">Level</th>
+            <th class="r">Health</th>
             <th class="r">Pass Rate</th>
             <th class="r">Success</th>
             <th class="r">Failures</th>
@@ -554,7 +572,8 @@ td.jobCell { text-align: center; padding: 2px; }
               </span>
             </td>
             <td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
-            <td class="r"><span class="chip chip-success">89.6%</span></td>
+            <td class="r"><span class="chip chip-warning">Degraded</span></td>
+            <td class="r">89.6%</td>
             <td class="r">43</td><td class="r" style="color: #c62828; font-weight: 500;">5</td><td class="r">48</td>
             <td class="r">29s</td><td class="r" style="color: #888;">12m ago</td>
           </tr>
@@ -562,7 +581,8 @@ td.jobCell { text-align: center; padding: 2px; }
             <td class="c"><span class="status-dot active" title="Active"></span></td>
             <td><a href="oot-hud-mockup-crcr-backend.html">pytorch-labs/ascend-pytorch</a></td>
             <td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
-            <td class="r"><span class="chip chip-success">90.2%</span></td>
+            <td class="r"><span class="chip chip-warning">Degraded</span></td>
+            <td class="r">90.2%</td>
             <td class="r">46</td><td class="r" style="color: #c62828; font-weight: 500;">5</td><td class="r">51</td>
             <td class="r">36s</td><td class="r" style="color: #888;">38m ago</td>
           </tr>
@@ -576,7 +596,8 @@ td.jobCell { text-align: center; padding: 2px; }
               </span>
             </td>
             <td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
-            <td class="r"><span class="chip chip-success">78.6%</span></td>
+            <td class="r"><span class="chip chip-warning">Degraded</span></td>
+            <td class="r">78.6%</td>
             <td class="r">11</td><td class="r" style="color: #c62828; font-weight: 500;">3</td><td class="r">14</td>
             <td class="r">2h 48m</td><td class="r" style="color: #888;">1d ago</td>
           </tr>
@@ -590,7 +611,7 @@ td.jobCell { text-align: center; padding: 2px; }
       <table class="oot-table">
         <colgroup>
           <col class="col-status"><col class="col-repo"><col class="col-level">
-          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num">
+          <col class="col-rate"><col class="col-num"><col class="col-num"><col class="col-num"><col class="col-num">
           <col class="col-dur"><col class="col-last">
         </colgroup>
         <thead>
@@ -598,6 +619,7 @@ td.jobCell { text-align: center; padding: 2px; }
             <th></th>
             <th>Backend Repository</th>
             <th class="c">Level</th>
+            <th class="r">Health</th>
             <th class="r">Pass Rate</th>
             <th class="r">Success</th>
             <th class="r">Failures</th>
@@ -613,7 +635,8 @@ td.jobCell { text-align: center; padding: 2px; }
               <a href="oot-hud-mockup-crcr-backend.html">Ascend/pytorch</a>
             </td>
             <td class="c"><span class="chip chip-outlined level-l2">L2</span></td>
-            <td class="r"><span class="chip chip-success">98.3%</span></td>
+            <td class="r"><span class="chip chip-warning">Degraded</span></td>
+            <td class="r">98.3%</td>
             <td class="r">174</td><td class="r" style="color: #c62828; font-weight: 500;">3</td><td class="r">177</td>
             <td class="r">31.8m</td><td class="r" style="color: #888;">4d ago</td>
           </tr>
@@ -621,6 +644,7 @@ td.jobCell { text-align: center; padding: 2px; }
             <td class="c"><span class="status-dot stale" title="No recent PR runs"></span></td>
             <td><a href="oot-hud-mockup-crcr-backend.html">torch-xpu/torch-xpu</a></td>
             <td class="c"><span class="chip chip-outlined level-l2">L2</span></td>
+            <td class="r">&mdash;</td>
             <td class="r">&mdash;</td>
             <td class="r">&mdash;</td><td class="r">&mdash;</td><td class="r">&mdash;</td>
             <td class="r">&mdash;</td><td class="r" style="color: #888;">&mdash;</td>
