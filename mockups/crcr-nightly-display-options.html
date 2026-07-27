@@ -898,26 +898,24 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
     <div class="rg-gauge">
       <svg viewBox="0 0 120 120" class="rg-svg">
         <circle cx="60" cy="60" r="50" fill="none" stroke="#333" stroke-width="10"/>
-        <circle cx="60" cy="60" r="50" fill="none" stroke="#ffa726" stroke-width="10" stroke-dasharray="282.7" stroke-dashoffset="29.7" transform="rotate(-90 60 60)" stroke-linecap="round"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#ef5350" stroke-width="10" stroke-dasharray="282.7" stroke-dashoffset="197" transform="rotate(-90 60 60)" stroke-linecap="round"/>
       </svg>
-      <div class="rg-center"><span class="rg-pct" style="color:#ffa726">89.5%</span><span class="rg-label">PR CI</span></div>
-      <div class="rg-sub">148/165 jobs passed · 5 repos</div>
+      <div class="rg-center"><span class="rg-pct" style="color:#ef5350">30.3%</span><span class="rg-label">PR CI</span></div>
+      <div class="rg-sub">380/1032 jobs passed · 1 repo</div>
     </div>
     <div class="rg-gauge">
       <svg viewBox="0 0 120 120" class="rg-svg">
         <circle cx="60" cy="60" r="50" fill="none" stroke="#333" stroke-width="10"/>
-        <circle cx="60" cy="60" r="50" fill="none" stroke="#66bb6a" stroke-width="10" stroke-dasharray="282.7" stroke-dashoffset="14.1" transform="rotate(-90 60 60)" stroke-linecap="round"/>
       </svg>
-      <div class="rg-center"><span class="rg-pct" style="color:#66bb6a">95.1%</span><span class="rg-label">Nightly</span></div>
-      <div class="rg-sub">135/142 jobs passed · 3 repos</div>
+      <div class="rg-center"><span class="rg-pct" style="color:#888">—</span><span class="rg-label">Nightly</span></div>
+      <div class="rg-sub">No data · 0 repos</div>
     </div>
     <div class="rg-gauge">
       <svg viewBox="0 0 120 120" class="rg-svg">
         <circle cx="60" cy="60" r="50" fill="none" stroke="#333" stroke-width="10"/>
-        <circle cx="60" cy="60" r="50" fill="none" stroke="#66bb6a" stroke-width="10" stroke-dasharray="282.7" stroke-dashoffset="11.3" transform="rotate(-90 60 60)" stroke-linecap="round"/>
       </svg>
-      <div class="rg-center"><span class="rg-pct" style="color:#66bb6a">96.4%</span><span class="rg-label">Periodic</span></div>
-      <div class="rg-sub">212/220 jobs passed · 2 repos</div>
+      <div class="rg-center"><span class="rg-pct" style="color:#888">—</span><span class="rg-label">Periodic</span></div>
+      <div class="rg-sub">No data · 0 repos</div>
     </div>
   </div>
 
@@ -925,26 +923,21 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
     <table class="oot-table">
       <thead><tr><th>Repository</th><th class="c">Level</th><th class="c">PR</th><th class="c">Nightly</th><th class="c">Periodic</th><th class="r">Last Run</th></tr></thead>
       <tbody>
+        <tr><td><a href="#">Ascend/pytorch</a></td><td class="c"><span class="chip chip-outlined level-l2">L2</span></td>
+          <td class="c"><span class="chip chip-error" style="font-size:11px">30.3%</span></td>
+          <td class="c" style="color:#666;font-style:italic">—</td>
+          <td class="c" style="color:#666;font-style:italic">—</td>
+          <td class="r" style="color:#888">39m ago</td></tr>
         <tr><td><a href="#">TorchedHat/pytorch-redhat-ci</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
-          <td class="c"><span class="chip chip-error" style="font-size:11px">78.6%</span></td>
-          <td class="c"><span class="chip chip-warning" style="font-size:11px">83.3%</span></td>
-          <td class="c" style="color:#666;font-style:italic">—</td>
-          <td class="r" style="color:#888">1d ago</td></tr>
-        <tr><td><a href="#">intel/intel-extension-for-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
-          <td class="c"><span class="chip chip-warning" style="font-size:11px">89.6%</span></td>
-          <td class="c"><span class="chip chip-success" style="font-size:11px">100%</span></td>
-          <td class="c"><span class="chip chip-success" style="font-size:11px">97.1%</span></td>
-          <td class="r" style="color:#888">12m ago</td></tr>
-        <tr><td><a href="#">pytorch-labs/cambricon-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l4">L4</span></td>
-          <td class="c"><span class="chip chip-success" style="font-size:11px">96.1%</span></td>
           <td class="c" style="color:#666;font-style:italic">—</td>
           <td class="c" style="color:#666;font-style:italic">—</td>
-          <td class="r" style="color:#888">5m ago</td></tr>
-        <tr><td><a href="#">pytorch-labs/ascend-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
-          <td class="c"><span class="chip chip-success" style="font-size:11px">90.2%</span></td>
-          <td class="c"><span class="chip chip-success" style="font-size:11px">97.8%</span></td>
-          <td class="c"><span class="chip chip-success" style="font-size:11px">95.0%</span></td>
-          <td class="r" style="color:#888">38m ago</td></tr>
+          <td class="c" style="color:#666;font-style:italic">—</td>
+          <td class="r" style="color:#888">—</td></tr>
+        <tr><td><a href="#">torch-spp/torch-sppr</a></td><td class="c"><span class="chip chip-outlined level-l2">L2</span></td>
+          <td class="c" style="color:#666;font-style:italic">—</td>
+          <td class="c" style="color:#666;font-style:italic">—</td>
+          <td class="c" style="color:#666;font-style:italic">—</td>
+          <td class="r" style="color:#888">—</td></tr>
       </tbody>
     </table>
   </div>
