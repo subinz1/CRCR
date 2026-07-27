@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRCR Summary — Nightly Tab Design (Option A: Page-Level Tabs)</title>
+<style>
+:root {
+  --bg: #1a1a2e; --surface: #16213e; --card-bg: #1e2a45; --border-color: #2a3a5c;
+  --text-color: #e0e0e0; --text-muted: #888; --link-color: #64b5f6; --dropdown-bg: #1e2a45;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text-color); margin: 0; padding: 0; }
+a { color: var(--link-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- Navbar ---- */
+.navbar { display: flex; align-items: center; gap: 24px; padding: 8px 24px; background: #111; border-bottom: 1px solid #333; font-size: 13px; }
+.navbar a { color: #ccc; font-weight: 500; }
+.navbar a:hover { color: #fff; text-decoration: none; }
+.navbar a.active { color: #64b5f6; }
+.nav-right { margin-left: auto; display: flex; gap: 16px; }
+.nav-right a { color: #888; }
+
+/* ---- Page layout ---- */
+.page { max-width: 1200px; margin: 0 auto; padding: 24px; }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.page-header h1 { font-size: 24px; font-weight: 600; margin: 0; }
+.subtitle { font-size: 13px; color: var(--text-muted); margin: 0 0 16px; }
+.subtitle a { color: var(--link-color); }
+
+/* ---- Time range select ---- */
+.time-select { display: flex; align-items: center; gap: 8px; }
+.time-select label { font-size: 12px; color: var(--text-muted); }
+.time-select select { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 4px; padding: 4px 8px; font-size: 12px; }
+
+/* ---- Stat cards ---- */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 0; }
+.stat-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; margin-bottom: 16px; }
+.stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; text-align: center; }
+.stat-label { display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 4px; }
+.stat-value { display: block; font-size: 28px; font-weight: 700; }
+.stat-sub { display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.stat-value.warn { color: #ffa726; }
+.stat-value.bad { color: #ef5350; }
+.relay-health { border-left: 4px solid #e65100; cursor: pointer; }
+.relay-health:hover { border-color: #ff9800; }
+
+/* ---- Event type tabs ---- */
+.event-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border-color); margin: 20px 0 0; }
+.event-tab { padding: 10px 20px; font-size: 14px; font-weight: 500; color: var(--text-muted); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+.event-tab:hover { color: var(--text-color); background: rgba(255,255,255,0.03); }
+.event-tab.active { color: var(--link-color); border-bottom-color: var(--link-color); }
+.tab-count { display: inline-block; background: rgba(255,255,255,0.08); border-radius: 10px; padding: 1px 7px; font-size: 11px; margin-left: 6px; }
+.event-tab.active .tab-count { background: rgba(100,181,246,0.15); color: var(--link-color); }
+
+/* ---- Tab panes ---- */
+.tab-pane { display: none; padding-top: 20px; }
+.tab-pane.active { display: block; }
+
+/* ---- Section headers ---- */
+.section-header { font-size: 14px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
+
+/* ---- Tables ---- */
+.data-table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); }
+.data-table thead th { background: rgba(0,0,0,0.2); font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
+.data-table thead th.c { text-align: center; }
+.data-table thead th.r { text-align: right; }
+.data-table tbody td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.data-table tbody td.c { text-align: center; }
+.data-table tbody td.r { text-align: right; }
+.data-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+/* ---- Chips / badges ---- */
+.chip { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.chip-error { background: rgba(211,47,47,0.15); color: #ef5350; }
+.chip-warning { background: rgba(255,167,38,0.15); color: #ffa726; }
+.chip-success { background: rgba(46,125,50,0.15); color: #66bb6a; }
+.level-chip { border: 1px solid; border-radius: 4px; padding: 1px 8px; font-size: 11px; font-weight: 600; }
+.level-l2 { border-color: #1565c0; color: #42a5f5; }
+.level-l3 { border-color: #6a1b9a; color: #ab47bc; }
+.level-l1 { border-color: #555; color: #888; }
+
+/* ---- Status dots ---- */
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot-active { background: #66bb6a; box-shadow: 0 0 4px rgba(102,187,106,0.4); }
+.dot-stale { background: #555; }
+.dot-warn { background: #ffa726; box-shadow: 0 0 4px rgba(255,167,38,0.4); }
+
+/* ---- L1 section ---- */
+.l1-section { margin-top: 24px; }
+.l1-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.l1-badge { display: inline-block; border: 1px solid #555; color: #888; border-radius: 4px; padding: 4px 12px; font-size: 12px; font-weight: 500; }
+
+/* ---- Empty state ---- */
+.empty-state { text-align: center; padding: 56px 24px; color: var(--text-muted); }
+.empty-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--text-color); }
+.empty-desc { font-size: 13px; max-width: 400px; margin: 0 auto; }
+
+/* ---- Nightly-specific ---- */
+.nightly-info { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; padding: 10px 14px; background: rgba(106,27,154,0.08); border: 1px solid rgba(106,27,154,0.2); border-radius: 6px; font-size: 12px; color: #ce93d8; }
+.nightly-info-icon { font-size: 16px; }
+.sha-mono { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: var(--text-muted); }
+
+/* ---- Footer ---- */
+.footer-links { font-size: 11px; color: #666; padding: 24px; border-top: 1px solid var(--border-color); margin-top: 32px; }
+.footer-links a { color: #888; margin: 0 4px; }
+.footer-links strong { color: #aaa; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="#">PyTorch CI HUD</a>
+  <a href="#">PyTorch</a>
+  <a href="#">ExecuTorch</a>
+  <a href="#">TorchVision</a>
+  <a href="#">Helion</a>
+  <a href="#" class="active">CRCR</a>
+  <div class="nav-right">
+    <a href="#">Help</a>
+    <a href="#">Requests</a>
+    <a href="#">KPIs</a>
+    <a href="#">Benchmarks ▾</a>
+    <a href="#">Metrics ▾</a>
+    <a href="#">Dev Infra ▾</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>Cross-Repository CI Summary</h1>
+    <div class="time-select">
+      <label>Time Range</label>
+      <select><option>Last 24h</option><option selected>Last 7 days</option><option>Last 14 days</option><option>Last 30 days</option></select>
+    </div>
+  </div>
+  <p class="subtitle">Relay health metrics from <a href="https://github.com/pytorch/crcr-test">pytorch/crcr-test</a> probes. To know more, check the <a href="https://hud.pytorch.org/crcr/pytorch/crcr-test">HUD dashboard</a> or view <a href="https://hud.pytorch.org/crcr/metrics">success rate trends</a>.</p>
+
+  <!-- Stat cards — Row 1 -->
+  <div class="stat-grid">
+    <div class="stat-card relay-health">
+      <span class="stat-label">CRCR Relay Health</span>
+      <span class="stat-value warn">Degraded</span>
+      <span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Total Probe Runs</span>
+      <span class="stat-value">6,525</span>
+      <span class="stat-sub">last 7 days · pytorch/crcr-test</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Probe Failures</span>
+      <span class="stat-value bad">241</span>
+      <span class="stat-sub">pytorch/crcr-test failures</span>
+    </div>
+  </div>
+
+  <!-- Stat cards — Row 2 -->
+  <div class="stat-grid-2">
+    <div class="stat-card">
+      <span class="stat-label">Registered Backends</span>
+      <span class="stat-value">7</span>
+      <span class="stat-sub">3 L2 · 4 L1</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Timed Out</span>
+      <span class="stat-value bad">479</span>
+      <span class="stat-sub">probes that failed to report completion</span>
+    </div>
+  </div>
+
+  <!-- Event-type tabs -->
+  <div class="event-tabs" id="eventTabs">
+    <button class="event-tab active" onclick="switchTab('pr')">Pull Requests <span class="tab-count">3</span></button>
+    <button class="event-tab" onclick="switchTab('nightly')">Nightly <span class="tab-count">1</span></button>
+  </div>
+
+  <!-- ==================== PR TAB ==================== -->
+  <div class="tab-pane active" id="tab-pr">
+
+    <h3 class="section-header">L2 Backends (callback-only)</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:30px"></th>
+          <th>Backend Repository</th>
+          <th class="c">Level</th>
+          <th class="c">Pass Rate</th>
+          <th class="r">Success</th>
+          <th class="r">Failures</th>
+          <th class="r">Total</th>
+          <th class="r">Avg Duration</th>
+          <th class="r">Last Run</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c"><span class="dot dot-active"></span></td>
+          <td><a href="https://hud.pytorch.org/crcr/Ascend/pytorch">Ascend/pytorch</a></td>
+          <td class="c"><span class="level-chip level-l2">L2</span></td>
+          <td class="c"><span class="chip chip-error">30.3%</span></td>
+          <td class="r">380</td>
+          <td class="r" style="color:#ef5350;font-weight:500">640</td>
+          <td class="r">1032</td>
+          <td class="r" style="color:var(--text-muted)">24.8m</td>
+          <td class="r" style="color:var(--text-muted)">39m ago</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="dot dot-stale"></span></td>
+          <td><a href="#">TorchedHat/pytorch-redhat-ci</a></td>
+          <td class="c"><span class="level-chip level-l3">L3</span></td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="dot dot-stale"></span></td>
+          <td><a href="#">torch-spp/torch-sppr</a></td>
+          <td class="c"><span class="level-chip level-l2">L2</span></td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+          <td class="r" style="color:var(--text-muted)">—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="l1-section">
+      <h3 class="section-header">L1 Integrations (webhook-only)</h3>
+      <p style="font-size:12px;color:var(--text-muted);margin:0 0 8px;">Repos receive webhook notifications on new commits. No CI results reported back.</p>
+      <div class="l1-badges">
+        <span class="l1-badge">torchproject-dev/pytorch-ci</span>
+        <span class="l1-badge">NVIDIA-dev/pytorch-oot-internal</span>
+        <span class="l1-badge">NVIDIA/pytorch-windows-ci</span>
+        <span class="l1-badge">google-pytorch/torch_tpu</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NIGHTLY TAB ==================== -->
+  <div class="tab-pane" id="tab-nightly">
+
+    <div class="nightly-info">
+      <span class="nightly-info-icon">🌙</span>
+      Nightly CI runs triggered daily from <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:3px;">pytorch/pytorch</code> nightly branch HEAD. Results are reported via the CRCR callback pipeline.
+    </div>
+
+    <h3 class="section-header">Nightly CI Runs — Last 7 Days</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:30px"></th>
+          <th>Repository</th>
+          <th class="c">Level</th>
+          <th class="c">Pass Rate</th>
+          <th class="r">Success</th>
+          <th class="r">Failures</th>
+          <th class="r">Total</th>
+          <th class="r">SHA</th>
+          <th class="r">Last Run</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c"><span class="dot dot-warn"></span></td>
+          <td><a href="#">TorchedHat/pytorch-redhat-ci</a></td>
+          <td class="c"><span class="level-chip level-l3">L3</span></td>
+          <td class="c"><span class="chip chip-warning">72.4%</span></td>
+          <td class="r">21</td>
+          <td class="r" style="color:#ef5350;font-weight:500">8</td>
+          <td class="r">29</td>
+          <td class="r"><span class="sha-mono">f4a82c1</span></td>
+          <td class="r" style="color:var(--text-muted)">6h ago</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:24px;padding:12px 16px;background:rgba(255,255,255,0.02);border:1px dashed var(--border-color);border-radius:6px;font-size:12px;color:var(--text-muted);">
+      <strong style="color:var(--text-color)">1 of 7 repos</strong> configured for nightly CI. Other repos will appear here once their nightly workflows are set up and report back via the callback action.
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer-links">
+  <strong>Mockup Pages:</strong>
+  <a href="oot-hud-mockup.html">Main HUD</a> ·
+  <a href="oot-hud-mockup-crcr-summary.html">CRCR Summary</a> ·
+  <a href="oot-hud-mockup-crcr-backend.html">Per-Repo (PR)</a> ·
+  <a href="oot-hud-mockup-crcr-nightly.html">Nightly</a> ·
+  <a href="oot-hud-mockup-crcr-periodic.html">Periodic</a> ·
+  <a href="oot-hud-mockup-pr-workflows.html">PR Workflows</a> ·
+  <a href="crcr-nightly-display-options.html">Display Options</a> ·
+  <span style="font-weight:600;color:#aaa">Nightly Design</span>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.event-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.closest('.event-tab').classList.add('active');
+}
+</script>
+</body>
+</html>
