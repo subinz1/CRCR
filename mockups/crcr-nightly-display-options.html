@@ -345,12 +345,16 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
 
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">53</span><span class="stat-sub">last 7 days</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="event-tabs-bar" id="evtA">
@@ -402,11 +406,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="paper" style="margin-top: 20px;">
@@ -456,11 +464,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div style="margin-top: 20px;">
@@ -491,11 +503,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="col-layout" style="margin-top: 20px;">
@@ -531,11 +547,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="paper" style="margin-top: 20px;">
@@ -589,11 +609,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="stk-hdr"><div class="stk-icon pr">🔀</div><h3>Pull Request CI</h3></div>
@@ -632,11 +656,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="paper" style="margin-top: 20px;">
@@ -677,11 +705,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="sb-board" style="margin-top: 20px;">
@@ -781,11 +813,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div style="display:flex;gap:4px;align-items:center;margin:16px 0 8px;font-size:11px;color:#888;">
@@ -855,11 +891,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="bg-grid" style="margin-top: 20px;">
@@ -924,11 +964,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="at-section" style="margin-top: 20px;">
@@ -982,7 +1026,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
 
   <div class="rg-row">
     <div class="rg-gauge">
@@ -1053,11 +1097,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="paper" style="margin-top: 20px;">
@@ -1108,11 +1156,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div style="display:flex;gap:12px;margin:16px 0 8px;font-size:11px;color:#888;align-items:center;">
@@ -1167,11 +1219,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div style="display:flex;gap:12px;margin:16px 0 8px;font-size:11px;color:#888;align-items:center;">
@@ -1217,11 +1273,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
     <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
   </div>
-  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <p class="subtitle">Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success rate trends</a>.</p>
   <div class="stat-grid">
-    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
-    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
-    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">85.2% · 5361/6525 jobs passed · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Total Probe Runs</span><span class="stat-value">6,525</span><span class="stat-sub">last 7 days · pytorch/crcr-test</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">241</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: -4px;">
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">7</span><span class="stat-sub">3 L2 · 4 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Timed Out</span><span class="stat-value bad">479</span><span class="stat-sub">probes that failed to report completion</span></div>
   </div>
 
   <div class="vt-timeline" style="margin-top: 20px;">
