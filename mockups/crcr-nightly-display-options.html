@@ -358,38 +358,44 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   </div>
 
   <div class="event-tabs-bar" id="evtA">
-    <button class="active" onclick="showEvt('A','pr')">Pull Requests <span class="tab-count">5</span></button>
-    <button onclick="showEvt('A','nightly')">Nightly <span class="tab-count">3</span></button>
-    <button onclick="showEvt('A','periodic')">Periodic <span class="tab-count">2</span></button>
+    <button class="active" onclick="showEvt('A','pr')">Pull Requests <span class="tab-count">3</span></button>
+    <button onclick="showEvt('A','nightly')">Nightly <span class="tab-count">0</span></button>
+    <button onclick="showEvt('A','periodic')">Periodic <span class="tab-count">0</span></button>
   </div>
 
   <div class="evt-pane active" id="A-pr">
-    <div class="section-divider"><h3>L4 Backends (merge-gating)</h3></div>
-    <div class="paper"><table class="oot-table"><thead><tr><th></th><th>Repository</th><th class="c">Level</th><th class="r">Pass Rate</th><th class="r">Success</th><th class="r">Failures</th><th class="r">Total</th><th class="r">Last Run</th></tr></thead><tbody>
-      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">pytorch-labs/cambricon-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l4">L4</span></td><td class="r"><span class="chip chip-success">96.1%</span></td><td class="r">49</td><td class="r" style="color:#c62828;font-weight:500">2</td><td class="r">51</td><td class="r" style="color:#888">5m ago</td></tr>
+    <div class="section-divider"><h3>L2 Backends (callback-only)</h3></div>
+    <div class="paper"><table class="oot-table"><thead><tr><th></th><th>Backend Repository</th><th class="c">Level</th><th class="r">Pass Rate</th><th class="r">Success</th><th class="r">Failures</th><th class="r">Total</th><th class="r">Avg Duration</th><th class="r">Last Run</th></tr></thead><tbody>
+      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">Ascend/pytorch</a></td><td class="c"><span class="chip chip-outlined level-l2">L2</span></td><td class="r"><span class="chip chip-error">30.3%</span></td><td class="r">380</td><td class="r" style="color:#c62828;font-weight:500">640</td><td class="r">1032</td><td class="r" style="color:#888">24.8m</td><td class="r" style="color:#888">39m ago</td></tr>
+      <tr><td class="c"><span class="status-dot stale"></span></td><td><a href="#">TorchedHat/pytorch-redhat-ci</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td></tr>
+      <tr><td class="c"><span class="status-dot stale"></span></td><td><a href="#">torch-spp/torch-sppr</a></td><td class="c"><span class="chip chip-outlined level-l2">L2</span></td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td><td class="r" style="color:#888">—</td></tr>
     </tbody></table></div>
-    <div class="section-divider" style="margin-top:20px"><h3>L3 Backends (check runs on PR)</h3></div>
-    <div class="paper"><table class="oot-table"><thead><tr><th></th><th>Repository</th><th class="c">Level</th><th class="r">Pass Rate</th><th class="r">Success</th><th class="r">Failures</th><th class="r">Total</th><th class="r">Last Run</th></tr></thead><tbody>
-      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">intel/intel-extension-for-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="chip chip-success">89.6%</span></td><td class="r">43</td><td class="r" style="color:#c62828;font-weight:500">5</td><td class="r">48</td><td class="r" style="color:#888">12m ago</td></tr>
-      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">TorchedHat/pytorch-redhat-ci</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="chip chip-warning">78.6%</span></td><td class="r">11</td><td class="r" style="color:#c62828;font-weight:500">3</td><td class="r">14</td><td class="r" style="color:#888">1d ago</td></tr>
-    </tbody></table></div>
+    <div class="section-divider" style="margin-top:20px"><h3>L1 Integrations (webhook-only)</h3></div>
+    <div style="padding:8px 0;font-size:12px;color:#888;">Repos receive webhook notifications on new commits, No CI results reported back.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;padding:8px 0;">
+      <span class="chip chip-outlined level-l1">torchproject-dev/pytorch-ci</span>
+      <span class="chip chip-outlined level-l1">NVIDIA-dev/pytorch-oot-internal</span>
+      <span class="chip chip-outlined level-l1">NVIDIA/pytorch-windows-ci</span>
+      <span class="chip chip-outlined level-l1">google-pytorch/torch_tpu</span>
+    </div>
   </div>
 
   <div class="evt-pane" id="A-nightly">
     <div class="section-divider"><h3>Nightly CI Runs — Last 7 Days</h3></div>
-    <div class="paper"><table class="oot-table"><thead><tr><th></th><th>Repository</th><th class="c">Level</th><th class="r">Pass Rate</th><th class="r">Success</th><th class="r">Failures</th><th class="r">Total</th><th class="r">Source SHA</th><th class="r">Last Run</th></tr></thead><tbody>
-      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">intel/intel-extension-for-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="chip chip-success">100%</span></td><td class="r">56</td><td class="r">0</td><td class="r">56</td><td class="r" style="font-family:monospace;font-size:12px;color:#888">e5f6a7b</td><td class="r" style="color:#888">12h ago</td></tr>
-      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">TorchedHat/pytorch-redhat-ci</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="chip chip-warning">83.3%</span></td><td class="r">35</td><td class="r" style="color:#c62828;font-weight:500">7</td><td class="r">42</td><td class="r" style="font-family:monospace;font-size:12px;color:#888">a1b2c3d</td><td class="r" style="color:#888">8h ago</td></tr>
-      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">pytorch-labs/ascend-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="chip chip-success">97.8%</span></td><td class="r">44</td><td class="r" style="color:#c62828;font-weight:500">1</td><td class="r">45</td><td class="r" style="font-family:monospace;font-size:12px;color:#888">c3d4e5f</td><td class="r" style="color:#888">6h ago</td></tr>
-    </tbody></table></div>
+    <div style="text-align:center;padding:48px 24px;color:#888;font-size:14px;">
+      <div style="font-size:32px;margin-bottom:12px;">🌙</div>
+      <div>No nightly CI data yet.</div>
+      <div style="font-size:12px;margin-top:6px;">Nightly runs will appear here once downstream repos are configured.</div>
+    </div>
   </div>
 
   <div class="evt-pane" id="A-periodic">
     <div class="section-divider"><h3>Periodic CI Runs — Last 7 Days</h3></div>
-    <div class="paper"><table class="oot-table"><thead><tr><th></th><th>Repository</th><th class="c">Level</th><th class="r">Pass Rate</th><th class="r">Success</th><th class="r">Failures</th><th class="r">Total</th><th class="r">Cadence</th><th class="r">Last Run</th></tr></thead><tbody>
-      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">intel/intel-extension-for-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="chip chip-success">97.1%</span></td><td class="r">136</td><td class="r" style="color:#c62828;font-weight:500">4</td><td class="r">140</td><td class="r" style="color:#888">Every 6h</td><td class="r" style="color:#888">3h ago</td></tr>
-      <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">pytorch-labs/ascend-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="chip chip-success">95.0%</span></td><td class="r">76</td><td class="r" style="color:#c62828;font-weight:500">4</td><td class="r">80</td><td class="r" style="color:#888">Every 12h</td><td class="r" style="color:#888">5h ago</td></tr>
-    </tbody></table></div>
+    <div style="text-align:center;padding:48px 24px;color:#888;font-size:14px;">
+      <div style="font-size:32px;margin-bottom:12px;">🔄</div>
+      <div>No periodic CI data yet.</div>
+      <div style="font-size:12px;margin-top:6px;">Periodic runs will appear here once downstream repos are configured.</div>
+    </div>
   </div>
 </div></div>
 
