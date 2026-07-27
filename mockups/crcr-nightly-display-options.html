@@ -184,6 +184,22 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 .dark-mode .prbar .bf.green { background: #66bb6a; } .dark-mode .prbar .bf.orange { background: #ffa726; }
 .prbar .bp { font-size: 12px; color: #888; min-width: 36px; }
 
+/* ====== Option K: Alert-First Triage ====== */
+.at-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.at-icon { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+.at-title { font-size: 15px; font-weight: 600; } .at-count { font-size: 12px; color: #888; margin-left: 8px; }
+.at-alert-card { background: var(--dropdown-bg); border: 1px solid #4a0000; border-left: 4px solid #d32f2f; border-radius: 8px; padding: 16px; margin-bottom: 10px; }
+.at-alert-top { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.at-alert-name { font-size: 15px; font-weight: 600; }
+.at-alert-body { display: flex; gap: 24px; }
+.at-metric { display: flex; flex-direction: column; gap: 2px; }
+.at-metric-label { font-size: 11px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.at-metric-val { font-size: 20px; font-weight: 700; }
+.at-metric-sub { font-size: 11px; color: #888; }
+.at-collapse { display: none; } .at-collapse.open { display: block; }
+.at-compact-row { display: flex; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+.at-compact-row:last-child { border-bottom: none; }
+
 /* ====== Option J: Badge Grid ====== */
 .bg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 12px; }
 .bg-card { background: var(--dropdown-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; }
@@ -257,6 +273,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <button onclick="showOpt('H')">H: Status Board</button>
   <button onclick="showOpt('I')">I: Heat Strip</button>
   <button onclick="showOpt('J')">J: Badge Grid</button>
+  <button onclick="showOpt('K')">K: Alert Triage</button>
 </div>
 
 <!-- ============================================================ -->
@@ -834,6 +851,64 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
         <span class="bg-badge bg-disabled"><span class="bg-label bg-pe">Periodic</span><span class="bg-val bg-na">—</span></span>
       </div>
       <div class="bg-meta">174/177 PR · last run 4d ago</div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ============================================================ -->
+<!-- OPTION K: Alert-First Triage                                 -->
+<!-- ============================================================ -->
+<div class="option-pane" id="pane-K"><div class="oot-page">
+  <div class="option-banner">
+    <h3>Option K: Alert-First Triage</h3>
+    <p>Degraded repos shown as prominent alert cards at the top with full details. Healthy repos collapsed into a compact summary below. Designed for oncall triage.</p>
+    <div class="pros-cons"><div class="pro"><h4>+ Pros</h4><ul><li>Immediate focus on problems</li><li>Oncall-friendly — action items first</li><li>Healthy repos don't distract</li></ul></div><div class="con"><h4>- Cons</h4><ul><li>Healthy repos need extra click</li><li>Empty when everything is green</li></ul></div></div>
+  </div>
+
+  <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
+    <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
+  </div>
+  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <div class="stat-grid">
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+
+  <div class="at-section" style="margin-top: 20px;">
+    <div class="at-hdr"><span class="at-icon" style="background:#4a0000;color:#ef5350">!</span><span class="at-title">Needs Attention</span><span class="at-count">2 repos degraded</span></div>
+
+    <div class="at-alert-card">
+      <div class="at-alert-top">
+        <a href="#" class="at-alert-name">TorchedHat/pytorch-redhat-ci</a>
+        <span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span>
+      </div>
+      <div class="at-alert-body">
+        <div class="at-metric"><span class="at-metric-label">PR CI</span><span class="at-metric-val" style="color:#ef5350">78.6%</span><span class="at-metric-sub">11/14 — 3 failures</span></div>
+        <div class="at-metric"><span class="at-metric-label">Nightly</span><span class="at-metric-val" style="color:#ffa726">83.3%</span><span class="at-metric-sub">35/42 — 7 failures</span></div>
+        <div class="at-metric"><span class="at-metric-label">Periodic</span><span class="at-metric-val" style="color:#888">—</span><span class="at-metric-sub">Not configured</span></div>
+      </div>
+    </div>
+
+    <div class="at-alert-card">
+      <div class="at-alert-top">
+        <a href="#" class="at-alert-name">intel/intel-extension-for-pytorch</a>
+        <span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span>
+      </div>
+      <div class="at-alert-body">
+        <div class="at-metric"><span class="at-metric-label">PR CI</span><span class="at-metric-val" style="color:#ffa726">89.6%</span><span class="at-metric-sub">43/48 — 5 failures</span></div>
+        <div class="at-metric"><span class="at-metric-label">Nightly</span><span class="at-metric-val" style="color:#66bb6a">100%</span><span class="at-metric-sub">56/56</span></div>
+        <div class="at-metric"><span class="at-metric-label">Periodic</span><span class="at-metric-val" style="color:#66bb6a">97.1%</span><span class="at-metric-sub">136/140</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="at-section" style="margin-top: 16px;">
+    <div class="at-hdr" onclick="document.getElementById('at-healthy').classList.toggle('open')" style="cursor:pointer"><span class="at-icon" style="background:#1b5e20;color:#66bb6a">✓</span><span class="at-title">All Healthy</span><span class="at-count">3 repos · click to expand</span></div>
+    <div id="at-healthy" class="at-collapse">
+      <div class="at-compact-row"><a href="#">pytorch-labs/cambricon-pytorch</a><span style="margin-left:auto;color:#66bb6a;font-weight:600;font-size:13px">PR 96.1%</span></div>
+      <div class="at-compact-row"><a href="#">pytorch-labs/ascend-pytorch</a><span style="margin-left:auto;color:#66bb6a;font-weight:600;font-size:13px">PR 90.2% · Night 97.8% · Per 95.0%</span></div>
+      <div class="at-compact-row"><a href="#">Ascend/pytorch</a><span style="margin-left:auto;color:#66bb6a;font-weight:600;font-size:13px">PR 98.3%</span></div>
     </div>
   </div>
 </div></div>
