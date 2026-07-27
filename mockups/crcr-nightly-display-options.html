@@ -184,6 +184,22 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 .dark-mode .prbar .bf.green { background: #66bb6a; } .dark-mode .prbar .bf.orange { background: #ffa726; }
 .prbar .bp { font-size: 12px; color: #888; min-width: 36px; }
 
+/* ====== Option H: Status Board ====== */
+.sb-board { background: #111; border-radius: 8px; overflow: hidden; font-family: 'Courier New', monospace; }
+.dark-mode .sb-board { background: #0a0a0a; }
+.sb-header { display: flex; padding: 12px 16px; background: #222; color: #888; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; border-bottom: 2px solid #333; }
+.sb-row { display: flex; padding: 10px 16px; border-bottom: 1px solid #222; color: #e0e0e0; font-size: 13px; transition: background 0.2s; }
+.sb-row:hover { background: #1a1a1a; }
+.sb-row.sb-alert { background: rgba(211,47,47,0.08); }
+.sb-row.sb-alert:hover { background: rgba(211,47,47,0.14); }
+.sb-col { display: inline-flex; align-items: center; }
+.sb-repo { flex: 2; font-weight: 600; } .sb-type { flex: 1; } .sb-status { flex: 1; }
+.sb-rate { flex: 0.8; font-weight: 600; } .sb-jobs { flex: 0.8; color: #888; } .sb-time { flex: 0.8; color: #666; font-size: 12px; }
+.sb-badge { padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+.sb-pr { background: #1565c0; color: #fff; } .sb-ni { background: #6a1b9a; color: #fff; } .sb-pe { background: #00695c; color: #fff; }
+.sb-st { padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; }
+.sb-st-ok { background: #1b5e20; color: #66bb6a; } .sb-st-warn { background: #4a3800; color: #ffa726; } .sb-st-fail { background: #4a0000; color: #ef5350; }
+
 /* ====== Option G: Traffic Lights ====== */
 .tl-light { display: inline-flex; align-items: center; gap: 8px; }
 .tl-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px rgba(0,0,0,0.2); }
@@ -218,6 +234,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <button onclick="showOpt('E')">E: Swimlane Timeline</button>
   <button onclick="showOpt('F')">F: Stacked Sections</button>
   <button onclick="showOpt('G')">G: Traffic Lights</button>
+  <button onclick="showOpt('H')">H: Status Board</button>
 </div>
 
 <!-- ============================================================ -->
@@ -549,6 +566,110 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
           <td class="c"><span class="tl-na">—</span></td></tr>
       </tbody>
     </table>
+  </div>
+</div></div>
+
+<!-- ============================================================ -->
+<!-- OPTION H: Status Board (departure-board style)               -->
+<!-- ============================================================ -->
+<div class="option-pane" id="pane-H"><div class="oot-page">
+  <div class="option-banner">
+    <h3>Option H: Status Board</h3>
+    <p>Airport departure-board style: each row is a "flight" (repo + event type) with live status, schedule, and destination. Bold and scannable.</p>
+    <div class="pros-cons"><div class="pro"><h4>+ Pros</h4><ul><li>Flat list — no nesting or expanding</li><li>Status column immediately visible</li><li>Familiar real-world metaphor</li></ul></div><div class="con"><h4>- Cons</h4><ul><li>More rows (one per repo × event type)</li><li>Less compact than matrix</li></ul></div></div>
+  </div>
+
+  <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
+    <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
+  </div>
+  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <div class="stat-grid">
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+
+  <div class="sb-board" style="margin-top: 20px;">
+    <div class="sb-header">
+      <span class="sb-col sb-repo">DOWNSTREAM REPO</span>
+      <span class="sb-col sb-type">TYPE</span>
+      <span class="sb-col sb-status">STATUS</span>
+      <span class="sb-col sb-rate">PASS RATE</span>
+      <span class="sb-col sb-jobs">JOBS</span>
+      <span class="sb-col sb-time">LAST RUN</span>
+    </div>
+    <div class="sb-row sb-alert">
+      <span class="sb-col sb-repo">TorchedHat/pytorch-redhat-ci</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-pr">PR</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-fail">DEGRADED</span></span>
+      <span class="sb-col sb-rate">78.6%</span>
+      <span class="sb-col sb-jobs">11/14</span>
+      <span class="sb-col sb-time">1d ago</span>
+    </div>
+    <div class="sb-row sb-alert">
+      <span class="sb-col sb-repo">TorchedHat/pytorch-redhat-ci</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-ni">NIGHTLY</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-warn">DEGRADED</span></span>
+      <span class="sb-col sb-rate">83.3%</span>
+      <span class="sb-col sb-jobs">35/42</span>
+      <span class="sb-col sb-time">8h ago</span>
+    </div>
+    <div class="sb-row sb-alert">
+      <span class="sb-col sb-repo">intel/intel-extension-for-pytorch</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-pr">PR</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-warn">DEGRADED</span></span>
+      <span class="sb-col sb-rate">89.6%</span>
+      <span class="sb-col sb-jobs">43/48</span>
+      <span class="sb-col sb-time">12m ago</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-col sb-repo">intel/intel-extension-for-pytorch</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-ni">NIGHTLY</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-ok">HEALTHY</span></span>
+      <span class="sb-col sb-rate">100%</span>
+      <span class="sb-col sb-jobs">56/56</span>
+      <span class="sb-col sb-time">12h ago</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-col sb-repo">intel/intel-extension-for-pytorch</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-pe">PERIODIC</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-ok">HEALTHY</span></span>
+      <span class="sb-col sb-rate">97.1%</span>
+      <span class="sb-col sb-jobs">136/140</span>
+      <span class="sb-col sb-time">3h ago</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-col sb-repo">pytorch-labs/cambricon-pytorch</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-pr">PR</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-ok">HEALTHY</span></span>
+      <span class="sb-col sb-rate">96.1%</span>
+      <span class="sb-col sb-jobs">49/51</span>
+      <span class="sb-col sb-time">5m ago</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-col sb-repo">pytorch-labs/ascend-pytorch</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-pr">PR</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-ok">HEALTHY</span></span>
+      <span class="sb-col sb-rate">90.2%</span>
+      <span class="sb-col sb-jobs">46/51</span>
+      <span class="sb-col sb-time">38m ago</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-col sb-repo">pytorch-labs/ascend-pytorch</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-ni">NIGHTLY</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-ok">HEALTHY</span></span>
+      <span class="sb-col sb-rate">97.8%</span>
+      <span class="sb-col sb-jobs">44/45</span>
+      <span class="sb-col sb-time">6h ago</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-col sb-repo">pytorch-labs/ascend-pytorch</span>
+      <span class="sb-col sb-type"><span class="sb-badge sb-pe">PERIODIC</span></span>
+      <span class="sb-col sb-status"><span class="sb-st sb-st-ok">HEALTHY</span></span>
+      <span class="sb-col sb-rate">95.0%</span>
+      <span class="sb-col sb-jobs">76/80</span>
+      <span class="sb-col sb-time">5h ago</span>
+    </div>
   </div>
 </div></div>
 
