@@ -184,6 +184,21 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 .dark-mode .prbar .bf.green { background: #66bb6a; } .dark-mode .prbar .bf.orange { background: #ffa726; }
 .prbar .bp { font-size: 12px; color: #888; min-width: 36px; }
 
+/* ====== Option J: Badge Grid ====== */
+.bg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 12px; }
+.bg-card { background: var(--dropdown-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; }
+.bg-card:hover { border-color: var(--link-color); }
+.bg-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.bg-name { font-weight: 600; font-size: 14px; }
+.bg-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.bg-badge { display: inline-flex; border-radius: 4px; overflow: hidden; font-size: 11px; font-weight: 700; }
+.bg-badge.bg-disabled { opacity: 0.5; }
+.bg-label { padding: 3px 8px; color: #fff; }
+.bg-pr { background: #1565c0; } .bg-ni { background: #6a1b9a; } .bg-pe { background: #00695c; }
+.bg-val { padding: 3px 8px; }
+.bg-ok { background: #1b5e20; color: #66bb6a; } .bg-warn { background: #4a3800; color: #ffa726; } .bg-fail { background: #4a0000; color: #ef5350; } .bg-na { background: #333; color: #666; }
+.bg-meta { font-size: 11px; color: #888; }
+
 /* ====== Option I: Heat Strip ====== */
 .hs-cell { display: inline-block; width: 20px; height: 20px; border-radius: 3px; cursor: pointer; transition: transform 0.15s; }
 .hs-cell:hover { transform: scale(1.3); z-index: 1; }
@@ -241,6 +256,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <button onclick="showOpt('G')">G: Traffic Lights</button>
   <button onclick="showOpt('H')">H: Status Board</button>
   <button onclick="showOpt('I')">I: Heat Strip</button>
+  <button onclick="showOpt('J')">J: Badge Grid</button>
 </div>
 
 <!-- ============================================================ -->
@@ -750,6 +766,75 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
           <td class="r"><span class="chip chip-success" style="font-size:11px">96.1%</span></td></tr>
       </tbody>
     </table>
+  </div>
+</div></div>
+
+<!-- ============================================================ -->
+<!-- OPTION J: Compact Badge Grid                                 -->
+<!-- ============================================================ -->
+<div class="option-pane" id="pane-J"><div class="oot-page">
+  <div class="option-banner">
+    <h3>Option J: Compact Badge Grid</h3>
+    <p>GitHub shields.io badge style: each repo is a card with inline badges for PR/Nightly/Periodic. Extremely compact, scannable, and familiar to open-source developers.</p>
+    <div class="pros-cons"><div class="pro"><h4>+ Pros</h4><ul><li>Ultra-compact — many repos on one screen</li><li>Familiar badge style</li><li>No wasted space</li></ul></div><div class="con"><h4>- Cons</h4><ul><li>Less detail than tables</li><li>No trend info</li></ul></div></div>
+  </div>
+
+  <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
+    <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
+  </div>
+  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <div class="stat-grid">
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+
+  <div class="bg-grid" style="margin-top: 20px;">
+    <div class="bg-card">
+      <div class="bg-top"><a href="#" class="bg-name">intel/intel-extension-for-pytorch</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
+      <div class="bg-badges">
+        <span class="bg-badge"><span class="bg-label bg-pr">PR</span><span class="bg-val bg-warn">89.6%</span></span>
+        <span class="bg-badge"><span class="bg-label bg-ni">Nightly</span><span class="bg-val bg-ok">100%</span></span>
+        <span class="bg-badge"><span class="bg-label bg-pe">Periodic</span><span class="bg-val bg-ok">97.1%</span></span>
+      </div>
+      <div class="bg-meta">43/48 PR · 56/56 nightly · 136/140 periodic · last run 12m ago</div>
+    </div>
+    <div class="bg-card">
+      <div class="bg-top"><a href="#" class="bg-name">TorchedHat/pytorch-redhat-ci</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
+      <div class="bg-badges">
+        <span class="bg-badge"><span class="bg-label bg-pr">PR</span><span class="bg-val bg-fail">78.6%</span></span>
+        <span class="bg-badge"><span class="bg-label bg-ni">Nightly</span><span class="bg-val bg-warn">83.3%</span></span>
+        <span class="bg-badge bg-disabled"><span class="bg-label bg-pe">Periodic</span><span class="bg-val bg-na">—</span></span>
+      </div>
+      <div class="bg-meta">11/14 PR · 35/42 nightly · last run 1d ago</div>
+    </div>
+    <div class="bg-card">
+      <div class="bg-top"><a href="#" class="bg-name">pytorch-labs/cambricon-pytorch</a><span class="chip chip-outlined level-l4" style="font-size:10px;padding:1px 6px">L4</span></div>
+      <div class="bg-badges">
+        <span class="bg-badge"><span class="bg-label bg-pr">PR</span><span class="bg-val bg-ok">96.1%</span></span>
+        <span class="bg-badge bg-disabled"><span class="bg-label bg-ni">Nightly</span><span class="bg-val bg-na">—</span></span>
+        <span class="bg-badge bg-disabled"><span class="bg-label bg-pe">Periodic</span><span class="bg-val bg-na">—</span></span>
+      </div>
+      <div class="bg-meta">49/51 PR · last run 5m ago</div>
+    </div>
+    <div class="bg-card">
+      <div class="bg-top"><a href="#" class="bg-name">pytorch-labs/ascend-pytorch</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
+      <div class="bg-badges">
+        <span class="bg-badge"><span class="bg-label bg-pr">PR</span><span class="bg-val bg-ok">90.2%</span></span>
+        <span class="bg-badge"><span class="bg-label bg-ni">Nightly</span><span class="bg-val bg-ok">97.8%</span></span>
+        <span class="bg-badge"><span class="bg-label bg-pe">Periodic</span><span class="bg-val bg-ok">95.0%</span></span>
+      </div>
+      <div class="bg-meta">46/51 PR · 44/45 nightly · 76/80 periodic · last run 38m ago</div>
+    </div>
+    <div class="bg-card">
+      <div class="bg-top"><a href="#" class="bg-name">Ascend/pytorch</a><span class="chip chip-outlined level-l2" style="font-size:10px;padding:1px 6px">L2</span></div>
+      <div class="bg-badges">
+        <span class="bg-badge"><span class="bg-label bg-pr">PR</span><span class="bg-val bg-ok">98.3%</span></span>
+        <span class="bg-badge bg-disabled"><span class="bg-label bg-ni">Nightly</span><span class="bg-val bg-na">—</span></span>
+        <span class="bg-badge bg-disabled"><span class="bg-label bg-pe">Periodic</span><span class="bg-val bg-na">—</span></span>
+      </div>
+      <div class="bg-meta">174/177 PR · last run 4d ago</div>
+    </div>
   </div>
 </div></div>
 
