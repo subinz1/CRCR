@@ -184,6 +184,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 .dark-mode .prbar .bf.green { background: #66bb6a; } .dark-mode .prbar .bf.orange { background: #ffa726; }
 .prbar .bp { font-size: 12px; color: #888; min-width: 36px; }
 
+/* ====== Option O: Waffle Chart ====== */
+.wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.wf-card { background: var(--dropdown-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; }
+.wf-top { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.wf-name { font-weight: 600; font-size: 14px; }
+.wf-label { font-size: 11px; color: #888; font-weight: 600; margin-bottom: 4px; }
+.wf-waffle { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; }
+.wf-cell { width: 100%; aspect-ratio: 1; border-radius: 2px; display: inline-block; }
+
 /* ====== Option N: Stacked Horizontal Bars ====== */
 .hb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 12px; }
 .hb-card { background: var(--dropdown-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; }
@@ -300,6 +309,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <button onclick="showOpt('L')">L: Ring Gauges</button>
   <button onclick="showOpt('M')">M: Sparkline Table</button>
   <button onclick="showOpt('N')">N: Stacked Bars</button>
+  <button onclick="showOpt('O')">O: Waffle Chart</button>
 </div>
 
 <!-- ============================================================ -->
@@ -1124,6 +1134,56 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   </div>
 </div></div>
 
+<!-- ============================================================ -->
+<!-- OPTION O: Waffle Chart                                       -->
+<!-- ============================================================ -->
+<div class="option-pane" id="pane-O"><div class="oot-page">
+  <div class="option-banner">
+    <h3>Option O: Waffle Chart</h3>
+    <p>10x10 waffle grids per repo where each cell = 1% of jobs. Colored by outcome. See pass/fail composition at a visceral level — like a "unit chart" for CI health.</p>
+    <div class="pros-cons"><div class="pro"><h4>+ Pros</h4><ul><li>Each cell = 1 percentage point — intuitive</li><li>Shows composition, not just rate</li><li>Visually striking and memorable</li></ul></div><div class="con"><h4>- Cons</h4><ul><li>Takes more space</li><li>Less precise than numbers</li></ul></div></div>
+  </div>
+
+  <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
+    <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
+  </div>
+  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <div class="stat-grid">
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+
+  <div style="display:flex;gap:12px;margin:16px 0 8px;font-size:11px;color:#888;align-items:center;">
+    <span>Each cell = 1% of jobs:</span>
+    <span style="display:flex;align-items:center;gap:3px"><span class="wf-cell" style="background:#2e7d32"></span>Pass</span>
+    <span style="display:flex;align-items:center;gap:3px"><span class="wf-cell" style="background:#d32f2f"></span>Fail</span>
+    <span style="display:flex;align-items:center;gap:3px"><span class="wf-cell" style="background:#e65100"></span>Timeout</span>
+  </div>
+
+  <div class="wf-grid" style="margin-top: 8px;">
+    <div class="wf-card">
+      <div class="wf-top"><a href="#" class="wf-name">intel/intel-extension-for-pytorch</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
+      <div class="wf-label">PR CI — 89.6%</div>
+      <div class="wf-waffle" id="wf-intel-pr"></div>
+      <div class="wf-label" style="margin-top:10px">Nightly — 100%</div>
+      <div class="wf-waffle" id="wf-intel-ni"></div>
+    </div>
+    <div class="wf-card">
+      <div class="wf-top"><a href="#" class="wf-name">TorchedHat/pytorch-redhat-ci</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
+      <div class="wf-label">PR CI — 78.6%</div>
+      <div class="wf-waffle" id="wf-rh-pr"></div>
+      <div class="wf-label" style="margin-top:10px">Nightly — 83.3%</div>
+      <div class="wf-waffle" id="wf-rh-ni"></div>
+    </div>
+    <div class="wf-card">
+      <div class="wf-top"><a href="#" class="wf-name">pytorch-labs/cambricon-pytorch</a><span class="chip chip-outlined level-l4" style="font-size:10px;padding:1px 6px">L4</span></div>
+      <div class="wf-label">PR CI — 96.1%</div>
+      <div class="wf-waffle" id="wf-camb-pr"></div>
+    </div>
+  </div>
+</div></div>
+
 <!-- Mockup cross-links -->
 <hr style="margin-top: 32px;">
 <div style="font-size: 0.75rem; color: #666; padding: 8px 24px;">
@@ -1150,6 +1210,22 @@ function showEvt(group, tab) {
   event.target.closest('button').classList.add('active');
   document.getElementById(group + '-' + tab).classList.add('active');
 }
+function buildWaffle(id, pass, fail, timeout) {
+  const el = document.getElementById(id); if (!el) return;
+  for (let i = 0; i < 100; i++) {
+    const c = document.createElement('span'); c.className = 'wf-cell';
+    if (i < pass) c.style.background = '#2e7d32';
+    else if (i < pass + fail) c.style.background = '#d32f2f';
+    else if (i < pass + fail + timeout) c.style.background = '#e65100';
+    else c.style.background = '#333';
+    el.appendChild(c);
+  }
+}
+buildWaffle('wf-intel-pr', 90, 8, 2);
+buildWaffle('wf-intel-ni', 100, 0, 0);
+buildWaffle('wf-rh-pr', 79, 14, 7);
+buildWaffle('wf-rh-ni', 83, 12, 5);
+buildWaffle('wf-camb-pr', 96, 4, 0);
 </script>
 </body>
 </html>
