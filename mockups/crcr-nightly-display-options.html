@@ -184,6 +184,9 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 .dark-mode .prbar .bf.green { background: #66bb6a; } .dark-mode .prbar .bf.orange { background: #ffa726; }
 .prbar .bp { font-size: 12px; color: #888; min-width: 36px; }
 
+/* ====== Option M: Sparkline Table ====== */
+.spark { width: 80px; height: 24px; vertical-align: middle; }
+
 /* ====== Option L: Ring Gauges ====== */
 .rg-row { display: flex; gap: 24px; justify-content: center; margin-top: 16px; }
 .rg-gauge { position: relative; display: flex; flex-direction: column; align-items: center; }
@@ -284,6 +287,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <button onclick="showOpt('J')">J: Badge Grid</button>
   <button onclick="showOpt('K')">K: Alert Triage</button>
   <button onclick="showOpt('L')">L: Ring Gauges</button>
+  <button onclick="showOpt('M')">M: Sparkline Table</button>
 </div>
 
 <!-- ============================================================ -->
@@ -989,6 +993,61 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
           <td class="c"><span class="chip chip-success" style="font-size:11px">97.8%</span></td>
           <td class="c"><span class="chip chip-success" style="font-size:11px">95.0%</span></td>
           <td class="r" style="color:#888">38m ago</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div></div>
+
+<!-- ============================================================ -->
+<!-- OPTION M: Sparkline Table                                    -->
+<!-- ============================================================ -->
+<div class="option-pane" id="pane-M"><div class="oot-page">
+  <div class="option-banner">
+    <h3>Option M: Sparkline Table</h3>
+    <p>Standard table with inline SVG sparkline charts showing 7-day pass rate trends per repo. Combines numeric precision with visual trend awareness.</p>
+    <div class="pros-cons"><div class="pro"><h4>+ Pros</h4><ul><li>Trends visible inline</li><li>No extra interaction needed</li><li>Familiar table with visual boost</li></ul></div><div class="con"><h4>- Cons</h4><ul><li>More visual complexity per row</li><li>Sparklines may be hard to read at small sizes</li></ul></div></div>
+  </div>
+
+  <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
+    <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
+  </div>
+  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <div class="stat-grid">
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+
+  <div class="paper" style="margin-top: 20px;">
+    <table class="oot-table">
+      <thead><tr><th>Repository</th><th class="c">Level</th><th class="c">PR Trend (7d)</th><th class="c">PR Rate</th><th class="c">Nightly Trend (7d)</th><th class="c">Night Rate</th><th class="c">Periodic Trend (7d)</th><th class="c">Per Rate</th></tr></thead>
+      <tbody>
+        <tr><td><a href="#">intel/intel-extension-for-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,2 12,4 24,14 36,2 48,5 58,8 70,6" fill="none" stroke="#ffa726" stroke-width="2"/><circle cx="70" cy="6" r="2.5" fill="#ffa726"/></svg></td>
+          <td class="c"><span class="chip chip-warning" style="font-size:11px">89.6%</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,2 12,2 24,2 36,2 48,2 58,2 70,2" fill="none" stroke="#66bb6a" stroke-width="2"/><circle cx="70" cy="2" r="2.5" fill="#66bb6a"/></svg></td>
+          <td class="c"><span class="chip chip-success" style="font-size:11px">100%</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,2 12,2 24,2 36,2 48,6 58,2 70,2" fill="none" stroke="#66bb6a" stroke-width="2"/><circle cx="70" cy="2" r="2.5" fill="#66bb6a"/></svg></td>
+          <td class="c"><span class="chip chip-success" style="font-size:11px">97.1%</span></td></tr>
+        <tr><td><a href="#">TorchedHat/pytorch-redhat-ci</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,2 12,18 24,2 36,2 48,2 58,18 70,2" fill="none" stroke="#ef5350" stroke-width="2"/><circle cx="70" cy="2" r="2.5" fill="#ef5350"/></svg></td>
+          <td class="c"><span class="chip chip-error" style="font-size:11px">78.6%</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,2 12,2 24,22 36,16 48,2 58,2 70,22" fill="none" stroke="#ffa726" stroke-width="2"/><circle cx="70" cy="22" r="2.5" fill="#ffa726"/></svg></td>
+          <td class="c"><span class="chip chip-warning" style="font-size:11px">83.3%</span></td>
+          <td class="c" style="color:#666;font-style:italic">—</td>
+          <td class="c" style="color:#666;font-style:italic">—</td></tr>
+        <tr><td><a href="#">pytorch-labs/cambricon-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l4">L4</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,2 12,2 24,2 36,6 48,2 58,2 70,2" fill="none" stroke="#66bb6a" stroke-width="2"/><circle cx="70" cy="2" r="2.5" fill="#66bb6a"/></svg></td>
+          <td class="c"><span class="chip chip-success" style="font-size:11px">96.1%</span></td>
+          <td class="c" style="color:#666;font-style:italic">—</td><td class="c" style="color:#666;font-style:italic">—</td>
+          <td class="c" style="color:#666;font-style:italic">—</td><td class="c" style="color:#666;font-style:italic">—</td></tr>
+        <tr><td><a href="#">pytorch-labs/ascend-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,4 12,4 24,2 36,6 48,2 58,4 70,2" fill="none" stroke="#66bb6a" stroke-width="2"/><circle cx="70" cy="2" r="2.5" fill="#66bb6a"/></svg></td>
+          <td class="c"><span class="chip chip-success" style="font-size:11px">90.2%</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,2 12,4 24,2 36,2 48,2 58,4 70,2" fill="none" stroke="#66bb6a" stroke-width="2"/><circle cx="70" cy="2" r="2.5" fill="#66bb6a"/></svg></td>
+          <td class="c"><span class="chip chip-success" style="font-size:11px">97.8%</span></td>
+          <td class="c"><svg class="spark" viewBox="0 0 70 24"><polyline points="0,4 12,2 24,2 36,4 48,2 58,2 70,4" fill="none" stroke="#66bb6a" stroke-width="2"/><circle cx="70" cy="4" r="2.5" fill="#66bb6a"/></svg></td>
+          <td class="c"><span class="chip chip-success" style="font-size:11px">95.0%</span></td></tr>
       </tbody>
     </table>
   </div>
