@@ -1136,22 +1136,18 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 
   <div class="wf-grid" style="margin-top: 8px;">
     <div class="wf-card">
-      <div class="wf-top"><a href="#" class="wf-name">intel/intel-extension-for-pytorch</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
-      <div class="wf-label">PR CI — 89.6%</div>
+      <div class="wf-top"><a href="#" class="wf-name">Ascend/pytorch</a><span class="chip chip-outlined level-l2" style="font-size:10px;padding:1px 6px">L2</span></div>
+      <div class="wf-label">PR CI — 30.3%</div>
       <div class="wf-waffle" id="wf-intel-pr"></div>
-      <div class="wf-label" style="margin-top:10px">Nightly — 100%</div>
-      <div class="wf-waffle" id="wf-intel-ni"></div>
     </div>
     <div class="wf-card">
       <div class="wf-top"><a href="#" class="wf-name">TorchedHat/pytorch-redhat-ci</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
-      <div class="wf-label">PR CI — 78.6%</div>
+      <div class="wf-label">PR CI — No data</div>
       <div class="wf-waffle" id="wf-rh-pr"></div>
-      <div class="wf-label" style="margin-top:10px">Nightly — 83.3%</div>
-      <div class="wf-waffle" id="wf-rh-ni"></div>
     </div>
     <div class="wf-card">
-      <div class="wf-top"><a href="#" class="wf-name">pytorch-labs/cambricon-pytorch</a><span class="chip chip-outlined level-l4" style="font-size:10px;padding:1px 6px">L4</span></div>
-      <div class="wf-label">PR CI — 96.1%</div>
+      <div class="wf-top"><a href="#" class="wf-name">torch-spp/torch-sppr</a><span class="chip chip-outlined level-l2" style="font-size:10px;padding:1px 6px">L2</span></div>
+      <div class="wf-label">PR CI — No data</div>
       <div class="wf-waffle" id="wf-camb-pr"></div>
     </div>
   </div>
@@ -1282,11 +1278,11 @@ function buildWaffle(id, pass, fail, timeout) {
     el.appendChild(c);
   }
 }
-buildWaffle('wf-intel-pr', 90, 8, 2);
-buildWaffle('wf-intel-ni', 100, 0, 0);
-buildWaffle('wf-rh-pr', 79, 14, 7);
-buildWaffle('wf-rh-ni', 83, 12, 5);
-buildWaffle('wf-camb-pr', 96, 4, 0);
+buildWaffle('wf-intel-pr', 30, 62, 8);
+buildWaffle('wf-intel-ni', 0, 0, 0);
+buildWaffle('wf-rh-pr', 0, 0, 0);
+buildWaffle('wf-rh-ni', 0, 0, 0);
+buildWaffle('wf-camb-pr', 0, 0, 0);
 </script>
 </body>
 </html>
