@@ -184,6 +184,25 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 .dark-mode .prbar .bf.green { background: #66bb6a; } .dark-mode .prbar .bf.orange { background: #ffa726; }
 .prbar .bp { font-size: 12px; color: #888; min-width: 36px; }
 
+/* ====== Option P: Vertical Timeline ====== */
+.vt-timeline { position: relative; padding-left: 28px; }
+.vt-timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: var(--border-color); }
+.vt-entry { position: relative; margin-bottom: 16px; }
+.vt-dot { position: absolute; left: -22px; top: 6px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--border-color); background: var(--dropdown-bg); }
+.vt-ok .vt-dot { border-color: #2e7d32; background: #1b5e20; }
+.vt-fail .vt-dot { border-color: #d32f2f; background: #b71c1c; }
+.vt-content { background: var(--dropdown-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px 16px; }
+.vt-fail .vt-content { border-left: 3px solid #d32f2f; }
+.vt-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.vt-time { font-size: 11px; color: #888; font-weight: 600; }
+.vt-repo { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.vt-repo a { color: var(--link-color); }
+.vt-detail { font-size: 12px; color: #aaa; }
+.vt-result { font-weight: 600; }
+.vt-sha { font-size: 11px; color: #666; margin-top: 4px; }
+.vt-sha code { font-family: 'Courier New', monospace; background: rgba(255,255,255,0.06); padding: 1px 4px; border-radius: 3px; }
+.vt-more { text-align: center; padding: 12px; color: var(--link-color); cursor: pointer; font-size: 13px; font-weight: 500; }
+
 /* ====== Option O: Waffle Chart ====== */
 .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
 .wf-card { background: var(--dropdown-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; }
@@ -310,6 +329,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <button onclick="showOpt('M')">M: Sparkline Table</button>
   <button onclick="showOpt('N')">N: Stacked Bars</button>
   <button onclick="showOpt('O')">O: Waffle Chart</button>
+  <button onclick="showOpt('P')">P: Vertical Timeline</button>
 </div>
 
 <!-- ============================================================ -->
@@ -1181,6 +1201,90 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
       <div class="wf-label">PR CI — 96.1%</div>
       <div class="wf-waffle" id="wf-camb-pr"></div>
     </div>
+  </div>
+</div></div>
+
+<!-- ============================================================ -->
+<!-- OPTION P: Vertical Timeline                                  -->
+<!-- ============================================================ -->
+<div class="option-pane" id="pane-P"><div class="oot-page">
+  <div class="option-banner">
+    <h3>Option P: Vertical Timeline</h3>
+    <p>A vertical timeline showing all CI runs across repos in reverse chronological order. Each entry shows repo, event type, result, and duration. Great for oncall — "what just happened?"</p>
+    <div class="pros-cons"><div class="pro"><h4>+ Pros</h4><ul><li>Chronological — answers "what just ran?"</li><li>Combines all event types</li><li>Natural for monitoring</li></ul></div><div class="con"><h4>- Cons</h4><ul><li>Long list with many repos</li><li>No per-repo grouping</li></ul></div></div>
+  </div>
+
+  <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
+    <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
+  </div>
+  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <div class="stat-grid">
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+
+  <div class="vt-timeline" style="margin-top: 20px;">
+    <div class="vt-entry vt-fail">
+      <div class="vt-dot"></div>
+      <div class="vt-content">
+        <div class="vt-head"><span class="vt-time">Jul 24, 6:12 AM</span><span class="sb-badge sb-ni" style="font-size:9px">NIGHTLY</span></div>
+        <div class="vt-repo"><a href="#">TorchedHat/pytorch-redhat-ci</a></div>
+        <div class="vt-detail"><span class="vt-result" style="color:#ef5350">3 failed</span> · 39 passed · 42 total · duration 4h 12m</div>
+        <div class="vt-sha">Source SHA: <code>a1b2c3d</code></div>
+      </div>
+    </div>
+    <div class="vt-entry vt-ok">
+      <div class="vt-dot"></div>
+      <div class="vt-content">
+        <div class="vt-head"><span class="vt-time">Jul 24, 5:30 AM</span><span class="sb-badge sb-pr" style="font-size:9px">PR</span></div>
+        <div class="vt-repo"><a href="#">pytorch-labs/cambricon-pytorch</a></div>
+        <div class="vt-detail"><span class="vt-result" style="color:#66bb6a">All 51 passed</span> · duration 28m</div>
+      </div>
+    </div>
+    <div class="vt-entry vt-ok">
+      <div class="vt-dot"></div>
+      <div class="vt-content">
+        <div class="vt-head"><span class="vt-time">Jul 24, 3:00 AM</span><span class="sb-badge sb-pe" style="font-size:9px">PERIODIC</span></div>
+        <div class="vt-repo"><a href="#">intel/intel-extension-for-pytorch</a></div>
+        <div class="vt-detail"><span class="vt-result" style="color:#66bb6a">136/140 passed</span> · 4 failed · duration 1h 45m</div>
+      </div>
+    </div>
+    <div class="vt-entry vt-fail">
+      <div class="vt-dot"></div>
+      <div class="vt-content">
+        <div class="vt-head"><span class="vt-time">Jul 23, 11:48 PM</span><span class="sb-badge sb-pr" style="font-size:9px">PR</span></div>
+        <div class="vt-repo"><a href="#">TorchedHat/pytorch-redhat-ci</a></div>
+        <div class="vt-detail"><span class="vt-result" style="color:#ef5350">2 failed</span> · 12 passed · 14 total · duration 1h 52m</div>
+      </div>
+    </div>
+    <div class="vt-entry vt-ok">
+      <div class="vt-dot"></div>
+      <div class="vt-content">
+        <div class="vt-head"><span class="vt-time">Jul 23, 10:15 PM</span><span class="sb-badge sb-ni" style="font-size:9px">NIGHTLY</span></div>
+        <div class="vt-repo"><a href="#">intel/intel-extension-for-pytorch</a></div>
+        <div class="vt-detail"><span class="vt-result" style="color:#66bb6a">All 56 passed</span> · duration 2h 10m</div>
+        <div class="vt-sha">Source SHA: <code>e5f6a7b</code></div>
+      </div>
+    </div>
+    <div class="vt-entry vt-ok">
+      <div class="vt-dot"></div>
+      <div class="vt-content">
+        <div class="vt-head"><span class="vt-time">Jul 23, 8:00 PM</span><span class="sb-badge sb-pr" style="font-size:9px">PR</span></div>
+        <div class="vt-repo"><a href="#">pytorch-labs/ascend-pytorch</a></div>
+        <div class="vt-detail"><span class="vt-result" style="color:#66bb6a">46/51 passed</span> · 5 failed · duration 42m</div>
+      </div>
+    </div>
+    <div class="vt-entry vt-ok">
+      <div class="vt-dot"></div>
+      <div class="vt-content">
+        <div class="vt-head"><span class="vt-time">Jul 23, 6:00 PM</span><span class="sb-badge sb-ni" style="font-size:9px">NIGHTLY</span></div>
+        <div class="vt-repo"><a href="#">pytorch-labs/ascend-pytorch</a></div>
+        <div class="vt-detail"><span class="vt-result" style="color:#66bb6a">44/45 passed</span> · 1 failed · duration 3h 05m</div>
+        <div class="vt-sha">Source SHA: <code>c3d4e5f</code></div>
+      </div>
+    </div>
+    <div class="vt-more">Load more...</div>
   </div>
 </div></div>
 
