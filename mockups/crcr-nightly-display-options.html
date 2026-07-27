@@ -184,6 +184,17 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 .dark-mode .prbar .bf.green { background: #66bb6a; } .dark-mode .prbar .bf.orange { background: #ffa726; }
 .prbar .bp { font-size: 12px; color: #888; min-width: 36px; }
 
+/* ====== Option N: Stacked Horizontal Bars ====== */
+.hb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 12px; }
+.hb-card { background: var(--dropdown-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; }
+.hb-top { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.hb-name { font-weight: 600; font-size: 14px; }
+.hb-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.hb-type { font-size: 11px; color: #888; font-weight: 600; text-transform: uppercase; width: 56px; flex-shrink: 0; }
+.hb-bar { flex: 1; height: 14px; border-radius: 3px; overflow: hidden; display: flex; background: #333; }
+.hb-seg { height: 100%; transition: width 0.3s; }
+.hb-pct { font-size: 12px; font-weight: 600; width: 44px; text-align: right; flex-shrink: 0; }
+
 /* ====== Option M: Sparkline Table ====== */
 .spark { width: 80px; height: 24px; vertical-align: middle; }
 
@@ -288,6 +299,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <button onclick="showOpt('K')">K: Alert Triage</button>
   <button onclick="showOpt('L')">L: Ring Gauges</button>
   <button onclick="showOpt('M')">M: Sparkline Table</button>
+  <button onclick="showOpt('N')">N: Stacked Bars</button>
 </div>
 
 <!-- ============================================================ -->
@@ -1050,6 +1062,65 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
           <td class="c"><span class="chip chip-success" style="font-size:11px">95.0%</span></td></tr>
       </tbody>
     </table>
+  </div>
+</div></div>
+
+<!-- ============================================================ -->
+<!-- OPTION N: Stacked Horizontal Bars                            -->
+<!-- ============================================================ -->
+<div class="option-pane" id="pane-N"><div class="oot-page">
+  <div class="option-banner">
+    <h3>Option N: Stacked Horizontal Bars</h3>
+    <p>Each repo as a card with horizontal stacked bars showing success/failure/timeout breakdown per event type. Ratio-aware — you see the composition, not just the pass rate.</p>
+    <div class="pros-cons"><div class="pro"><h4>+ Pros</h4><ul><li>Shows failure composition (fail vs timeout vs cancel)</li><li>Proportional view — rare failures obvious</li><li>Good for comparing repos</li></ul></div><div class="con"><h4>- Cons</h4><ul><li>More visual noise per card</li><li>Needs legend</li></ul></div></div>
+  </div>
+
+  <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
+    <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
+  </div>
+  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <div class="stat-grid">
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+
+  <div style="display:flex;gap:12px;margin:16px 0 8px;font-size:11px;color:#888;align-items:center;">
+    <span>Legend:</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#2e7d32;border-radius:2px;display:inline-block"></span>Success</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#d32f2f;border-radius:2px;display:inline-block"></span>Failure</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#e65100;border-radius:2px;display:inline-block"></span>Timeout</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#616161;border-radius:2px;display:inline-block"></span>Cancelled</span>
+  </div>
+
+  <div class="hb-grid" style="margin-top: 8px;">
+    <div class="hb-card">
+      <div class="hb-top"><a href="#" class="hb-name">intel/intel-extension-for-pytorch</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
+      <div class="hb-row"><span class="hb-type">PR</span><div class="hb-bar"><div class="hb-seg" style="width:89.6%;background:#2e7d32" title="43 success"></div><div class="hb-seg" style="width:8.3%;background:#d32f2f" title="4 failures"></div><div class="hb-seg" style="width:2.1%;background:#e65100" title="1 timeout"></div></div><span class="hb-pct">89.6%</span></div>
+      <div class="hb-row"><span class="hb-type">Nightly</span><div class="hb-bar"><div class="hb-seg" style="width:100%;background:#2e7d32" title="56 success"></div></div><span class="hb-pct">100%</span></div>
+      <div class="hb-row"><span class="hb-type">Periodic</span><div class="hb-bar"><div class="hb-seg" style="width:97.1%;background:#2e7d32" title="136 success"></div><div class="hb-seg" style="width:2.9%;background:#d32f2f" title="4 failures"></div></div><span class="hb-pct">97.1%</span></div>
+    </div>
+
+    <div class="hb-card">
+      <div class="hb-top"><a href="#" class="hb-name">TorchedHat/pytorch-redhat-ci</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
+      <div class="hb-row"><span class="hb-type">PR</span><div class="hb-bar"><div class="hb-seg" style="width:78.6%;background:#2e7d32" title="11 success"></div><div class="hb-seg" style="width:14.3%;background:#d32f2f" title="2 failures"></div><div class="hb-seg" style="width:7.1%;background:#e65100" title="1 timeout"></div></div><span class="hb-pct">78.6%</span></div>
+      <div class="hb-row"><span class="hb-type">Nightly</span><div class="hb-bar"><div class="hb-seg" style="width:83.3%;background:#2e7d32" title="35 success"></div><div class="hb-seg" style="width:11.9%;background:#d32f2f" title="5 failures"></div><div class="hb-seg" style="width:4.8%;background:#e65100" title="2 timeout"></div></div><span class="hb-pct">83.3%</span></div>
+      <div class="hb-row"><span class="hb-type" style="color:#555">Periodic</span><div class="hb-bar" style="opacity:0.3"><div class="hb-seg" style="width:100%;background:#555"></div></div><span class="hb-pct" style="color:#555">—</span></div>
+    </div>
+
+    <div class="hb-card">
+      <div class="hb-top"><a href="#" class="hb-name">pytorch-labs/cambricon-pytorch</a><span class="chip chip-outlined level-l4" style="font-size:10px;padding:1px 6px">L4</span></div>
+      <div class="hb-row"><span class="hb-type">PR</span><div class="hb-bar"><div class="hb-seg" style="width:96.1%;background:#2e7d32" title="49 success"></div><div class="hb-seg" style="width:3.9%;background:#d32f2f" title="2 failures"></div></div><span class="hb-pct">96.1%</span></div>
+      <div class="hb-row"><span class="hb-type" style="color:#555">Nightly</span><div class="hb-bar" style="opacity:0.3"><div class="hb-seg" style="width:100%;background:#555"></div></div><span class="hb-pct" style="color:#555">—</span></div>
+      <div class="hb-row"><span class="hb-type" style="color:#555">Periodic</span><div class="hb-bar" style="opacity:0.3"><div class="hb-seg" style="width:100%;background:#555"></div></div><span class="hb-pct" style="color:#555">—</span></div>
+    </div>
+
+    <div class="hb-card">
+      <div class="hb-top"><a href="#" class="hb-name">pytorch-labs/ascend-pytorch</a><span class="chip chip-outlined level-l3" style="font-size:10px;padding:1px 6px">L3</span></div>
+      <div class="hb-row"><span class="hb-type">PR</span><div class="hb-bar"><div class="hb-seg" style="width:90.2%;background:#2e7d32"></div><div class="hb-seg" style="width:9.8%;background:#d32f2f"></div></div><span class="hb-pct">90.2%</span></div>
+      <div class="hb-row"><span class="hb-type">Nightly</span><div class="hb-bar"><div class="hb-seg" style="width:97.8%;background:#2e7d32"></div><div class="hb-seg" style="width:2.2%;background:#d32f2f"></div></div><span class="hb-pct">97.8%</span></div>
+      <div class="hb-row"><span class="hb-type">Periodic</span><div class="hb-bar"><div class="hb-seg" style="width:95%;background:#2e7d32"></div><div class="hb-seg" style="width:5%;background:#d32f2f"></div></div><span class="hb-pct">95.0%</span></div>
+    </div>
   </div>
 </div></div>
 
