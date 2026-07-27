@@ -184,6 +184,15 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
 .dark-mode .prbar .bf.green { background: #66bb6a; } .dark-mode .prbar .bf.orange { background: #ffa726; }
 .prbar .bp { font-size: 12px; color: #888; min-width: 36px; }
 
+/* ====== Option G: Traffic Lights ====== */
+.tl-light { display: inline-flex; align-items: center; gap: 8px; }
+.tl-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px rgba(0,0,0,0.2); }
+.tl-green { background: radial-gradient(circle at 35% 35%, #66bb6a, #2e7d32); }
+.tl-yellow { background: radial-gradient(circle at 35% 35%, #ffca28, #f9a825); }
+.tl-red { background: radial-gradient(circle at 35% 35%, #ef5350, #c62828); }
+.tl-pct { font-size: 13px; font-weight: 600; color: var(--text-color); }
+.tl-na { font-size: 12px; color: #666; font-style: italic; }
+
 @media (max-width: 900px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } .col-layout { grid-template-columns: 1fr; } .dgrid { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -208,6 +217,7 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
   <button onclick="showOpt('D')">D: Side-by-Side Columns</button>
   <button onclick="showOpt('E')">E: Swimlane Timeline</button>
   <button onclick="showOpt('F')">F: Stacked Sections</button>
+  <button onclick="showOpt('G')">G: Traffic Lights</button>
 </div>
 
 <!-- ============================================================ -->
@@ -495,6 +505,51 @@ button { cursor: pointer; display: inline-block; font-weight: 400; color: var(--
     <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">intel/intel-extension-for-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="prbar"><span class="bar"><span class="bf green" style="width:97%"></span></span><span class="bp">97.1%</span></span></td><td class="r" style="color:#888">136/140</td><td class="r" style="color:#888">Every 6h</td><td class="r" style="color:#888">3h ago</td></tr>
     <tr><td class="c"><span class="status-dot active"></span></td><td><a href="#">pytorch-labs/ascend-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td><td class="r"><span class="prbar"><span class="bar"><span class="bf green" style="width:95%"></span></span><span class="bp">95.0%</span></span></td><td class="r" style="color:#888">76/80</td><td class="r" style="color:#888">Every 12h</td><td class="r" style="color:#888">5h ago</td></tr>
   </tbody></table></div>
+</div></div>
+
+<!-- ============================================================ -->
+<!-- OPTION G: Traffic Light Dashboard                            -->
+<!-- ============================================================ -->
+<div class="option-pane" id="pane-G"><div class="oot-page">
+  <div class="option-banner">
+    <h3>Option G: Traffic Light Dashboard</h3>
+    <p>Each repo gets red/yellow/green traffic-light indicators per event type. Degraded repos float to the top. Instant visual scan.</p>
+    <div class="pros-cons"><div class="pro"><h4>+ Pros</h4><ul><li>Universal visual metaphor</li><li>Zero learning curve</li><li>Worst-first sort draws attention</li></ul></div><div class="con"><h4>- Cons</h4><ul><li>No numeric detail without hover</li><li>Color-only can be hard for colorblind users</li></ul></div></div>
+  </div>
+
+  <div class="oot-page-header"><h2>Cross-Repository CI Summary</h2>
+    <div class="mui-select-wrapper"><label>Time Range</label><select><option>Last 24h</option><option selected>Last 7 days</option></select></div>
+  </div>
+  <p class="subtitle">Relay health from <a href="#">pytorch/crcr-test</a> probes.</p>
+  <div class="stat-grid">
+    <a class="relay-health-card degraded"><span class="stat-label">CRCR Relay Health</span><span class="stat-value warn">Degraded</span><span class="stat-sub">96.2% · 51/53 jobs · pytorch/crcr-test</span></a>
+    <div class="stat-card"><span class="stat-label">Registered Backends</span><span class="stat-value">9</span><span class="stat-sub">1 L4 · 3 L3 · 2 L2 · 3 L1</span></div>
+    <div class="stat-card"><span class="stat-label">Probe Failures</span><span class="stat-value bad">2</span><span class="stat-sub">pytorch/crcr-test failures</span></div>
+  </div>
+
+  <div class="paper" style="margin-top: 20px;">
+    <table class="oot-table">
+      <thead><tr><th>Repository</th><th class="c">Level</th><th class="c" style="width:120px">PR CI</th><th class="c" style="width:120px">Nightly</th><th class="c" style="width:120px">Periodic</th></tr></thead>
+      <tbody>
+        <tr><td><a href="#">TorchedHat/pytorch-redhat-ci</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
+          <td class="c"><span class="tl-light" title="78.6% — 11/14 passed"><span class="tl-dot tl-red"></span><span class="tl-pct">78.6%</span></span></td>
+          <td class="c"><span class="tl-light" title="83.3% — 35/42 passed"><span class="tl-dot tl-yellow"></span><span class="tl-pct">83.3%</span></span></td>
+          <td class="c"><span class="tl-na">—</span></td></tr>
+        <tr><td><a href="#">intel/intel-extension-for-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
+          <td class="c"><span class="tl-light" title="89.6% — 43/48 passed"><span class="tl-dot tl-yellow"></span><span class="tl-pct">89.6%</span></span></td>
+          <td class="c"><span class="tl-light" title="100% — 56/56 passed"><span class="tl-dot tl-green"></span><span class="tl-pct">100%</span></span></td>
+          <td class="c"><span class="tl-light" title="97.1% — 136/140 passed"><span class="tl-dot tl-green"></span><span class="tl-pct">97.1%</span></span></td></tr>
+        <tr><td><a href="#">pytorch-labs/ascend-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l3">L3</span></td>
+          <td class="c"><span class="tl-light" title="90.2%"><span class="tl-dot tl-green"></span><span class="tl-pct">90.2%</span></span></td>
+          <td class="c"><span class="tl-light" title="97.8%"><span class="tl-dot tl-green"></span><span class="tl-pct">97.8%</span></span></td>
+          <td class="c"><span class="tl-light" title="95.0%"><span class="tl-dot tl-green"></span><span class="tl-pct">95.0%</span></span></td></tr>
+        <tr><td><a href="#">pytorch-labs/cambricon-pytorch</a></td><td class="c"><span class="chip chip-outlined level-l4">L4</span></td>
+          <td class="c"><span class="tl-light" title="96.1%"><span class="tl-dot tl-green"></span><span class="tl-pct">96.1%</span></span></td>
+          <td class="c"><span class="tl-na">—</span></td>
+          <td class="c"><span class="tl-na">—</span></td></tr>
+      </tbody>
+    </table>
+  </div>
 </div></div>
 
 <!-- Mockup cross-links -->
