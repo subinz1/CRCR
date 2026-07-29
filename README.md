@@ -1,8 +1,10 @@
 # CRCR
 
-All the files and mock-ups related to the HUD changes related to CRCR (Cross-Repository CI Relay).
+All the files and mock-ups related to the HUD changes for CRCR (Cross-Repository CI Relay).
 
 **Live mockups**: [subinz1.github.io/CRCR](https://subinz1.github.io/CRCR/)
+
+**RFC**: [RFC-0056: CRCR Support for Nightly & Periodic CI](https://github.com/pytorch/rfcs/pull/98)
 
 ## Mockups
 
