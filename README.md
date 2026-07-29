@@ -58,3 +58,13 @@ Weekly status reports summarizing CRCR development progress.
 | [#8366](https://github.com/pytorch/test-infra/pull/8366) | Healthy/Degraded display on summary page | Draft |
 | [#8376](https://github.com/pytorch/test-infra/pull/8376) | Fix x-prefix success rate calculation | Draft |
 | [#8377](https://github.com/pytorch/test-infra/pull/8377) | Nightly tab on CRCR summary page | Draft |
+
+## Related Repositories
+
+| Repo | Description |
+|------|-------------|
+| [pytorch/test-infra](https://github.com/pytorch/test-infra) | HUD frontend, ClickHouse queries, Lambda functions |
+| [pytorch/crcr-test](https://github.com/pytorch/crcr-test) | CRCR health probe repo (L2) |
+| [pytorch/rfcs](https://github.com/pytorch/rfcs) | RFC-0056 for nightly/periodic CI |
+| [TorchedHat/pytorch-redhat-ci](https://github.com/TorchedHat/pytorch-redhat-ci) | RHEL 9.6 downstream CI (L3) |
+| [subinz1/pytorch-targeted-tests](https://github.com/subinz1/pytorch-targeted-tests) | Diff-based test selection for nightly CI |
