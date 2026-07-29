@@ -19,6 +19,10 @@ Interactive HTML mockups for the CRCR HUD integration. These mockups demonstrate
 | [Per-Repo Dashboard](mockups/oot-hud-mockup-crcr-backend.html) | Downstream repo page with commit/author columns | [#8319](https://github.com/pytorch/test-infra/pull/8319), [#8330](https://github.com/pytorch/test-infra/pull/8330) |
 | [Nightly Results](mockups/oot-hud-mockup-crcr-nightly.html) | Nightly CI results for downstream repos | [#8353](https://github.com/pytorch/test-infra/pull/8353) |
 | [Periodic Results](mockups/oot-hud-mockup-crcr-periodic.html) | Periodic CI results (6-hour cadence) | [#8353](https://github.com/pytorch/test-infra/pull/8353) |
+| [Nightly Tab Design](mockups/crcr-summary-nightly-design.html) | Nightly tab on CRCR summary page (Option A) | [#8377](https://github.com/pytorch/test-infra/pull/8377) |
+| [Display Options](mockups/crcr-nightly-display-options.html) | 16 design options for nightly/periodic display | Design exploration |
+| [Nightly Tab Design](mockups/crcr-summary-nightly-design.html) | Standalone nightly tab mockup (Option A) | [#8377](https://github.com/pytorch/test-infra/pull/8377) |
+| [Display Options](mockups/crcr-nightly-display-options.html) | 16 design options (A–P) for nightly display | Design exploration |
 
 ## Implementation Status
 
