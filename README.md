@@ -22,6 +22,14 @@ Interactive HTML mockups for the CRCR HUD integration. These mockups demonstrate
 | [Nightly Tab Design](mockups/crcr-summary-nightly-design.html) | Nightly tab on CRCR summary page (Option A) | [#8377](https://github.com/pytorch/test-infra/pull/8377) |
 | [Display Options](mockups/crcr-nightly-display-options.html) | 16 design options (A–P) for nightly display | Design exploration |
 
+## Reports
+
+Weekly status reports summarizing CRCR development progress.
+
+| Report | Period |
+|--------|--------|
+| [Jul 21–28](reports/weekly-status-jul21-28.md) | Merged 5 PRs, 3 code reviews, RHEL nightly stabilization |
+
 ## Implementation Status
 
 ### Merged PRs
