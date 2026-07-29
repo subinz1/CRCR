@@ -26,5 +26,29 @@ Interactive HTML mockups for the CRCR HUD integration. These mockups demonstrate
 
 ## Implementation Status
 
-- **Merged**: Main HUD grid (#8285), PR workflows (#8247), Summary page (#8220), Per-repo dashboard (#8319, #8330), Metrics page (#8318), CRCR Metrics in navbar (#8244), Idle crash fix (#8341), L3/L4 filter (#8343)
-- **Open**: Event type column for nightly/periodic (#8353)
+### Merged PRs
+
+| PR | Title |
+|----|-------|
+| [#8220](https://github.com/pytorch/test-infra/pull/8220) | CRCR Summary page with stat cards |
+| [#8244](https://github.com/pytorch/test-infra/pull/8244) | Move CRCR link to top-level navbar |
+| [#8247](https://github.com/pytorch/test-infra/pull/8247) | CRCR workflow boxes on PR page |
+| [#8285](https://github.com/pytorch/test-infra/pull/8285) | CRCR columns on main HUD grid |
+| [#8318](https://github.com/pytorch/test-infra/pull/8318) | CRCR Metrics page |
+| [#8319](https://github.com/pytorch/test-infra/pull/8319) | Per-repo downstream dashboard |
+| [#8330](https://github.com/pytorch/test-infra/pull/8330) | PR-based grouping for downstream page |
+| [#8341](https://github.com/pytorch/test-infra/pull/8341) | Fix idle crash on CRCR pages |
+| [#8343](https://github.com/pytorch/test-infra/pull/8343) | Filter HUD grid to L3/L4 only |
+| [#8386](https://github.com/pytorch/test-infra/pull/8386) | Fix PR search for CRCR check runs |
+
+### Open PRs
+
+| PR | Title | Status |
+|----|-------|--------|
+| [#8302](https://github.com/pytorch/test-infra/pull/8302) | Nightly/periodic callback handler | In review |
+| [#8303](https://github.com/pytorch/test-infra/pull/8303) | CI-neutral callback action | In review |
+| [#8304](https://github.com/pytorch/test-infra/pull/8304) | SHA validator for nightly commits | In review |
+| [#8353](https://github.com/pytorch/test-infra/pull/8353) | Event type column for nightly/periodic | Draft |
+| [#8366](https://github.com/pytorch/test-infra/pull/8366) | Healthy/Degraded display on summary page | Draft |
+| [#8376](https://github.com/pytorch/test-infra/pull/8376) | Fix x-prefix success rate calculation | Draft |
+| [#8377](https://github.com/pytorch/test-infra/pull/8377) | Nightly tab on CRCR summary page | Draft |
