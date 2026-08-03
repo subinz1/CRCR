@@ -216,6 +216,13 @@ td.jobCell { text-align: center; padding: 2px; }
   font-family: -apple-system, sans-serif; font-weight: normal;
 }
 .has-tooltip:hover .tt { display: block; }
+.tt.tt-pinned {
+  display: block;
+  background: var(--tooltip-pinned-bg);
+  pointer-events: auto;
+  z-index: 1001;
+}
+.selectedRow { background-color: var(--selected-row-bg); font-weight: bold; }
 
 /* ═══════════════════════════════════════════════════════════════════════
    CRCR / MUI-like styles
@@ -520,20 +527,24 @@ td.jobCell { text-align: center; padding: 2px; }
             <td class="jobMetadata"><span class="jobMetadataTruncatedAuthor"><a href="#">contributor42</a></span></td>
             <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">build — success
 Duration: 2m 14s
-Queue: 8.2s</div></td>
+Queue: 8.2s
+<a href="#" style="color: var(--link-color); font-size: 11px; display: block; margin-top: 4px;">Show log ›</a></div></td>
             <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test-float32 — success
 Duration: 18m 32s
 Tests: 1240/1240 passed
-Queue: 12.3s</div></td>
+Queue: 12.3s
+<a href="#" style="color: var(--link-color); font-size: 11px; display: block; margin-top: 4px;">Show log ›</a></div></td>
             <td class="jobCell has-tooltip"><span class="conclusion c-failure">X</span><div class="tt">test-float16 — failure
 Duration: 12m 5s
 Tests: 1180/1210 passed (30 failed)
-Queue: 11.8s</div></td>
+Queue: 11.8s
+<a href="#" style="color: var(--link-color); font-size: 11px; display: block; margin-top: 4px;">Show log ›</a></div></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell has-tooltip"><span class="conclusion c-pending">?</span><div class="tt">test-quantized — running
-Queue: 14.1s</div></td>
+Queue: 14.1s
+<a href="#" style="color: var(--link-color); font-size: 11px; display: block; margin-top: 4px;">Show log ›</a></div></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
@@ -585,12 +596,14 @@ Queue: 14.1s</div></td>
             <td class="jobCell has-tooltip"><span class="conclusion c-failure">X</span><div class="tt">test-float32 — failure
 Duration: 15m 11s
 Tests: 1201/1240 passed (39 failed)
-Queue: 9.4s</div></td>
+Queue: 9.4s
+<a href="#" style="color: var(--link-color); font-size: 11px; display: block; margin-top: 4px;">Show log ›</a></div></td>
             <td class="jobCell"><span class="conclusion c-failure">X</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell has-tooltip"><span class="conclusion c-cancelled">X</span><div class="tt">test-sparse — cancelled
-Cancelled after build failure</div></td>
+Cancelled after build failure
+<a href="#" style="color: var(--link-color); font-size: 11px; display: block; margin-top: 4px;">Show log ›</a></div></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-failure">X</span></td>
@@ -662,7 +675,8 @@ Cancelled after build failure</div></td>
 Attempt 2 of 2
 Duration: 19m 44s
 Tests: 1240/1240 passed
-Queue: 10.1s</div></td>
+Queue: 10.1s
+<a href="#" style="color: var(--link-color); font-size: 11px; display: block; margin-top: 4px;">Show log ›</a></div></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
             <td class="jobCell"><span class="conclusion c-success">O</span></td>
@@ -969,7 +983,94 @@ Queue: 10.1s</div></td>
 <script>
 function toggleTheme() { document.body.classList.toggle("dark-mode"); }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   Interactive HUD behaviors (matching main HUD)
+   ═══════════════════════════════════════════════════════════════════════ */
+(function() {
+  let pinnedSha = null;
+  let pinnedCol = null;
 
+  const table = document.querySelector('.hudTable');
+  if (!table) return;
+
+  function clearAll() {
+    pinnedSha = null;
+    pinnedCol = null;
+    table.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+    table.querySelectorAll('.selectedRow').forEach(el => el.classList.remove('selectedRow'));
+    document.querySelectorAll('.tt-pinned').forEach(el => el.classList.remove('tt-pinned'));
+  }
+
+  function highlightColumn(colIdx) {
+    const rows = table.querySelectorAll('tr');
+    rows.forEach(tr => {
+      const cells = tr.children;
+      if (cells[colIdx]) cells[colIdx].classList.add('highlight');
+    });
+  }
+
+  function highlightRow(tr) {
+    tr.classList.add('highlight');
+  }
+
+  // Column header click — highlight entire column
+  const headerCells = table.querySelectorAll('thead th');
+  headerCells.forEach((th, idx) => {
+    if (!th.classList.contains('jobHeader')) return;
+    th.style.cursor = 'pointer';
+    th.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (pinnedCol === idx) { clearAll(); return; }
+      clearAll();
+      pinnedCol = idx;
+      highlightColumn(idx);
+    });
+  });
+
+  // Row click — highlight entire row
+  const bodyRows = table.querySelectorAll('tbody tr');
+  bodyRows.forEach(tr => {
+    const metaCells = tr.querySelectorAll('td.jobMetadata');
+    metaCells.forEach(td => {
+      td.style.cursor = 'pointer';
+      td.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (tr.classList.contains('highlight') && pinnedCol === null) { clearAll(); return; }
+        clearAll();
+        pinnedSha = tr;
+        highlightRow(tr);
+      });
+    });
+  });
+
+  // Cell click — pin tooltip
+  const jobCells = table.querySelectorAll('td.jobCell .has-tooltip');
+  table.querySelectorAll('td.jobCell').forEach(td => {
+    const tooltip = td.querySelector('.tt');
+    if (!tooltip) return;
+    td.style.cursor = 'pointer';
+    td.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (tooltip.classList.contains('tt-pinned')) { clearAll(); return; }
+      clearAll();
+      tooltip.classList.add('tt-pinned');
+      // also highlight column
+      const tr = td.parentElement;
+      const cells = Array.from(tr.children);
+      const colIdx = cells.indexOf(td);
+      pinnedCol = colIdx;
+      highlightColumn(colIdx);
+    });
+  });
+
+  // Global click — reset all selections
+  document.addEventListener('click', clearAll);
+
+  // Escape key — reset all selections
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') clearAll();
+  });
+})();
 </script>
 
 </body>
