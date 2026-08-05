@@ -168,22 +168,6 @@ td.jobCell { text-align: center; padding: 2px; border-bottom: 1px solid var(--bo
 }
 .dark-mode .nightly-badge { background: #9c27b0; }
 
-/* Event type tabs */
-.event-type-tabs {
-  display: inline-flex; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden;
-  margin-left: 12px; vertical-align: middle;
-}
-.event-type-tab {
-  display: inline-block; padding: 4px 14px; font-size: 0.8125rem; font-weight: 500;
-  text-decoration: none; color: #888; border-right: 1px solid var(--border-color);
-  transition: background 0.15s, color 0.15s;
-}
-.event-type-tab:last-child { border-right: none; }
-.event-type-tab:hover { background: rgba(0,0,0,0.04); color: var(--text-color); }
-.dark-mode .event-type-tab:hover { background: rgba(255,255,255,0.04); }
-.event-type-tab.active { background: #7b1fa2; color: #fff; font-weight: 600; }
-.dark-mode .event-type-tab.active { background: #9c27b0; color: #fff; }
-.event-type-tab.disabled { opacity: 0.4; pointer-events: none; }
 
 .theme-picker {
   background: none; border: 1px solid var(--border-color); border-radius: 4px;
@@ -254,12 +238,6 @@ td.jobCell { text-align: center; padding: 2px; border-bottom: 1px solid var(--bo
       <div style="display: flex; align-items: center; gap: 12px;">
         <a href="oot-hud-mockup-crcr-summary.html" style="font-size: 0.8125rem;">&larr; Back to CRCR Summary</a>
         <a href="https://github.com/TorchedHat/pytorch-redhat-ci" target="_blank" style="font-size: 0.8125rem;">GitHub ↗</a>
-        <span style="color: #555; font-size: 0.8125rem;">|</span>
-        <span class="event-type-tabs">
-          <a href="oot-hud-mockup-crcr-backend.html" class="event-type-tab">PR</a>
-          <a href="oot-hud-mockup-crcr-nightly.html" class="event-type-tab active">Nightly</a>
-          <a href="oot-hud-mockup-crcr-periodic.html" class="event-type-tab disabled">Periodic</a>
-        </span>
       </div>
     </div>
     <div style="display: flex; align-items: center; gap: 12px;">
