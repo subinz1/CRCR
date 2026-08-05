@@ -249,6 +249,29 @@ td.jobCell { text-align: center; padding: 2px; border-bottom: 1px solid var(--bo
     </div>
   </div>
 
+  <!-- Nightly summary cards -->
+  <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+    <div style="flex: 1; min-width: 140px; text-align: center; padding: 16px; border: 1px solid var(--border-color); border-radius: 4px; border-top: 3px solid #ed6c02; background: var(--dropdown-bg);">
+      <div style="font-size: 0.7rem; color: #888; text-transform: uppercase;">Pass Rate</div>
+      <div style="font-size: 1.5rem; font-weight: 600; color: #ed6c02;">85.7%</div>
+      <div style="font-size: 0.7rem; color: #888;">30/35 jobs</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; text-align: center; padding: 16px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--dropdown-bg);">
+      <div style="font-size: 0.7rem; color: #888; text-transform: uppercase;">Nightly Runs</div>
+      <div style="font-size: 1.5rem; font-weight: 600;">7</div>
+      <div style="font-size: 0.7rem; color: #888;">unique SHAs tested</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; text-align: center; padding: 16px; border: 1px solid var(--border-color); border-radius: 4px; border-top: 3px solid #f44336; background: var(--dropdown-bg);">
+      <div style="font-size: 0.7rem; color: #888; text-transform: uppercase;">Failures</div>
+      <div style="font-size: 1.5rem; font-weight: 600; color: #f44336;">2</div>
+      <div style="font-size: 0.7rem; color: #888;">+ 3 timed out</div>
+    </div>
+  </div>
+
+  <div style="font-size: 0.85rem; color: #888; margin-bottom: 12px;">
+    Rows = nightly CI runs (one per SHA), columns = build &amp; test stages. Click a cell to open the workflow run.
+  </div>
+
   <!-- Job filter (matches main HUD) -->
   <div class="job-filter">
     <label style="font-size: 0.8125rem;">Job filter:</label>
@@ -282,7 +305,7 @@ td.jobCell { text-align: center; padding: 2px; border-bottom: 1px solid var(--bo
         <tr onclick="highlightRow(this)">
           <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">1:49 PM</td>
           <td class="jobMetadata mono"><a href="https://github.com/pytorch/pytorch/commit/9470f12">9470f12</a></td>
-          <td class="jobMetadataTruncated"><a href="https://github.com/pytorch/pytorch/commit/9470f12">nightly release (9470f12ed7a922ad30941f...)</a></td>
+          <td class="jobMetadataTruncated"><a href="https://github.com/pytorch/pytorch/commit/9470f12" title="Update torch/distributed/_tensor to use DTensor.from_local instead of deprecated distribute_tensor">Update torch/distributed/_tensor to use DTensor.from_local instead of deprecated distribute_tensor</a></td>
           <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">build — success
 Duration: 1h 49m
 <a href="https://github.com/TorchedHat/pytorch-redhat-ci/actions/runs/30933060381" style="color:#4a90e2;">Show log ›</a></div></td>
@@ -306,7 +329,7 @@ Tests: 2 passed, 0 failed
         <tr onclick="highlightRow(this)">
           <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Mon 2:17 PM</td>
           <td class="jobMetadata mono"><a href="#">fdd065a</a></td>
-          <td class="jobMetadataTruncated"><a href="#">nightly release (fdd065ad78fa0600ad658c...)</a></td>
+          <td class="jobMetadataTruncated"><a href="#" title="[inductor] Fix bug in pattern matching with unbacked symints (#189042)">[inductor] Fix bug in pattern matching with unbacked symints (#189042)</a></td>
           <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">build — success
 Duration: 1h 52m
 <a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
@@ -326,7 +349,7 @@ Duration: 45s
         <tr onclick="highlightRow(this)">
           <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Sun 1:48 PM</td>
           <td class="jobMetadata mono"><a href="#">a3b4c5d</a></td>
-          <td class="jobMetadataTruncated"><a href="#">nightly release (a3b4c5d6e7f8091234567...)</a></td>
+          <td class="jobMetadataTruncated"><a href="#" title="[dynamo] Support torch.compile with async_compile backend (#188901)">[dynamo] Support torch.compile with async_compile backend (#188901)</a></td>
           <td class="jobCell has-tooltip"><span class="conclusion c-failure">X</span><div class="tt">build — failure
 Duration: 42s
 subscription-manager: Remote server error
@@ -339,7 +362,7 @@ subscription-manager: Remote server error
         <tr onclick="highlightRow(this)">
           <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Sat 1:48 PM</td>
           <td class="jobMetadata mono"><a href="#">e7f8091</a></td>
-          <td class="jobMetadataTruncated"><a href="#">nightly release (e7f8091a2b3c4d5e6f789...)</a></td>
+          <td class="jobMetadataTruncated"><a href="#" title="[MPS] Add support for torch.linalg.eigh on MPS backend (#188776)">[MPS] Add support for torch.linalg.eigh on MPS backend (#188776)</a></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
@@ -349,7 +372,7 @@ subscription-manager: Remote server error
         <tr onclick="highlightRow(this)">
           <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Fri 1:53 PM</td>
           <td class="jobMetadata mono"><a href="#">b2c3d4e</a></td>
-          <td class="jobMetadataTruncated"><a href="#">nightly release (b2c3d4e5f6a7890123456...)</a></td>
+          <td class="jobMetadataTruncated"><a href="#" title="Revert: [FSDP2] Enable mixed precision for FSDP2 with autocast (#188650)">Revert: [FSDP2] Enable mixed precision for FSDP2 with autocast (#188650)</a></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
@@ -359,7 +382,7 @@ subscription-manager: Remote server error
         <tr onclick="highlightRow(this)">
           <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Thu 1:48 PM</td>
           <td class="jobMetadata mono"><a href="#">c4d5e6f</a></td>
-          <td class="jobMetadataTruncated"><a href="#">nightly release (c4d5e6f7a8b9012345678...)</a></td>
+          <td class="jobMetadataTruncated"><a href="#" title="[export] Handle dynamic shapes in custom ops with structured kernels (#188512)">[export] Handle dynamic shapes in custom ops with structured kernels (#188512)</a></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
           <td class="jobCell has-tooltip"><span class="conclusion c-failure">X</span><div class="tt">test (cpu) — failure
 Duration: 2h 1m
@@ -372,7 +395,7 @@ FAIL: test_overrides (CUDA driver mismatch)
         <tr onclick="highlightRow(this)">
           <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Wed 1:50 PM</td>
           <td class="jobMetadata mono"><a href="#">f7a8b9c</a></td>
-          <td class="jobMetadataTruncated"><a href="#">nightly release (f7a8b9c0d1e2345678901...)</a></td>
+          <td class="jobMetadataTruncated"><a href="#" title="[c10d] Fix ProcessGroupNCCL timeout handling for async ops (#188401)">[c10d] Fix ProcessGroupNCCL timeout handling for async ops (#188401)</a></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
           <td class="jobCell"><span class="conclusion c-success">O</span></td>
