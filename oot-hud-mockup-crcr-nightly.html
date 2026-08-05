@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyTorch CI HUD — CRCR Nightly (Mockup)</title>
+<style>
+:root {
+  --background-color: #ffffff;
+  --text-color: #212529;
+  --link-color: #0064cf;
+  --navbar-bg: linear-gradient(326deg, rgba(255,246,246,0.5), rgba(255,247,236,0.5));
+  --navbar-shadow: 0 -4px 20px 0px #c2c2c2;
+  --dropdown-bg: white;
+  --code-bg: aliceblue;
+  --icon-color: black;
+  --dropdown-shadow: 0 -4px 20px 0px #c2c2c2;
+  --button-color: #212529;
+  --button-bg: transparent;
+  --border-color: #e1e1e1;
+  --table-border-color: #e1e1e1;
+  --color-success: #4caf50;
+  --color-failure: #f44336;
+  --color-grey: #9e9e9e;
+  --color-light-grey: #bdbdbd;
+  --color-warning: #ff9800;
+  --color-pending: #ffc107;
+  --color-flaky: #8bc34a;
+  --tooltip-bg: #e0e0e0;
+  --tooltip-text: #212529;
+  --highlight-bg: #ffa;
+}
+.dark-mode {
+  --background-color: #1e1e1e;
+  --text-color: #e0e0e0;
+  --link-color: #4a90e2;
+  --navbar-bg: linear-gradient(326deg, rgba(42,42,42,0.8), rgba(45,45,45,0.8));
+  --navbar-shadow: 0 -4px 20px 0px rgba(0,0,0,0.4);
+  --dropdown-bg: #2a2a2a;
+  --code-bg: #2a2a2a;
+  --icon-color: #e0e0e0;
+  --dropdown-shadow: 0 -4px 20px 0px rgba(0,0,0,0.3);
+  --button-color: #e0e0e0;
+  --button-bg: transparent;
+  --border-color: #3a3a3a;
+  --table-border-color: rgba(255,255,255,0.3);
+  --tooltip-bg: #3a3a3a;
+  --tooltip-text: #e0e0e0;
+}
+
+html {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+h1 { margin: 0; }
+body {
+  margin: 0; padding: 5px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+a { text-decoration: none; color: var(--link-color); }
+* { box-sizing: border-box; }
+pre, code { background-color: var(--code-bg); }
+table a, td a { color: var(--link-color); }
+button {
+  cursor: pointer; display: inline-block; font-weight: 400;
+  color: var(--button-color); text-align: center; vertical-align: middle;
+  user-select: none; border: 1px solid transparent; border-radius: 0.25rem;
+  background-color: var(--button-bg);
+}
+input, select {
+  background-color: var(--dropdown-bg); color: var(--text-color);
+  border: 1px solid var(--border-color); border-radius: 0.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+select option { background-color: var(--dropdown-bg); color: var(--text-color); }
+table { border-collapse: collapse; border-color: var(--border-color); color: var(--text-color); background-color: var(--dropdown-bg); }
+th, td { border-color: var(--border-color); padding: 1px 3px; }
+hr { border-color: var(--border-color); }
+
+/* NavBar */
+.navbar {
+  display: flex; padding: 0 clamp(0.5rem, 1vw, 1rem);
+  background: var(--navbar-bg); box-shadow: var(--navbar-shadow);
+  width: 100%; min-height: 60px; align-items: center;
+  position: relative; z-index: 1300;
+  backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(1px);
+  flex-wrap: wrap; gap: clamp(0.5rem, 2vw, 1.5rem);
+  font-size: clamp(14px, 1vw, 16px);
+}
+.navbar li {
+  padding: clamp(0.5rem, 0.8vw, 0.7rem) clamp(0.6rem, 1vw, 0.8rem);
+  position: relative; display: flex; align-items: center;
+}
+.navbar ul { list-style: none; margin: 0; padding: 0; }
+.navbarlinkslist { display: flex; align-items: center; flex-wrap: wrap; margin: 0; padding: 0; height: 100%; }
+.homeLink { font-weight: bold; padding-right: 10px; }
+.nav-right { margin-left: auto; display: flex; align-items: center; }
+.dropdown-trigger { position: relative; cursor: pointer; }
+.dropdown-menu {
+  position: absolute; top: 100%; left: 0; box-shadow: var(--dropdown-shadow);
+  z-index: 9999; min-width: 12rem; padding: 0.5rem 0;
+  background-color: var(--dropdown-bg); display: none; border-radius: 4px;
+}
+.dropdown-trigger:hover .dropdown-menu { display: block; }
+.dropdown-menu a { display: block; padding: 0.35rem 0.8rem; font-size: 13px; color: var(--text-color); white-space: nowrap; }
+.dropdown-menu a:hover { background: rgba(0,0,0,0.05); }
+.dark-mode .dropdown-menu a:hover { background: rgba(255,255,255,0.05); }
+
+/* HUD Table — matches main HUD */
+.hudTable { table-layout: fixed; border-collapse: collapse; width: max-content; line-height: 1; }
+.colTime { width: 10ch; }
+.colSha { width: 8ch; }
+.colCommit { width: 50ch; }
+.colJob { width: 2ch; min-width: 14px; }
+.jobHeader { font-family: sans-serif; height: 150px; white-space: nowrap; padding-right: 4px; }
+.jobHeaderName { transform: translate(5px, 60px) rotate(315deg); width: 12px; font-weight: 400; font-size: 0.8em; }
+.regularHeader { vertical-align: bottom; font-weight: 600; font-size: 0.85em; padding: 4px 6px; }
+.jobMetadata { padding: 4px 6px; font-size: 0.85em; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
+.jobMetadataTruncated { padding: 4px 6px; font-size: 0.85em; border-bottom: 1px solid var(--border-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 50ch; }
+.mono { font-family: monospace; font-size: 0.75rem; }
+td.jobCell { text-align: center; padding: 2px; border-bottom: 1px solid var(--border-color); }
+
+/* JobConclusion */
+.conclusion { font-family: monospace; font-size: 1rem; font-weight: bold; display: inline-block; width: 14px; text-align: center; }
+.c-success { color: var(--color-success); }
+.c-failure { color: var(--color-failure); }
+.c-pending { color: var(--color-pending); }
+.c-cancelled { color: var(--color-failure); }
+.c-skipped { color: var(--color-grey); }
+.c-warning { color: var(--color-warning); }
+.c-none { color: var(--color-light-grey); }
+
+/* Tooltip */
+.has-tooltip { position: relative; cursor: pointer; }
+.has-tooltip .tt {
+  display: none; position: absolute; z-index: 1000; bottom: calc(100% + 6px);
+  left: 50%; transform: translateX(-50%); background: var(--tooltip-bg);
+  color: var(--tooltip-text); padding: 6px 10px; border-radius: 4px;
+  font-size: 12px; white-space: pre-line; pointer-events: none;
+  min-width: 200px; max-width: 350px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-family: -apple-system, sans-serif; font-weight: normal;
+}
+.has-tooltip:hover .tt { display: block; }
+
+/* Highlight */
+.highlight-col { background-color: rgba(255,255,0,0.12) !important; }
+.highlight-row { background-color: rgba(255,255,0,0.08) !important; }
+
+/* Page layout */
+.oot-page { padding: 24px; max-width: 1600px; margin: 0 auto; }
+
+.mui-select-wrapper { position: relative; min-width: 140px; }
+.mui-select-wrapper label {
+  position: absolute; top: -8px; left: 12px; font-size: 11px;
+  background: var(--dropdown-bg); padding: 0 4px; color: #888;
+}
+.mui-select-wrapper select { width: 100%; padding: 8px 12px; font-size: 14px; }
+
+/* Nightly badge */
+.nightly-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 3px;
+  font-size: 0.6875rem; font-weight: 600; text-transform: uppercase;
+  background: #7b1fa2; color: #fff; vertical-align: middle; margin-left: 8px;
+  letter-spacing: 0.03em;
+}
+.dark-mode .nightly-badge { background: #9c27b0; }
+
+/* Event type tabs */
+.event-type-tabs {
+  display: inline-flex; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden;
+  margin-left: 12px; vertical-align: middle;
+}
+.event-type-tab {
+  display: inline-block; padding: 4px 14px; font-size: 0.8125rem; font-weight: 500;
+  text-decoration: none; color: #888; border-right: 1px solid var(--border-color);
+  transition: background 0.15s, color 0.15s;
+}
+.event-type-tab:last-child { border-right: none; }
+.event-type-tab:hover { background: rgba(0,0,0,0.04); color: var(--text-color); }
+.dark-mode .event-type-tab:hover { background: rgba(255,255,255,0.04); }
+.event-type-tab.active { background: #7b1fa2; color: #fff; font-weight: 600; }
+.dark-mode .event-type-tab.active { background: #9c27b0; color: #fff; }
+.event-type-tab.disabled { opacity: 0.4; pointer-events: none; }
+
+.theme-picker {
+  background: none; border: 1px solid var(--border-color); border-radius: 4px;
+  padding: 4px 10px; cursor: pointer; color: var(--text-color); font-size: 14px;
+}
+
+/* Job filter */
+.job-filter { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.job-filter input { padding: 4px 8px; font-size: 13px; width: 200px; }
+.job-filter button { padding: 4px 12px; font-size: 13px; border: 1px solid var(--border-color); }
+.settings-toggle { padding: 4px 12px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 4px; }
+</style>
+</head>
+<body class="dark-mode">
+
+<nav class="navbar">
+  <div>
+    <ul class="navbarlinkslist">
+      <li class="homeLink"><a href="oot-hud-mockup.html">PyTorch CI HUD</a></li>
+      <li><a href="oot-hud-mockup.html">PyTorch</a></li>
+      <li><a href="#">ExecuTorch</a></li>
+      <li><a href="#">TorchVision</a></li>
+      <li><a href="#">TorchAudio</a></li>
+      <li><a href="#">Helion</a></li>
+      <li><a href="oot-hud-mockup-crcr-summary.html">CRCR</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <ul class="navbarlinkslist">
+      <li><a href="#">Help</a></li>
+      <li><a href="#">Requests</a></li>
+      <li><a href="#">KPIs</a></li>
+      <li class="dropdown-trigger">
+        <span>Benchmarks &#9662;</span>
+        <div class="dropdown-menu"><a href="#">TorchBench</a><a href="#">Inductor Perf</a></div>
+      </li>
+      <li class="dropdown-trigger">
+        <span>Metrics &#9662;</span>
+        <div class="dropdown-menu">
+          <a href="#">Metrics</a>
+          <a href="#">CRCR Metrics</a>
+        </div>
+      </li>
+      <li class="dropdown-trigger">
+        <span>Dev Infra &#9662;</span>
+        <div class="dropdown-menu">
+          <a href="#">TTS</a><a href="#">Queue Time Analysis</a>
+          <a href="#">Nightly Dashboard</a><a href="#">Disabled Tests</a>
+        </div>
+      </li>
+      <li><button class="theme-picker" onclick="toggleTheme()" title="Toggle dark mode">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18V4c4.41 0 8 3.59 8 8s-3.59 8-8 8z"/></svg>
+      </button></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="oot-page">
+
+  <!-- Header: repo/branch : nightly (matches main HUD style) -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+    <div>
+      <h2 style="font-size: 1.5rem; font-weight: 400; margin: 2px 0 6px;">
+        TorchedHat/pytorch-redhat-ci
+        <span style="color: #888; font-weight: 300; margin: 0 8px;">:</span>
+        nightly
+      </h2>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="oot-hud-mockup-crcr-summary.html" style="font-size: 0.8125rem;">&larr; Back to CRCR Summary</a>
+        <a href="https://github.com/TorchedHat/pytorch-redhat-ci" target="_blank" style="font-size: 0.8125rem;">GitHub ↗</a>
+        <span style="color: #555; font-size: 0.8125rem;">|</span>
+        <span class="event-type-tabs">
+          <a href="oot-hud-mockup-crcr-backend.html" class="event-type-tab">PR</a>
+          <a href="oot-hud-mockup-crcr-nightly.html" class="event-type-tab active">Nightly</a>
+          <a href="oot-hud-mockup-crcr-periodic.html" class="event-type-tab disabled">Periodic</a>
+        </span>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 0.8125rem;"><a href="#">&#128279; Permalink</a></span>
+      <div class="mui-select-wrapper">
+        <label>Time Range</label>
+        <select><option value="7" selected>Last 7 days</option><option value="14">Last 14 days</option><option value="30">Last 30 days</option></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Job filter (matches main HUD) -->
+  <div class="job-filter">
+    <label style="font-size: 0.8125rem;">Job filter:</label>
+    <input type="text" placeholder="" />
+    <button>Go</button>
+    <button class="settings-toggle">Settings &#9662;</button>
+  </div>
+
+  <!-- HUD-style grid -->
+  <div style="overflow-x: auto;">
+    <table class="hudTable" id="nightlyTable">
+      <colgroup>
+        <col class="colTime">
+        <col class="colSha">
+        <col class="colCommit">
+        <col class="colJob"><col class="colJob"><col class="colJob"><col class="colJob"><col class="colJob">
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="regularHeader">Time</th>
+          <th class="regularHeader">SHA</th>
+          <th class="regularHeader">Commit</th>
+          <th class="jobHeader" onclick="highlightCol(3)"><div class="jobHeaderName">build</div></th>
+          <th class="jobHeader" onclick="highlightCol(4)"><div class="jobHeaderName">test (cpu)</div></th>
+          <th class="jobHeader" onclick="highlightCol(5)"><div class="jobHeaderName">test (inductor)</div></th>
+          <th class="jobHeader" onclick="highlightCol(6)"><div class="jobHeaderName">test (sgpu)</div></th>
+          <th class="jobHeader" onclick="highlightCol(7)"><div class="jobHeaderName">test (mgpu)</div></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr onclick="highlightRow(this)">
+          <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">1:49 PM</td>
+          <td class="jobMetadata mono"><a href="https://github.com/pytorch/pytorch/commit/9470f12">9470f12</a></td>
+          <td class="jobMetadataTruncated"><a href="https://github.com/pytorch/pytorch/commit/9470f12">nightly release (9470f12ed7a922ad30941f...)</a></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">build — success
+Duration: 1h 49m
+<a href="https://github.com/TorchedHat/pytorch-redhat-ci/actions/runs/30933060381" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test (cpu) — success
+Duration: 1m 2s
+Tests: 2 passed, 0 failed
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test (inductor) — success
+Duration: 1m 7s
+Tests: 2 passed, 0 failed
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test (sgpu) — success
+Duration: 1m 38s
+Tests: 2 passed, 0 failed
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test (mgpu) — success
+Duration: 48s
+Tests: 2 passed, 0 failed
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+        </tr>
+        <tr onclick="highlightRow(this)">
+          <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Mon 2:17 PM</td>
+          <td class="jobMetadata mono"><a href="#">fdd065a</a></td>
+          <td class="jobMetadataTruncated"><a href="#">nightly release (fdd065ad78fa0600ad658c...)</a></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">build — success
+Duration: 1h 52m
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test (cpu) — success
+Duration: 58s
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test (inductor) — success
+Duration: 1m 5s
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test (sgpu) — success
+Duration: 1m 30s
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-success">O</span><div class="tt">test (mgpu) — success
+Duration: 45s
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+        </tr>
+        <tr onclick="highlightRow(this)">
+          <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Sun 1:48 PM</td>
+          <td class="jobMetadata mono"><a href="#">a3b4c5d</a></td>
+          <td class="jobMetadataTruncated"><a href="#">nightly release (a3b4c5d6e7f8091234567...)</a></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-failure">X</span><div class="tt">build — failure
+Duration: 42s
+subscription-manager: Remote server error
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell"><span class="conclusion c-cancelled">X</span></td>
+          <td class="jobCell"><span class="conclusion c-cancelled">X</span></td>
+          <td class="jobCell"><span class="conclusion c-cancelled">X</span></td>
+          <td class="jobCell"><span class="conclusion c-cancelled">X</span></td>
+        </tr>
+        <tr onclick="highlightRow(this)">
+          <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Sat 1:48 PM</td>
+          <td class="jobMetadata mono"><a href="#">e7f8091</a></td>
+          <td class="jobMetadataTruncated"><a href="#">nightly release (e7f8091a2b3c4d5e6f789...)</a></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+        </tr>
+        <tr onclick="highlightRow(this)">
+          <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Fri 1:53 PM</td>
+          <td class="jobMetadata mono"><a href="#">b2c3d4e</a></td>
+          <td class="jobMetadataTruncated"><a href="#">nightly release (b2c3d4e5f6a7890123456...)</a></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+        </tr>
+        <tr onclick="highlightRow(this)">
+          <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Thu 1:48 PM</td>
+          <td class="jobMetadata mono"><a href="#">c4d5e6f</a></td>
+          <td class="jobMetadataTruncated"><a href="#">nightly release (c4d5e6f7a8b9012345678...)</a></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell has-tooltip"><span class="conclusion c-failure">X</span><div class="tt">test (cpu) — failure
+Duration: 2h 1m
+FAIL: test_overrides (CUDA driver mismatch)
+<a href="#" style="color:#4a90e2;">Show log ›</a></div></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+        </tr>
+        <tr onclick="highlightRow(this)">
+          <td class="jobMetadata" style="font-size: 0.8rem; color: #888;">Wed 1:50 PM</td>
+          <td class="jobMetadata mono"><a href="#">f7a8b9c</a></td>
+          <td class="jobMetadataTruncated"><a href="#">nightly release (f7a8b9c0d1e2345678901...)</a></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+          <td class="jobCell"><span class="conclusion c-success">O</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 12px; font-size: 0.85rem;">
+    Page 1: <span style="color: #888;">Prev</span> | <a href="#">Next</a>
+  </div>
+
+  <!-- Mockup cross-links -->
+  <hr style="margin-top: 32px;">
+  <div style="font-size: 0.75rem; color: #666; padding: 8px 0;">
+    <strong>Mockup Pages:</strong>
+    <a href="oot-hud-mockup.html">Main HUD</a> &middot;
+    <a href="oot-hud-mockup-crcr-summary.html">CRCR Summary</a> &middot;
+    <a href="oot-hud-mockup-crcr-backend.html">Per-Repo (PR)</a> &middot;
+    <span style="font-weight: 600;">Nightly</span> &middot;
+    <a href="oot-hud-mockup-crcr-periodic.html">Periodic</a> &middot;
+    <a href="oot-hud-mockup-pr-workflows.html">PR Workflows</a>
+  </div>
+</div>
+
+<script>
+function toggleTheme() { document.body.classList.toggle("dark-mode"); }
+
+let highlightedCol = -1;
+let highlightedRow = null;
+
+function highlightCol(colIdx) {
+  const table = document.getElementById("nightlyTable");
+  const rows = table.querySelectorAll("tr");
+  // Clear previous
+  table.querySelectorAll(".highlight-col").forEach(el => el.classList.remove("highlight-col"));
+  if (highlightedRow) { highlightedRow.classList.remove("highlight-row"); highlightedRow = null; }
+  if (highlightedCol === colIdx) { highlightedCol = -1; return; }
+  highlightedCol = colIdx;
+  rows.forEach(tr => {
+    const cells = tr.querySelectorAll("th, td");
+    if (cells[colIdx]) cells[colIdx].classList.add("highlight-col");
+  });
+}
+
+function highlightRow(tr) {
+  if (highlightedRow === tr) { tr.classList.remove("highlight-row"); highlightedRow = null; return; }
+  if (highlightedRow) highlightedRow.classList.remove("highlight-row");
+  document.getElementById("nightlyTable").querySelectorAll(".highlight-col").forEach(el => el.classList.remove("highlight-col"));
+  highlightedCol = -1;
+  tr.classList.add("highlight-row");
+  highlightedRow = tr;
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    document.getElementById("nightlyTable").querySelectorAll(".highlight-col, .highlight-row").forEach(el => {
+      el.classList.remove("highlight-col");
+      el.classList.remove("highlight-row");
+    });
+    highlightedCol = -1;
+    highlightedRow = null;
+  }
+});
+</script>
+
+</body>
+</html>
