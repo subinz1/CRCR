@@ -32,15 +32,12 @@ jobs:
             \"schema_version\": 1,
             \"event_type\": \"nightly\",
             \"delivery_id\": \"test-run-${RUN_ID}\",
-            \"payload\": {},
-            \"workflow\": {
-              \"status\": \"completed\",
-              \"conclusion\": \"success\",
-              \"name\": \"Test Results Relay\",
-              \"run_id\": \"${RUN_ID}\",
-              \"run_attempt\": \"${RUN_ATTEMPT}\",
-              \"job_name\": \"test-relay\"
-            }
+            \"status\": \"completed\",
+            \"conclusion\": \"success\",
+            \"workflow_name\": \"Test Results Relay\",
+            \"run_id\": \"${RUN_ID}\",
+            \"run_attempt\": \"${RUN_ATTEMPT}\",
+            \"job_name\": \"test-relay\"
           }"
 
           echo "Sending callback to: $CALLBACK_URL"
