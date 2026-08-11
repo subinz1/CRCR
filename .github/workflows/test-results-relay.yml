@@ -1,0 +1,66 @@
+name: Test Results Relay Lambda
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  send-test-result:
+    name: Send test result to Results Relay
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint OIDC token
+        id: oidc
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const token = await core.getIDToken("rhel-results-relay");
+            core.setSecret(token);
+            core.setOutput('token', token);
+
+      - name: Send callback to Results Relay Lambda
+        env:
+          OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
+          CALLBACK_URL: https://hg21hqq0r6.execute-api.us-east-1.amazonaws.com/default/crcr-rhel-workflow
+        run: |
+          PAYLOAD=$(cat <<'PAYLOAD_EOF'
+          {
+            "schema_version": 1,
+            "event_type": "nightly",
+            "delivery_id": "test-run-$(date +%s)",
+            "payload": {},
+            "workflow": {
+              "status": "completed",
+              "conclusion": "success",
+              "name": "Test Results Relay",
+              "run_id": "${{ github.run_id }}",
+              "run_attempt": "${{ github.run_attempt }}",
+              "job_name": "test-relay"
+            }
+          }
+          PAYLOAD_EOF
+          )
+
+          echo "Sending callback to: $CALLBACK_URL"
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST "$CALLBACK_URL" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $OIDC_TOKEN" \
+            -d "$PAYLOAD" \
+            --max-time 15)
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          echo "HTTP Status: $HTTP_CODE"
+          echo "Response: $BODY"
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "SUCCESS: Results Relay accepted the callback"
+          else
+            echo "FAILURE: Results Relay returned HTTP $HTTP_CODE"
+            exit 1
+          fi
