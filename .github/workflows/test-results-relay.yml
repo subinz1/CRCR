@@ -25,36 +25,35 @@ jobs:
         env:
           OIDC_TOKEN: ${{ steps.oidc.outputs.token }}
           CALLBACK_URL: https://hg21hqq0r6.execute-api.us-east-1.amazonaws.com/default/crcr-rhel-workflow
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
-          PAYLOAD=$(cat <<'PAYLOAD_EOF'
-          {
-            "schema_version": 1,
-            "event_type": "nightly",
-            "delivery_id": "test-run-$(date +%s)",
-            "payload": {},
-            "workflow": {
-              "status": "completed",
-              "conclusion": "success",
-              "name": "Test Results Relay",
-              "run_id": "${{ github.run_id }}",
-              "run_attempt": "${{ github.run_attempt }}",
-              "job_name": "test-relay"
+          PAYLOAD="{
+            \"schema_version\": 1,
+            \"event_type\": \"nightly\",
+            \"delivery_id\": \"test-run-${RUN_ID}\",
+            \"payload\": {},
+            \"workflow\": {
+              \"status\": \"completed\",
+              \"conclusion\": \"success\",
+              \"name\": \"Test Results Relay\",
+              \"run_id\": \"${RUN_ID}\",
+              \"run_attempt\": \"${RUN_ATTEMPT}\",
+              \"job_name\": \"test-relay\"
             }
-          }
-          PAYLOAD_EOF
-          )
+          }"
 
           echo "Sending callback to: $CALLBACK_URL"
-          RESPONSE=$(curl -s -w "\n%{http_code}" \
+          echo "Payload: $PAYLOAD"
+
+          HTTP_CODE=$(curl -s -o /tmp/response.txt -w "%{http_code}" \
             -X POST "$CALLBACK_URL" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $OIDC_TOKEN" \
             -d "$PAYLOAD" \
             --max-time 15)
 
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-
+          BODY=$(cat /tmp/response.txt)
           echo "HTTP Status: $HTTP_CODE"
           echo "Response: $BODY"
 
