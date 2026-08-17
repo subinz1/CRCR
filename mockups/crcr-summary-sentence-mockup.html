@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CRCR Summary – Description Sentence Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Roboto', 'Segoe UI', sans-serif; background: #121212; color: #e0e0e0; padding: 32px; }
+  h1 { font-size: 28px; font-weight: 400; margin-bottom: 24px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #90caf9; margin-bottom: 16px; }
+
+  .tabs { display: flex; border-bottom: 1px solid #333; margin-bottom: 0; }
+  .tab { padding: 10px 20px; cursor: pointer; font-size: 14px; color: #aaa; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .tab.active { color: #90caf9; border-bottom-color: #90caf9; }
+  .tab .chip { display: inline-block; font-size: 11px; border: 1px solid #555; border-radius: 10px; padding: 1px 8px; margin-left: 6px; }
+
+  .description { font-size: 14px; color: #aaa; padding: 12px 0 8px 0; line-height: 1.6; }
+  .description a { color: #90caf9; text-decoration: none; }
+  .description a:hover { text-decoration: underline; }
+  .description code { background: #1e1e1e; padding: 2px 6px; border-radius: 3px; font-size: 13px; color: #ce93d8; }
+
+  .cards { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+  .card { flex: 1; min-width: 180px; border-top: 3px solid; padding: 16px; border-radius: 6px; background: #1e1e1e; text-align: center; }
+  .card.red { border-color: #f44336; }
+  .card.green { border-color: #66bb6a; }
+  .card.blue { border-color: #42a5f5; }
+  .card.orange { border-color: #ffa726; }
+  .card .label { font-size: 12px; color: #999; text-transform: uppercase; }
+  .card .value { font-size: 28px; font-weight: 300; margin: 6px 0; }
+  .card .sub { font-size: 11px; color: #777; }
+
+  .compare { display: flex; gap: 32px; margin-top: 16px; }
+  .compare-panel { flex: 1; background: #1a1a2e; border-radius: 8px; padding: 20px; border: 1px solid #333; }
+  .compare-panel h3 { font-size: 13px; color: #999; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .highlight { background: #1b5e20; padding: 2px 4px; border-radius: 3px; }
+
+  .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
+  .badge.before { background: #b71c1c; color: #fff; }
+  .badge.after { background: #1b5e20; color: #fff; }
+
+  .info-box { background: #1e1e1e; border-left: 3px solid #42a5f5; padding: 12px 16px; margin-top: 8px; border-radius: 4px; }
+  .info-box p { font-size: 14px; color: #bbb; }
+
+  .table-mock { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  .table-mock th { text-align: left; font-size: 12px; color: #888; padding: 8px 12px; border-bottom: 1px solid #333; }
+  .table-mock td { font-size: 13px; padding: 8px 12px; border-bottom: 1px solid #222; }
+  .table-mock .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .table-mock .dot.green { background: #66bb6a; }
+  .table-mock .dot.grey { background: #666; }
+  .pass-rate { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+  .pass-rate.low { background: #b71c1c; color: #fff; }
+</style>
+</head>
+<body>
+
+<h1>CRCR Summary Page — Sentence Update Mockup</h1>
+
+<!-- ===== BEFORE / AFTER comparison ===== -->
+<div class="section">
+  <div class="section-title">Before vs After</div>
+  <div class="compare">
+    <div class="compare-panel">
+      <h3>Before <span class="badge before">Current</span></h3>
+      <div class="description">
+        Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the <a href="#">HUD dashboard</a> or view <a href="#">success-rate trends</a>.
+      </div>
+      <div style="font-size:11px; color:#ff9800; margin-top:8px;">⚠ Single HUD link — no distinction between PR and Nightly dashboards</div>
+    </div>
+    <div class="compare-panel">
+      <h3>After <span class="badge after">Proposed</span></h3>
+      <div class="description">
+        Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the HUD dashboard for <a href="#">Pull Requests</a> and <a href="#">Nightly</a>, or view <a href="#">success-rate trends</a>.
+      </div>
+      <div style="font-size:11px; color:#4caf50; margin-top:8px;">✓ Separate links for PR and Nightly HUD views — always visible above both tabs</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Full mockup: PR View ===== -->
+<div class="section">
+  <div class="section-title">Full Page — Pull Requests Tab Selected</div>
+  <div style="background:#1a1a2e; border-radius:8px; padding:24px; border:1px solid #333;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+      <h1 style="font-size:24px;">Cross-Repository CI Summary</h1>
+      <div style="font-size:13px; color:#aaa; border:1px solid #444; padding:4px 12px; border-radius:4px;">Time Range: Last 7 days ▾</div>
+    </div>
+
+    <div class="description" style="margin-bottom:16px;">
+      Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the HUD dashboard for <a href="#">Pull Requests</a> and <a href="#">Nightly</a>, or view <a href="#">success-rate trends</a>.
+    </div>
+
+    <div class="cards">
+      <div class="card red">
+        <div class="label">CRCR Relay Health</div>
+        <div class="value" style="color:#f44336; font-size:20px;">Degraded</div>
+        <div class="sub">3/5 recent PRs passed · pytorch/crcr-test</div>
+      </div>
+      <div class="card green">
+        <div class="label">CRCR Relay Health · Nightly</div>
+        <div class="value" style="color:#66bb6a; font-size:20px;">Healthy</div>
+        <div class="sub">5/5 recent nightlies passed</div>
+      </div>
+      <div class="card blue">
+        <div class="label">Total Probe Runs</div>
+        <div class="value">6466</div>
+        <div class="sub">last 7 days · pytorch/crcr-test</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card blue">
+        <div class="label">Probe Failures</div>
+        <div class="value">0</div>
+        <div class="sub">pytorch/crcr-test failures</div>
+      </div>
+      <div class="card blue">
+        <div class="label">Registered Backends</div>
+        <div class="value">7</div>
+        <div class="sub">3 L2 · 4 L1</div>
+      </div>
+      <div class="card orange">
+        <div class="label">Timed Out</div>
+        <div class="value">236</div>
+        <div class="sub">probes that failed to report completion</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active">Pull Requests <span class="chip">7</span></div>
+      <div class="tab">Nightly <span class="chip">2</span></div>
+    </div>
+
+    <div class="description" style="padding-top:8px;">
+      Registered downstream repos sorted by pass rate (worst first). Click a row to see the per-downstream repo dashboard.
+    </div>
+
+    <div style="margin-top:8px; font-size:16px; font-weight:500;">L2 Backends (callback-only)</div>
+    <table class="table-mock">
+      <tr><th></th><th>Backend Repository</th><th>Level</th><th>Pass Rate</th><th>Success</th><th>Failures</th><th>Total</th><th>Avg Duration</th><th>Last Run</th></tr>
+      <tr><td><span class="dot green"></span></td><td>Ascend/pytorch</td><td style="color:#42a5f5;">L2</td><td><span class="pass-rate low">39.6%</span></td><td>139</td><td style="color:#f44336;">212</td><td>351</td><td>12.0m</td><td>5h ago</td></tr>
+      <tr><td><span class="dot grey"></span></td><td>TorchedHat/pytorch-redhat-ci</td><td style="color:#42a5f5;">L2</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+      <tr><td><span class="dot grey"></span></td><td>torch-spyre/torch-spyre</td><td style="color:#42a5f5;">L2</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== Full mockup: Nightly View ===== -->
+<div class="section">
+  <div class="section-title">Full Page — Nightly Tab Selected</div>
+  <div style="background:#1a1a2e; border-radius:8px; padding:24px; border:1px solid #333;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+      <h1 style="font-size:24px;">Cross-Repository CI Summary</h1>
+      <div style="font-size:13px; color:#aaa; border:1px solid #444; padding:4px 12px; border-radius:4px;">Time Range: Last 7 days ▾</div>
+    </div>
+
+    <div class="description" style="margin-bottom:16px;">
+      Relay health metrics from <a href="#">pytorch/crcr-test</a> probes. To know more, check the HUD dashboard for <a href="#">Pull Requests</a> and <a href="#">Nightly</a>, or view <a href="#">success-rate trends</a>.
+    </div>
+
+    <div class="cards">
+      <div class="card red">
+        <div class="label">CRCR Relay Health</div>
+        <div class="value" style="color:#f44336; font-size:20px;">Degraded</div>
+        <div class="sub">3/5 recent PRs passed · pytorch/crcr-test</div>
+      </div>
+      <div class="card green">
+        <div class="label">CRCR Relay Health · Nightly</div>
+        <div class="value" style="color:#66bb6a; font-size:20px;">Healthy</div>
+        <div class="sub">5/5 recent nightlies passed</div>
+      </div>
+      <div class="card blue">
+        <div class="label">Total Probe Runs</div>
+        <div class="value">6466</div>
+        <div class="sub">last 7 days · pytorch/crcr-test</div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card blue">
+        <div class="label">Probe Failures</div>
+        <div class="value">0</div>
+        <div class="sub">pytorch/crcr-test failures</div>
+      </div>
+      <div class="card blue">
+        <div class="label">Registered Backends</div>
+        <div class="value">7</div>
+        <div class="sub">3 L2 · 4 L1</div>
+      </div>
+      <div class="card orange">
+        <div class="label">Timed Out</div>
+        <div class="value">236</div>
+        <div class="sub">probes that failed to report completion</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab">Pull Requests <span class="chip">7</span></div>
+      <div class="tab active">Nightly <span class="chip">2</span></div>
+    </div>
+
+    <div class="info-box" style="margin-top:8px;">
+      <p>Nightly CI runs triggered daily from the <code>pytorch/pytorch</code> nightly branch HEAD. Results are reported via the CRCR callback pipeline.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
