@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CRCR Metrics – PR/Nightly Tabs Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Roboto', 'Segoe UI', sans-serif; background: #121212; color: #e0e0e0; padding: 32px; }
+  h1 { font-size: 28px; font-weight: 400; margin-bottom: 24px; }
+  h2 { font-size: 22px; font-weight: 400; margin-bottom: 8px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #90caf9; margin-bottom: 16px; }
+
+  .page { background: #1a1a2e; border-radius: 8px; padding: 24px; border: 1px solid #333; }
+  .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .time-select { font-size: 13px; color: #aaa; border: 1px solid #444; padding: 4px 12px; border-radius: 4px; }
+
+  .description { font-size: 14px; color: #aaa; padding: 8px 0; line-height: 1.6; }
+  .description a { color: #90caf9; text-decoration: none; }
+  .description a:hover { text-decoration: underline; }
+
+  .tabs { display: flex; border-bottom: 1px solid #333; margin: 16px 0 0 0; }
+  .tab { padding: 10px 20px; cursor: pointer; font-size: 14px; color: #aaa; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .tab.active { color: #90caf9; border-bottom-color: #90caf9; }
+
+  .chart-box { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-top: 16px; }
+  .chart-title { font-size: 16px; font-weight: 500; margin-bottom: 12px; }
+  .chart-placeholder { height: 200px; border-radius: 6px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+
+  .line-chart { background: linear-gradient(180deg, #1e1e1e 0%, #1a2a1a 100%); }
+  .bar-chart { background: linear-gradient(180deg, #1e1e1e 0%, #1a1a2e 100%); }
+
+  .y-axis { position: absolute; left: 0; top: 0; bottom: 0; width: 50px; display: flex; flex-direction: column; justify-content: space-between; padding: 8px 4px; font-size: 11px; color: #666; }
+  .x-axis { position: absolute; left: 50px; right: 0; bottom: 0; height: 20px; display: flex; justify-content: space-between; padding: 0 8px; font-size: 11px; color: #666; }
+
+  .chart-line { position: absolute; left: 50px; right: 10px; top: 20px; bottom: 25px; }
+  .line-path { stroke-width: 2; fill: none; }
+
+  .legend { display: flex; gap: 16px; margin-top: 8px; justify-content: flex-end; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #aaa; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  .repo-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .repo-chip { font-size: 13px; color: #90caf9; background: #1e1e1e; padding: 2px 10px; border-radius: 4px; text-decoration: none; }
+  .repo-chip:hover { background: #2a2a3e; }
+
+  .compare { display: flex; gap: 32px; margin-top: 16px; }
+  .compare-panel { flex: 1; background: #1a1a2e; border-radius: 8px; padding: 20px; border: 1px solid #333; }
+  .compare-panel h3 { font-size: 13px; color: #999; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
+  .badge.before { background: #b71c1c; color: #fff; }
+  .badge.after { background: #1b5e20; color: #fff; }
+
+  svg text { font-family: 'Roboto', sans-serif; }
+</style>
+</head>
+<body>
+
+<h1>CRCR Metrics Page — PR/Nightly Tabs Mockup</h1>
+
+<!-- ===== Before vs After ===== -->
+<div class="section">
+  <div class="section-title">Before vs After</div>
+  <div class="compare">
+    <div class="compare-panel">
+      <h3>Before <span class="badge before">Current</span></h3>
+      <div class="description">
+        Single view showing only PR-level success rate and failure trends. No way to see nightly metrics.
+      </div>
+      <div style="margin-top:12px;">
+        <div class="chart-box" style="height:80px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:#666; font-size:13px;">Pass Rate Over Time (PR only)</span>
+        </div>
+        <div class="chart-box" style="height:80px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:#666; font-size:13px;">Failures Over Time (PR only)</span>
+        </div>
+        <div class="chart-box" style="height:80px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:#666; font-size:13px;">Total Runs Over Time (PR only)</span>
+        </div>
+      </div>
+    </div>
+    <div class="compare-panel">
+      <h3>After <span class="badge after">Proposed</span></h3>
+      <div class="description">
+        Tabbed view with "Pull Requests" and "Nightly" tabs — same charts, different data source. Each tab shows its own pass rate, failures, and total runs trends.
+      </div>
+      <div style="margin-top:12px;">
+        <div class="tabs" style="margin:0;">
+          <div class="tab active">Pull Requests</div>
+          <div class="tab">Nightly</div>
+        </div>
+        <div class="chart-box" style="height:50px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:#4caf50; font-size:12px;">Pass Rate — filtered by active tab</span>
+        </div>
+        <div class="chart-box" style="height:50px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:#4caf50; font-size:12px;">Failures — filtered by active tab</span>
+        </div>
+        <div class="chart-box" style="height:50px; display:flex; align-items:center; justify-content:center;">
+          <span style="color:#4caf50; font-size:12px;">Total Runs — filtered by active tab</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Full Mockup: Pull Requests Tab ===== -->
+<div class="section">
+  <div class="section-title">Full Page — Pull Requests Tab Selected</div>
+  <div class="page">
+    <div class="page-header">
+      <h2>CRCR Metrics</h2>
+      <div class="time-select">Time Range: Last 90 days ▾</div>
+    </div>
+
+    <div class="description">
+      Success rate and failure trends for all CRCR-registered downstream repos. <a href="#">Back to CRCR Summary</a>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active">Pull Requests</div>
+      <div class="tab">Nightly</div>
+    </div>
+
+    <!-- Pass Rate Chart -->
+    <div class="chart-box">
+      <div class="chart-title">Pass Rate Over Time</div>
+      <div class="chart-placeholder line-chart">
+        <svg width="100%" height="100%" viewBox="0 0 700 200" preserveAspectRatio="none">
+          <line x1="50" y1="0" x2="50" y2="175" stroke="#333" stroke-width="1"/>
+          <line x1="50" y1="175" x2="690" y2="175" stroke="#333" stroke-width="1"/>
+          <!-- Grid lines -->
+          <line x1="50" y1="35" x2="690" y2="35" stroke="#222" stroke-width="0.5"/>
+          <line x1="50" y1="70" x2="690" y2="70" stroke="#222" stroke-width="0.5"/>
+          <line x1="50" y1="105" x2="690" y2="105" stroke="#222" stroke-width="0.5"/>
+          <line x1="50" y1="140" x2="690" y2="140" stroke="#222" stroke-width="0.5"/>
+          <!-- Y-axis labels -->
+          <text x="45" y="8" fill="#666" font-size="10" text-anchor="end">100%</text>
+          <text x="45" y="40" fill="#666" font-size="10" text-anchor="end">80%</text>
+          <text x="45" y="75" fill="#666" font-size="10" text-anchor="end">60%</text>
+          <text x="45" y="110" fill="#666" font-size="10" text-anchor="end">40%</text>
+          <text x="45" y="145" fill="#666" font-size="10" text-anchor="end">20%</text>
+          <text x="45" y="178" fill="#666" font-size="10" text-anchor="end">0%</text>
+          <!-- X-axis labels -->
+          <text x="100" y="192" fill="#666" font-size="10" text-anchor="middle">Jun</text>
+          <text x="250" y="192" fill="#666" font-size="10" text-anchor="middle">Jul</text>
+          <text x="450" y="192" fill="#666" font-size="10" text-anchor="middle">Aug</text>
+          <text x="650" y="192" fill="#666" font-size="10" text-anchor="middle">Sep</text>
+          <!-- Ascend/pytorch line (volatile) -->
+          <polyline points="70,175 100,160 130,155 160,140 190,155 220,120 250,70 280,40 310,25 340,15 370,10 400,20 430,35 460,25 490,20 520,15 550,30 580,25 610,35 640,30 670,20" stroke="#42a5f5" stroke-width="2" fill="none"/>
+          <!-- pytorch/crcr-test line (stable near 0%) -->
+          <polyline points="70,175 100,175 130,175 160,170 190,168 220,160 250,165 280,158 310,155 340,150 370,145 400,148 430,155 460,150 490,148 520,140 550,145 580,142 610,138 640,135 670,130" stroke="#66bb6a" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#42a5f5;"></div>Ascend/pytorch</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#66bb6a;"></div>pytorch/crcr-test</div>
+      </div>
+    </div>
+
+    <!-- Failures Chart -->
+    <div class="chart-box">
+      <div class="chart-title">Failures Over Time</div>
+      <div class="chart-placeholder bar-chart" style="height:160px;">
+        <svg width="100%" height="100%" viewBox="0 0 700 160" preserveAspectRatio="none">
+          <line x1="50" y1="0" x2="50" y2="135" stroke="#333" stroke-width="1"/>
+          <line x1="50" y1="135" x2="690" y2="135" stroke="#333" stroke-width="1"/>
+          <text x="45" y="10" fill="#666" font-size="10" text-anchor="end">600</text>
+          <text x="45" y="70" fill="#666" font-size="10" text-anchor="end">300</text>
+          <text x="45" y="138" fill="#666" font-size="10" text-anchor="end">0</text>
+          <!-- Stacked bars (Ascend/pytorch in blue, crcr-test in green) -->
+          <rect x="240" y="45" width="12" height="90" fill="#42a5f5" rx="1"/>
+          <rect x="255" y="60" width="12" height="75" fill="#42a5f5" rx="1"/>
+          <rect x="270" y="50" width="12" height="85" fill="#42a5f5" rx="1"/>
+          <rect x="285" y="80" width="12" height="55" fill="#42a5f5" rx="1"/>
+          <rect x="300" y="90" width="12" height="45" fill="#42a5f5" rx="1"/>
+          <rect x="315" y="95" width="12" height="40" fill="#42a5f5" rx="1"/>
+          <rect x="330" y="85" width="12" height="50" fill="#42a5f5" rx="1"/>
+          <rect x="345" y="75" width="12" height="60" fill="#42a5f5" rx="1"/>
+          <rect x="360" y="95" width="12" height="40" fill="#42a5f5" rx="1"/>
+          <rect x="375" y="100" width="12" height="35" fill="#42a5f5" rx="1"/>
+          <!-- Small green bars -->
+          <rect x="240" y="130" width="12" height="5" fill="#66bb6a" rx="1"/>
+          <rect x="270" y="128" width="12" height="7" fill="#66bb6a" rx="1"/>
+          <rect x="330" y="132" width="12" height="3" fill="#66bb6a" rx="1"/>
+        </svg>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#42a5f5;"></div>Ascend/pytorch</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#66bb6a;"></div>pytorch/crcr-test</div>
+      </div>
+    </div>
+
+    <!-- Total Runs Chart -->
+    <div class="chart-box">
+      <div class="chart-title">Total Runs Over Time</div>
+      <div class="chart-placeholder bar-chart" style="height:120px;">
+        <svg width="100%" height="100%" viewBox="0 0 700 120" preserveAspectRatio="none">
+          <line x1="50" y1="0" x2="50" y2="100" stroke="#333" stroke-width="1"/>
+          <line x1="50" y1="100" x2="690" y2="100" stroke="#333" stroke-width="1"/>
+          <text x="45" y="10" fill="#666" font-size="10" text-anchor="end">1000</text>
+          <text x="45" y="55" fill="#666" font-size="10" text-anchor="end">500</text>
+          <text x="45" y="103" fill="#666" font-size="10" text-anchor="end">0</text>
+          <rect x="240" y="30" width="12" height="70" fill="#42a5f5" rx="1"/>
+          <rect x="255" y="35" width="12" height="65" fill="#42a5f5" rx="1"/>
+          <rect x="270" y="25" width="12" height="75" fill="#42a5f5" rx="1"/>
+          <rect x="285" y="40" width="12" height="60" fill="#42a5f5" rx="1"/>
+          <rect x="300" y="35" width="12" height="65" fill="#42a5f5" rx="1"/>
+          <rect x="315" y="30" width="12" height="70" fill="#42a5f5" rx="1"/>
+          <rect x="330" y="28" width="12" height="72" fill="#42a5f5" rx="1"/>
+          <rect x="345" y="32" width="12" height="68" fill="#42a5f5" rx="1"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Repos in view -->
+    <div style="margin-top:16px;">
+      <div style="font-size:13px; color:#888; margin-bottom:6px;">Repos in view (2):</div>
+      <div class="repo-chips">
+        <a href="#" class="repo-chip">Ascend/pytorch</a>
+        <a href="#" class="repo-chip">pytorch/crcr-test</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Full Mockup: Nightly Tab ===== -->
+<div class="section">
+  <div class="section-title">Full Page — Nightly Tab Selected</div>
+  <div class="page">
+    <div class="page-header">
+      <h2>CRCR Metrics</h2>
+      <div class="time-select">Time Range: Last 90 days ▾</div>
+    </div>
+
+    <div class="description">
+      Success rate and failure trends for all CRCR-registered downstream repos. <a href="#">Back to CRCR Summary</a>
+    </div>
+
+    <div class="tabs">
+      <div class="tab">Pull Requests</div>
+      <div class="tab active">Nightly</div>
+    </div>
+
+    <!-- Pass Rate Chart (nightly data) -->
+    <div class="chart-box">
+      <div class="chart-title">Pass Rate Over Time</div>
+      <div class="chart-placeholder line-chart">
+        <svg width="100%" height="100%" viewBox="0 0 700 200" preserveAspectRatio="none">
+          <line x1="50" y1="0" x2="50" y2="175" stroke="#333" stroke-width="1"/>
+          <line x1="50" y1="175" x2="690" y2="175" stroke="#333" stroke-width="1"/>
+          <line x1="50" y1="35" x2="690" y2="35" stroke="#222" stroke-width="0.5"/>
+          <line x1="50" y1="70" x2="690" y2="70" stroke="#222" stroke-width="0.5"/>
+          <line x1="50" y1="105" x2="690" y2="105" stroke="#222" stroke-width="0.5"/>
+          <line x1="50" y1="140" x2="690" y2="140" stroke="#222" stroke-width="0.5"/>
+          <text x="45" y="8" fill="#666" font-size="10" text-anchor="end">100%</text>
+          <text x="45" y="40" fill="#666" font-size="10" text-anchor="end">80%</text>
+          <text x="45" y="75" fill="#666" font-size="10" text-anchor="end">60%</text>
+          <text x="45" y="110" fill="#666" font-size="10" text-anchor="end">40%</text>
+          <text x="45" y="145" fill="#666" font-size="10" text-anchor="end">20%</text>
+          <text x="45" y="178" fill="#666" font-size="10" text-anchor="end">0%</text>
+          <text x="100" y="192" fill="#666" font-size="10" text-anchor="middle">Jun</text>
+          <text x="250" y="192" fill="#666" font-size="10" text-anchor="middle">Jul</text>
+          <text x="450" y="192" fill="#666" font-size="10" text-anchor="middle">Aug</text>
+          <text x="650" y="192" fill="#666" font-size="10" text-anchor="middle">Sep</text>
+          <!-- TorchedHat/pytorch-redhat-ci (nightly data — fewer points, daily) -->
+          <polyline points="400,175 420,140 440,105 460,70 480,35 500,40 520,30 540,25 560,30 580,35 600,25 620,20 640,30 660,25 680,20" stroke="#ff9800" stroke-width="2" fill="none"/>
+          <!-- pytorch/crcr-test nightly probes -->
+          <polyline points="400,70 420,35 440,25 460,20 480,15 500,20 520,15 540,10 560,15 580,10 600,12 620,8 640,10 660,8 680,5" stroke="#66bb6a" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#ff9800;"></div>TorchedHat/pytorch-redhat-ci</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#66bb6a;"></div>pytorch/crcr-test</div>
+      </div>
+    </div>
+
+    <!-- Failures Chart (nightly) -->
+    <div class="chart-box">
+      <div class="chart-title">Failures Over Time</div>
+      <div class="chart-placeholder bar-chart" style="height:160px;">
+        <svg width="100%" height="100%" viewBox="0 0 700 160" preserveAspectRatio="none">
+          <line x1="50" y1="0" x2="50" y2="135" stroke="#333" stroke-width="1"/>
+          <line x1="50" y1="135" x2="690" y2="135" stroke="#333" stroke-width="1"/>
+          <text x="45" y="10" fill="#666" font-size="10" text-anchor="end">10</text>
+          <text x="45" y="70" fill="#666" font-size="10" text-anchor="end">5</text>
+          <text x="45" y="138" fill="#666" font-size="10" text-anchor="end">0</text>
+          <!-- Nightly failures (much lower volume than PR) -->
+          <rect x="420" y="95" width="14" height="40" fill="#ff9800" rx="1"/>
+          <rect x="440" y="105" width="14" height="30" fill="#ff9800" rx="1"/>
+          <rect x="460" y="110" width="14" height="25" fill="#ff9800" rx="1"/>
+          <rect x="480" y="120" width="14" height="15" fill="#ff9800" rx="1"/>
+          <rect x="500" y="115" width="14" height="20" fill="#ff9800" rx="1"/>
+          <rect x="520" y="125" width="14" height="10" fill="#ff9800" rx="1"/>
+          <rect x="540" y="130" width="14" height="5" fill="#ff9800" rx="1"/>
+          <rect x="560" y="120" width="14" height="15" fill="#ff9800" rx="1"/>
+          <rect x="580" y="128" width="14" height="7" fill="#ff9800" rx="1"/>
+        </svg>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#ff9800;"></div>TorchedHat/pytorch-redhat-ci</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#66bb6a;"></div>pytorch/crcr-test</div>
+      </div>
+    </div>
+
+    <!-- Total Runs Chart (nightly) -->
+    <div class="chart-box">
+      <div class="chart-title">Total Runs Over Time</div>
+      <div class="chart-placeholder bar-chart" style="height:120px;">
+        <svg width="100%" height="100%" viewBox="0 0 700 120" preserveAspectRatio="none">
+          <line x1="50" y1="0" x2="50" y2="100" stroke="#333" stroke-width="1"/>
+          <line x1="50" y1="100" x2="690" y2="100" stroke="#333" stroke-width="1"/>
+          <text x="45" y="10" fill="#666" font-size="10" text-anchor="end">20</text>
+          <text x="45" y="55" fill="#666" font-size="10" text-anchor="end">10</text>
+          <text x="45" y="103" fill="#666" font-size="10" text-anchor="end">0</text>
+          <rect x="420" y="50" width="14" height="50" fill="#ff9800" rx="1"/>
+          <rect x="440" y="55" width="14" height="45" fill="#ff9800" rx="1"/>
+          <rect x="460" y="45" width="14" height="55" fill="#ff9800" rx="1"/>
+          <rect x="480" y="50" width="14" height="50" fill="#ff9800" rx="1"/>
+          <rect x="500" y="55" width="14" height="45" fill="#ff9800" rx="1"/>
+          <rect x="520" y="50" width="14" height="50" fill="#ff9800" rx="1"/>
+          <rect x="540" y="48" width="14" height="52" fill="#ff9800" rx="1"/>
+          <!-- crcr-test green bars -->
+          <rect x="420" y="40" width="14" height="10" fill="#66bb6a" rx="1"/>
+          <rect x="440" y="45" width="14" height="10" fill="#66bb6a" rx="1"/>
+          <rect x="460" y="38" width="14" height="7" fill="#66bb6a" rx="1"/>
+          <rect x="480" y="42" width="14" height="8" fill="#66bb6a" rx="1"/>
+          <rect x="500" y="47" width="14" height="8" fill="#66bb6a" rx="1"/>
+          <rect x="520" y="43" width="14" height="7" fill="#66bb6a" rx="1"/>
+          <rect x="540" y="40" width="14" height="8" fill="#66bb6a" rx="1"/>
+        </svg>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#ff9800;"></div>TorchedHat/pytorch-redhat-ci</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#66bb6a;"></div>pytorch/crcr-test</div>
+      </div>
+    </div>
+
+    <!-- Repos in view -->
+    <div style="margin-top:16px;">
+      <div style="font-size:13px; color:#888; margin-bottom:6px;">Repos in view (2):</div>
+      <div class="repo-chips">
+        <a href="#" class="repo-chip">TorchedHat/pytorch-redhat-ci</a>
+        <a href="#" class="repo-chip">pytorch/crcr-test</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Implementation Notes ===== -->
+<div class="section">
+  <div class="section-title">Implementation Notes</div>
+  <div class="page" style="font-size:14px; color:#bbb; line-height:1.8;">
+    <ul style="padding-left:20px;">
+      <li><strong>New ClickHouse query:</strong> <code>crcr_nightly_success_rate</code> — same structure as <code>crcr_success_rate</code> but filters <code>event_type = 'nightly'</code> instead of <code>pr_number &gt; 0</code></li>
+      <li><strong>Tab state:</strong> <code>useState&lt;'pr' | 'nightly'&gt;('pr')</code> — controls which data to fetch and display</li>
+      <li><strong>Charts reused:</strong> <code>PassRateChart</code>, <code>FailuresChart</code>, <code>TotalRunsChart</code> accept data as props — no changes needed to chart components</li>
+      <li><strong>Data fetching:</strong> Both PR and nightly data can be fetched in parallel via <code>useSWR</code>; only the active tab's charts render</li>
+      <li><strong>Repos list:</strong> Each tab shows its own set of repos derived from the active dataset</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>
