@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRCR Per-Repo Dashboard — Artifact URL Tooltip Mockup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            padding: 24px;
+        }
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .subtitle {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+        .issue-ref {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            font-size: 0.85rem;
+        }
+        .issue-ref a { color: #58a6ff; text-decoration: none; }
+        .issue-ref a:hover { text-decoration: underline; }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #8b949e;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .comparison-box {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .comparison-box h3 {
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+        .comparison-box h3.before { color: #f85149; }
+        .comparison-box h3.after { color: #3fb950; }
+
+        /* Tooltip mockup */
+        .tooltip-mock {
+            background: #2d333b;
+            border: 1px solid #444c56;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            max-width: 320px;
+        }
+        .tooltip-line {
+            white-space: pre-line;
+        }
+        .tooltip-link {
+            margin-top: 6px;
+        }
+        .tooltip-link a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+        .tooltip-link a:hover { text-decoration: underline; }
+        .tooltip-link-new {
+            margin-top: 3px;
+        }
+        .tooltip-link-new a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+        .new-badge {
+            display: inline-block;
+            background: #1f6feb;
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 6px;
+            vertical-align: middle;
+            font-weight: 600;
+        }
+
+        /* Matrix mockup */
+        .matrix-section {
+            margin-top: 32px;
+        }
+        .matrix-header {
+            display: grid;
+            grid-template-columns: 80px 80px 200px repeat(5, 40px);
+            gap: 4px;
+            font-size: 0.7rem;
+            color: #8b949e;
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+        .matrix-row {
+            display: grid;
+            grid-template-columns: 80px 80px 200px repeat(5, 40px);
+            gap: 4px;
+            padding: 4px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        .matrix-row:hover { background: rgba(255,255,255,0.03); }
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 24px;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            cursor: pointer;
+            position: relative;
+        }
+        .cell-success { background: rgba(63, 185, 80, 0.15); color: #3fb950; }
+        .cell-failure { background: rgba(248, 81, 73, 0.15); color: #f85149; }
+        .cell-pending { background: rgba(210, 153, 34, 0.15); color: #d29922; }
+
+        .sha { color: #58a6ff; font-family: monospace; font-size: 0.7rem; }
+        .commit-msg { color: #8b949e; font-size: 0.7rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* Floating tooltip */
+        .floating-tooltip {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: none;
+        }
+        .cell:hover .floating-tooltip { display: block; }
+
+        .highlight-box {
+            border: 2px solid #1f6feb;
+            border-radius: 4px;
+            padding: 2px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { border-color: #1f6feb; }
+            50% { border-color: #58a6ff; }
+        }
+
+        .notes {
+            margin-top: 32px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 0.82rem;
+            line-height: 1.6;
+        }
+        .notes h3 {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .notes ul { padding-left: 20px; }
+        .notes li { margin-bottom: 4px; color: #8b949e; }
+        .notes code {
+            background: #2d333b;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.78rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Artifact URL in Per-Repo Dashboard Tooltip</h1>
+    <p class="subtitle">Mockup for <code>artifact_url</code> rendering on /crcr/[org]/[repo] — Issue #8546</p>
+
+    <div class="issue-ref">
+        <strong>Issue:</strong> <a href="https://github.com/pytorch/test-infra/issues/8546">#8546</a> — 
+        <code>artifact_url</code> is queried but never rendered on the per-repo dashboard.
+        The PR view (<code>CrcrPrSection.tsx</code>) already renders an "Artifacts" button, but the 
+        per-repo page tooltip only shows "Show log".
+    </div>
+
+    <div class="section-label">Before vs After</div>
+    <div class="comparison">
+        <div class="comparison-box">
+            <h3 class="before">Current (Before)</h3>
+            <div class="tooltip-mock">
+                <div class="tooltip-line">Job: linux-x86_64 / pytorch / test</div>
+                <div class="tooltip-line">Status: success</div>
+                <div class="tooltip-line">Duration: 18m 32s</div>
+                <div class="tooltip-line">Tests: 142/142 passed</div>
+                <div class="tooltip-line">Queue: 12.3s</div>
+                <div class="tooltip-link">
+                    <a href="#">Show log ›</a>
+                </div>
+            </div>
+            <p style="margin-top: 8px; font-size: 0.7rem; color: #8b949e;">
+                ⚠️ No artifact link even when artifact_url is populated
+            </p>
+        </div>
+
+        <div class="comparison-box">
+            <h3 class="after">Proposed (After)</h3>
+            <div class="tooltip-mock">
+                <div class="tooltip-line">Job: linux-x86_64 / pytorch / test</div>
+                <div class="tooltip-line">Status: success</div>
+                <div class="tooltip-line">Duration: 18m 32s</div>
+                <div class="tooltip-line">Tests: 142/142 passed</div>
+                <div class="tooltip-line">Queue: 12.3s</div>
+                <div class="tooltip-link">
+                    <a href="#">Show log ›</a>
+                </div>
+                <div class="tooltip-link-new">
+                    <span class="highlight-box">
+                        <a href="#">View artifacts ›</a>
+                    </span>
+                    <span class="new-badge">NEW</span>
+                </div>
+            </div>
+            <p style="margin-top: 8px; font-size: 0.7rem; color: #3fb950;">
+                ✓ Artifact link appears when artifact_url is non-empty
+            </p>
+        </div>
+    </div>
+
+    <div class="section-label">In Context — Matrix View with Tooltip</div>
+    <div class="matrix-section">
+        <div class="matrix-header">
+            <span>Time</span>
+            <span>SHA</span>
+            <span>Commit</span>
+            <span>build</span>
+            <span>test</span>
+            <span>lint</span>
+            <span>bench</span>
+            <span>docs</span>
+        </div>
+        <div class="matrix-row">
+            <span style="color:#8b949e">2:18 PM</span>
+            <span class="sha">b7930e4</span>
+            <span class="commit-msg">Fix SymBool equality handling in symbolic...</span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-success" style="position:relative">
+                C
+                <div class="floating-tooltip">
+                    <div class="tooltip-mock" style="width: 280px;">
+                        <div class="tooltip-line">Job: linux-x86_64 / pytorch / test</div>
+                        <div class="tooltip-line">Status: success</div>
+                        <div class="tooltip-line">Duration: 18m 32s</div>
+                        <div class="tooltip-line">Tests: 142/142 passed</div>
+                        <div class="tooltip-line">Queue: 12.3s</div>
+                        <div class="tooltip-link"><a href="#">Show log ›</a></div>
+                        <div class="tooltip-link-new"><a href="#">View artifacts ›</a></div>
+                    </div>
+                </div>
+            </span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-success">C</span>
+        </div>
+        <div class="matrix-row">
+            <span style="color:#8b949e">Sun 2:15</span>
+            <span class="sha">b1c1cc8</span>
+            <span class="commit-msg">Fix grammar and typos in code comments...</span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-failure">X</span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-success">C</span>
+        </div>
+        <div class="matrix-row">
+            <span style="color:#8b949e">Sat 2:14</span>
+            <span class="sha">f7dfbdd</span>
+            <span class="commit-msg">support min, max in maybe mark dynamic...</span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-success">C</span>
+            <span class="cell cell-pending">?</span>
+            <span class="cell cell-success">C</span>
+        </div>
+    </div>
+    <p style="margin-top: 8px; font-size: 0.7rem; color: #8b949e;">
+        ↑ Hover over the "test" cell on the first row to see the tooltip with the new "View artifacts" link
+    </p>
+
+    <div class="notes">
+        <h3>Implementation Notes</h3>
+        <ul>
+            <li><code>artifact_url</code> is already on <code>CrcrJobRow</code> and returned from ClickHouse</li>
+            <li>Only renders when <code>job.artifact_url</code> is non-empty (most jobs won't have it)</li>
+            <li>Mirrors the existing "Artifacts" button in <code>CrcrPrSection.tsx</code></li>
+            <li>Change is ~8 lines in <code>JobCellTooltipContent</code> in <code>[org]/[repo].tsx</code></li>
+            <li>No backend changes needed — data pipeline already works end-to-end</li>
+        </ul>
+    </div>
+</body>
+</html>
