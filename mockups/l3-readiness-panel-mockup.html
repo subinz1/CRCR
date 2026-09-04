@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRCR — L3 Promotion/Demotion Readiness Panel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    h1 { font-size: 1.4rem; color: #fff; margin-bottom: 8px; }
+    .subtitle { color: #8b949e; font-size: 0.85rem; margin-bottom: 20px; }
+    .subtitle a { color: #58a6ff; text-decoration: none; }
+    .subtitle a:hover { text-decoration: underline; }
+
+    .note {
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+      color: #c9d1d9;
+    }
+    .note strong { color: #fff; }
+
+    .repo-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .repo-name { font-size: 1.1rem; font-weight: 600; color: #fff; }
+    .chip {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+    }
+    .chip-promote {
+      background: #1b4332;
+      color: #3fb950;
+      border-color: #238636;
+    }
+    .chip-demote {
+      background: #3d1f1f;
+      color: #f85149;
+      border-color: #da3633;
+    }
+    .chip-neutral {
+      background: #21262d;
+      color: #8b949e;
+      border-color: #30363d;
+    }
+    .chip-l2 {
+      background: #1f3a5f;
+      color: #58a6ff;
+      border-color: #1f6feb;
+    }
+    .details-btn {
+      margin-left: auto;
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .details-btn:hover { border-color: #58a6ff; color: #58a6ff; }
+
+    .panel {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      background: #0d1117;
+      color: #8b949e;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid #30363d;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #21262d;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    .crit { color: #c9d1d9; font-weight: 500; }
+    .target { color: #8b949e; font-family: ui-monospace, monospace; font-size: 0.8rem; }
+    .val {
+      font-family: ui-monospace, monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .val-pass { background: #1b4332; color: #3fb950; }
+    .val-fail { background: #3d1f1f; color: #f85149; }
+    .val-warn { background: #3d2e00; color: #d29922; }
+    .val-na { background: #21262d; color: #8b949e; }
+    .window-hint {
+      font-size: 0.65rem;
+      color: #6e7681;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .index-section { margin-top: 8px; }
+    .index-section h2 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #8b949e;
+      margin-bottom: 12px;
+    }
+    .index-table th, .index-table td { font-size: 0.8rem; }
+    .index-table .repo { color: #58a6ff; font-weight: 500; }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      font-size: 0.75rem;
+      color: #8b949e;
+    }
+    .legend span { display: flex; align-items: center; gap: 6px; }
+  </style>
+</head>
+<body>
+
+<h1>L3 Promotion / Demotion Readiness Panel</h1>
+<p class="subtitle">
+  Mockup for <a href="https://github.com/pytorch/test-infra/pull/8693" target="_blank">test-infra#8693</a>
+  (implements <a href="https://github.com/pytorch/test-infra/issues/8554" target="_blank">#8554</a>
+  + fixed windows from <a href="https://github.com/pytorch/test-infra/issues/8552" target="_blank">#8552</a>).
+  Criteria live in <code>lib/crcr/l3Thresholds.ts</code>; tenure via <code>crcr_repo_tenure</code>.
+</p>
+
+<div class="note">
+  <strong>Fixed evaluation windows:</strong> Promotion metrics use a <strong>14-day</strong> window;
+  demotion metrics use a <strong>7-day</strong> window. Per-repo stat cards above the panel still follow
+  the page Time Range selector — only this panel uses the fixed L3 windows so threshold coloring stays meaningful.
+</div>
+
+<!-- Per-repo expanded panel -->
+<div class="repo-header">
+  <span class="repo-name">pytorch/crcr-test</span>
+  <span class="chip chip-l2">L2</span>
+  <span class="chip chip-promote">Promotion ready</span>
+  <span class="chip chip-neutral">Demotion OK</span>
+  <button class="details-btn" type="button">Details ▾</button>
+</div>
+
+<div class="panel">
+  <table>
+    <thead>
+      <tr>
+        <th>Criterion</th>
+        <th>Target</th>
+        <th>Promotion (14d)</th>
+        <th>Demotion (7d)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="crit">Time at L2 (tenure)</td>
+        <td class="target">&ge; 14 days</td>
+        <td><span class="val val-pass">21d</span><span class="window-hint">meets promotion tenure</span></td>
+        <td><span class="val val-na">n/a</span><span class="window-hint">tenure not used for demotion</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Job success rate</td>
+        <td class="target">&ge; 95%</td>
+        <td><span class="val val-pass">97.2%</span></td>
+        <td><span class="val val-pass">96.1%</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Callback completeness</td>
+        <td class="target">&ge; 98%</td>
+        <td><span class="val val-pass">99.0%</span></td>
+        <td><span class="val val-pass">98.4%</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Median job duration</td>
+        <td class="target">&le; target SLA</td>
+        <td><span class="val val-pass">42m</span></td>
+        <td><span class="val val-warn">51m</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Flaky / retry rate</td>
+        <td class="target">&le; 5%</td>
+        <td><span class="val val-pass">2.1%</span></td>
+        <td><span class="val val-pass">3.0%</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Coverage breadth</td>
+        <td class="target">required suites present</td>
+        <td><span class="val val-pass">pass</span></td>
+        <td><span class="val val-pass">pass</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- At-risk example -->
+<div class="repo-header">
+  <span class="repo-name">example/partner-ci</span>
+  <span class="chip chip-l2">L2</span>
+  <span class="chip chip-neutral">Not ready</span>
+  <span class="chip chip-demote">Demotion risk</span>
+  <button class="details-btn" type="button">Details ▾</button>
+</div>
+
+<div class="panel">
+  <table>
+    <thead>
+      <tr>
+        <th>Criterion</th>
+        <th>Target</th>
+        <th>Promotion (14d)</th>
+        <th>Demotion (7d)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="crit">Time at L2 (tenure)</td>
+        <td class="target">&ge; 14 days</td>
+        <td><span class="val val-fail">6d</span></td>
+        <td><span class="val val-na">n/a</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Job success rate</td>
+        <td class="target">&ge; 95%</td>
+        <td><span class="val val-fail">88.4%</span></td>
+        <td><span class="val val-fail">81.0%</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Callback completeness</td>
+        <td class="target">&ge; 98%</td>
+        <td><span class="val val-warn">96.5%</span></td>
+        <td><span class="val val-fail">94.2%</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Median job duration</td>
+        <td class="target">&le; target SLA</td>
+        <td><span class="val val-pass">38m</span></td>
+        <td><span class="val val-pass">40m</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Flaky / retry rate</td>
+        <td class="target">&le; 5%</td>
+        <td><span class="val val-fail">9.8%</span></td>
+        <td><span class="val val-fail">12.4%</span></td>
+      </tr>
+      <tr>
+        <td class="crit">Coverage breadth</td>
+        <td class="target">required suites present</td>
+        <td><span class="val val-fail">missing inductor</span></td>
+        <td><span class="val val-fail">missing inductor</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Index page at-a-glance -->
+<div class="index-section">
+  <h2>/crcr index — readiness column</h2>
+  <div class="panel">
+    <table class="index-table">
+      <thead>
+        <tr>
+          <th>Repo</th>
+          <th>Level</th>
+          <th>Promotion</th>
+          <th>Demotion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="repo">pytorch/crcr-test</td>
+          <td><span class="chip chip-l2">L2</span></td>
+          <td><span class="chip chip-promote">Ready</span></td>
+          <td><span class="chip chip-neutral">OK</span></td>
+        </tr>
+        <tr>
+          <td class="repo">TorchedHat/pytorch-redhat-ci</td>
+          <td><span class="chip chip-l2">L3</span></td>
+          <td><span class="chip chip-neutral">—</span></td>
+          <td><span class="chip chip-neutral">OK</span></td>
+        </tr>
+        <tr>
+          <td class="repo">example/partner-ci</td>
+          <td><span class="chip chip-l2">L2</span></td>
+          <td><span class="chip chip-neutral">Blocked</span></td>
+          <td><span class="chip chip-demote">At risk</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="legend">
+  <span><span class="val val-pass">pass</span> qualifies / safe</span>
+  <span><span class="val val-warn">warn</span> near threshold</span>
+  <span><span class="val val-fail">fail</span> blocks promotion or triggers demotion</span>
+</div>
+
+</body>
+</html>
