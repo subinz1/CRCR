@@ -21,6 +21,11 @@ Interactive HTML mockups for the CRCR HUD integration. These mockups demonstrate
 | [Periodic Results](mockups/oot-hud-mockup-crcr-periodic.html) | Periodic CI results (6-hour cadence) | [#8353](https://github.com/pytorch/test-infra/pull/8353) |
 | [Nightly Tab Design](mockups/crcr-summary-nightly-design.html) | Nightly tab on CRCR summary page (Option A) | [#8377](https://github.com/pytorch/test-infra/pull/8377) |
 | [Display Options](mockups/crcr-nightly-display-options.html) | 16 design options (A–P) for nightly display | Design exploration |
+| [L3 Readiness Panel](mockups/l3-readiness-panel-mockup.html) | Promotion/demotion criteria with 14d / 7d columns and chips | [#8693](https://github.com/pytorch/test-infra/pull/8693) |
+| [Slash-Prefix Job Grouping](mockups/job-grouping-slash-prefix.html) | Group jobs by left-hand segment before `/` | Design exploration |
+| [Artifact URL Tooltip](mockups/artifact-url-tooltip-mockup.html) | Render "View artifacts" when `artifact_url` is set | [#8546](https://github.com/pytorch/test-infra/issues/8546) |
+| [Metrics Page Tabs](mockups/crcr-metrics-tabs-mockup.html) | PR / Nightly tabs on CRCR metrics page | [#8538](https://github.com/pytorch/test-infra/pull/8538) |
+| [Summary Sentence](mockups/crcr-summary-sentence-mockup.html) | Separate Pull Requests and Nightly HUD links | [#8537](https://github.com/pytorch/test-infra/pull/8537) |
 
 ## Reports
 
