@@ -59,17 +59,19 @@ Weekly status reports summarizing CRCR development progress.
 | [#8538](https://github.com/pytorch/test-infra/pull/8538) | PR/Nightly tabs on metrics page |
 | [#8555](https://github.com/pytorch/test-infra/pull/8555) | Fix query double-counting via run_id partition |
 
-### Open PRs
+### Recent / In progress
 
-| PR | Title | Status |
-|----|-------|--------|
-| [#8302](https://github.com/pytorch/test-infra/pull/8302) | Nightly/periodic callback handler | In review |
-| [#8303](https://github.com/pytorch/test-infra/pull/8303) | CI-neutral callback action | In review |
-| [#8304](https://github.com/pytorch/test-infra/pull/8304) | SHA validator for nightly commits | In review |
-| [#8353](https://github.com/pytorch/test-infra/pull/8353) | Event type column for nightly/periodic | Draft |
-| [#8366](https://github.com/pytorch/test-infra/pull/8366) | Healthy/Degraded display on summary page | Draft |
-| [#8376](https://github.com/pytorch/test-infra/pull/8376) | Fix x-prefix success rate calculation | Draft |
-| [#8377](https://github.com/pytorch/test-infra/pull/8377) | Nightly tab on CRCR summary page | Draft |
+| PR / Issue | Title | Status |
+|------------|-------|--------|
+| [#8693](https://github.com/pytorch/test-infra/pull/8693) | L3 promotion/demotion readiness panel (14d / 7d windows) | Open |
+| [#8694](https://github.com/pytorch/test-infra/pull/8694) | Write-once guard for nightly/periodic finalize | Open |
+| [#8695](https://github.com/pytorch/test-infra/pull/8695) | Fix nightly dashboard partial rows at window boundary | Open |
+| [#8696](https://github.com/pytorch/test-infra/pull/8696) | Nightly summary stats from matrix data | Open |
+| [#8697](https://github.com/pytorch/test-infra/pull/8697) | Hide crcr-test from nightly CI summary table | Open |
+| [#8730](https://github.com/pytorch/test-infra/pull/8730) | PR matrix: report jobs for latest commit SHA only | Open |
+| [#8707](https://github.com/pytorch/test-infra/pull/8707) | Max execution time excludes timed-out jobs | Open |
+| [#8676](https://github.com/pytorch/test-infra/issues/8676) | State-machine validation for nightly/periodic callbacks | Open |
+| [#8623](https://github.com/pytorch/test-infra/issues/8623) | Long-term xfail / xcancel policy | Open |
 
 ## Related Repositories
 
