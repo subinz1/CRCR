@@ -40,12 +40,24 @@ Weekly status reports summarizing CRCR development progress.
 | [#8244](https://github.com/pytorch/test-infra/pull/8244) | Move CRCR link to top-level navbar |
 | [#8247](https://github.com/pytorch/test-infra/pull/8247) | CRCR workflow boxes on PR page |
 | [#8285](https://github.com/pytorch/test-infra/pull/8285) | CRCR columns on main HUD grid |
+| [#8302](https://github.com/pytorch/test-infra/pull/8302) | Nightly/periodic callback handler (Phase 1) |
+| [#8303](https://github.com/pytorch/test-infra/pull/8303) | delivery-id / event-type inputs on callback action |
+| [#8304](https://github.com/pytorch/test-infra/pull/8304) | SHA validator for nightly/periodic callbacks |
 | [#8318](https://github.com/pytorch/test-infra/pull/8318) | CRCR Metrics page |
 | [#8319](https://github.com/pytorch/test-infra/pull/8319) | Per-repo downstream dashboard |
 | [#8330](https://github.com/pytorch/test-infra/pull/8330) | PR-based grouping for downstream page |
 | [#8341](https://github.com/pytorch/test-infra/pull/8341) | Fix idle crash on CRCR pages |
 | [#8343](https://github.com/pytorch/test-infra/pull/8343) | Filter HUD grid to L3/L4 only |
+| [#8353](https://github.com/pytorch/test-infra/pull/8353) | event_type column for nightly/periodic |
+| [#8366](https://github.com/pytorch/test-infra/pull/8366) | Healthy/Degraded display on summary page |
+| [#8376](https://github.com/pytorch/test-infra/pull/8376) | Treat xfail/xcancel/xtimeout as success (crcr-test) |
+| [#8377](https://github.com/pytorch/test-infra/pull/8377) | Nightly tab on CRCR summary page |
 | [#8386](https://github.com/pytorch/test-infra/pull/8386) | Fix PR search for CRCR check runs |
+| [#8453](https://github.com/pytorch/test-infra/pull/8453) | Multi-issuer OIDC support for Buildkite |
+| [#8468](https://github.com/pytorch/test-infra/pull/8468) | Move Buildkite repo mappings to ci_providers.yml |
+| [#8537](https://github.com/pytorch/test-infra/pull/8537) | Split summary description with PR and Nightly links |
+| [#8538](https://github.com/pytorch/test-infra/pull/8538) | PR/Nightly tabs on metrics page |
+| [#8555](https://github.com/pytorch/test-infra/pull/8555) | Fix query double-counting via run_id partition |
 
 ### Open PRs
 
