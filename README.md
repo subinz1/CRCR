@@ -27,6 +27,18 @@ Interactive HTML mockups for the CRCR HUD integration. These mockups demonstrate
 | [Metrics Page Tabs](mockups/crcr-metrics-tabs-mockup.html) | PR / Nightly tabs on CRCR metrics page | [#8538](https://github.com/pytorch/test-infra/pull/8538) |
 | [Summary Sentence](mockups/crcr-summary-sentence-mockup.html) | Separate Pull Requests and Nightly HUD links | [#8537](https://github.com/pytorch/test-infra/pull/8537) |
 
+### Relay Operations Exploration
+
+The operations set uses the current dark HUD language to explore the workflows that sit behind a reliable CRCR dashboard: relay operations, delivery triage, callback timelines, latency, health-probe funnels, zombie-sweeper visibility, failure and rerun investigation, artifact access, partner coverage and onboarding, trust-tier promotion, OIDC and payload validation, nightly SHA grouping, job-matrix completeness, alert routing, incident command, runner capacity, build-cache measurement, and targeted-test impact.
+
+| Area | Mockups |
+|------|---------|
+| Relay and probe health | [Operations overview](mockups/crcr-relay-operations-overview.html), [delivery triage](mockups/crcr-delivery-triage-mockup.html), [callback timeline](mockups/crcr-callback-timeline-mockup.html), [latency](mockups/crcr-relay-latency-mockup.html), [probe funnel](mockups/crcr-health-probe-funnel-mockup.html), [zombie sweeper](mockups/crcr-zombie-sweeper-watch-mockup.html) |
+| Result correctness | [Failed-job drilldown](mockups/crcr-failed-job-drilldown-mockup.html), [duplicate guard](mockups/crcr-duplicate-delivery-mockup.html), [state machine](mockups/crcr-callback-state-machine-mockup.html), [flaky jobs](mockups/crcr-flaky-jobs-mockup.html), [rerun comparison](mockups/crcr-rerun-comparison-mockup.html), [artifacts](mockups/crcr-artifact-browser-mockup.html) |
+| Partner lifecycle | [Coverage](mockups/crcr-partner-coverage-mockup.html), [onboarding](mockups/crcr-onboarding-progress-mockup.html), [compliance](mockups/crcr-compliance-checklist-mockup.html), [tier readiness](mockups/crcr-tier-readiness-mockup.html), [promotion review](mockups/crcr-promotion-review-mockup.html), [release gate](mockups/crcr-release-gate-mockup.html) |
+| Data and operations | [OIDC audit](mockups/crcr-oidc-auth-audit-mockup.html), [payload validation](mockups/crcr-payload-validation-mockup.html), [SHA alignment](mockups/crcr-sha-alignment-mockup.html), [nightly run inspector](mockups/crcr-nightly-run-inspector-mockup.html), [matrix completeness](mockups/crcr-job-matrix-completeness-mockup.html), [status normalization](mockups/crcr-status-normalization-mockup.html) |
+| Reliability and efficiency | [Alert routing](mockups/crcr-alert-routing-mockup.html), [incident command](mockups/crcr-incident-command-center-mockup.html), [empty states](mockups/crcr-empty-states-mockup.html), [runner capacity](mockups/crcr-runner-capacity-mockup.html), [build cache](mockups/crcr-build-cache-analysis-mockup.html), [test selection](mockups/crcr-test-selection-impact-mockup.html) |
+
 ## Reports
 
 Weekly status reports summarizing CRCR development progress.
