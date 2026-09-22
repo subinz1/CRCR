@@ -6,6 +6,8 @@ All the files and mock-ups related to the HUD changes for CRCR (Cross-Repository
 
 **RFC**: [RFC-0056: CRCR Support for Nightly & Periodic CI](https://github.com/pytorch/rfcs/pull/98)
 
+**Operator documentation**: [CRCR documentation map](docs/README.md)
+
 ## Mockups
 
 Interactive HTML mockups for the CRCR HUD integration. These mockups demonstrate the UI designs implemented in the `pytorch/test-infra` PRs.
@@ -76,7 +78,18 @@ Weekly status reports summarizing CRCR development progress.
 | [#8538](https://github.com/pytorch/test-infra/pull/8538) | PR/Nightly tabs on metrics page |
 | [#8555](https://github.com/pytorch/test-infra/pull/8555) | Fix query double-counting via run_id partition |
 
-### Recent / In progress
+### Current stacks and follow-up
+
+| PR / Issue | Title | Status |
+|------------|-------|--------|
+| [#8801](https://github.com/pytorch/test-infra/pull/8801) | Detect overdue in-progress health probes | Open |
+| [#8834](https://github.com/pytorch/test-infra/pull/8834) | Add health card triage details | Open, stacked on #8801 |
+| [#8854](https://github.com/pytorch/test-infra/pull/8854) | Event participation allowlist schema | Open |
+| [#8855](https://github.com/pytorch/test-infra/pull/8855) | Filter nightly-only backends from Pull Requests | Open, stacked |
+| [#8856](https://github.com/pytorch/test-infra/pull/8856) | Filter relay dispatch by event participation | Open, stacked |
+| [pytorch#197864](https://github.com/pytorch/pytorch/pull/197864) | Configure L2 backends for nightly reporting | Draft; follows test-infra deployment |
+
+### Earlier / in progress
 
 | PR / Issue | Title | Status |
 |------------|-------|--------|
