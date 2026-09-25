@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ascend/pytorch · CRCR history</title>
+  <title>Ascend/pytorch · CRCR level history</title>
   <link rel="stylesheet" href="crcr-operations.css">
 </head>
 <body>
@@ -44,15 +44,17 @@
 
     <section class="ops-section readiness-panel" aria-labelledby="readiness-title">
       <div class="readiness-header">
-        <h2 id="readiness-title">L3 Readiness</h2>
+        <div>
+          <h2 id="readiness-title">L3 Readiness</h2>
+          <button class="disclosure-chip" id="readiness-toggle" aria-controls="readiness-details" aria-expanded="true">Hide details⌃</button>
+        </div>
         <div class="ops-controls">
           <span class="ops-chip good">Promotion: 6/6 met</span>
           <span class="ops-chip">Demotion: 0/3 at risk</span>
         </div>
       </div>
-      <button class="ops-button-primary readiness-toggle" id="readiness-toggle" aria-controls="readiness-details" aria-expanded="true">Hide details⌃</button>
       <div id="readiness-details">
-        <p class="ops-note">Promotion is evaluated over the last 14 days, demotion over the last 7 days.</p>
+        <p class="ops-note readiness-note">Promotion is evaluated over the last 14 days, demotion over the last 7 days.</p>
         <table class="ops-table readiness-table">
           <thead>
             <tr><th>Criterion</th><th>Target</th><th>Promotion (14d)</th><th>Demotion (7d)</th></tr>
@@ -66,6 +68,122 @@
             <tr><td>Job Pass Rate</td><td>≥ 90%</td><td><strong class="good">97.9%</strong></td><td>97.4%</td></tr>
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <section class="ops-section history-panel" aria-labelledby="history-title">
+      <div class="readiness-header">
+        <div>
+          <h2 id="history-title">Level History</h2>
+          <button class="disclosure-chip" id="history-toggle" aria-controls="history-details" aria-expanded="true">Hide details⌃</button>
+        </div>
+        <div class="ops-controls">
+          <span class="ops-chip purple">Current: L3</span>
+          <span class="ops-chip">4 recorded decisions</span>
+        </div>
+      </div>
+      <div id="history-details">
+        <p class="ops-note readiness-note">Proposed audit trail for manual and automated tier changes. The historical values below are illustrative until the audit data source is available.</p>
+
+        <div class="history-layout">
+          <section aria-labelledby="tier-timeline-title">
+            <h3 class="ops-section-title" id="tier-timeline-title">Trust-tier timeline</h3>
+            <div class="history-levels" role="img" aria-label="Level one from June 3 to June 20, level two from June 20 to September 12, and level three from September 12 to the present">
+              <div class="history-level">
+                <span class="history-level-label">L4</span>
+                <div class="history-level-track"></div>
+                <span class="history-level-date">blocking</span>
+              </div>
+              <div class="history-level">
+                <span class="history-level-label">L3</span>
+                <div class="history-level-track"><span class="history-level-segment l3">L3</span></div>
+                <span class="history-level-date">12 Sep → now</span>
+              </div>
+              <div class="history-level">
+                <span class="history-level-label">L2</span>
+                <div class="history-level-track"><span class="history-level-segment l2">L2 · callback observability</span></div>
+                <span class="history-level-date">20 Jun → 12 Sep</span>
+              </div>
+              <div class="history-level">
+                <span class="history-level-label">L1</span>
+                <div class="history-level-track"><span class="history-level-segment l1">L1</span></div>
+                <span class="history-level-date">03 Jun → 20 Jun</span>
+              </div>
+            </div>
+            <p class="ops-note history-explainer">The tier is a discrete policy state. The reliability signal is shown separately so the evidence behind a change remains clear.</p>
+
+            <h3 class="ops-section-title history-chart-title">Reliability used by the selected decision</h3>
+            <svg class="history-chart" viewBox="0 0 820 154" role="img" aria-label="Fourteen-day callback reliability trending from 98.7 to 99.4 percent">
+              <title>Fourteen-day callback reliability</title>
+              <line class="history-gridline" x1="68" y1="28" x2="790" y2="28" />
+              <line class="history-gridline" x1="68" y1="78" x2="790" y2="78" />
+              <line class="history-gridline" x1="68" y1="128" x2="790" y2="128" />
+              <text x="12" y="32">100%</text>
+              <text x="20" y="82">99%</text>
+              <text x="20" y="132">98%</text>
+              <line class="history-marker" x1="68" y1="53" x2="790" y2="53" />
+              <text class="history-marker-label" x="612" y="48">promotion threshold · 99%</text>
+              <path class="history-path" d="M68 109 L123 103 L178 98 L234 88 L289 92 L344 76 L400 69 L455 73 L510 62 L566 64 L621 54 L677 58 L733 43 L790 45" />
+              <circle cx="790" cy="45" r="5" fill="#4caf50" />
+              <text x="68" y="150">day -14</text>
+              <text x="397" y="150">day -7</text>
+              <text x="752" y="150">today</text>
+            </svg>
+          </section>
+
+          <aside class="history-evidence" aria-live="polite" aria-labelledby="evidence-title">
+            <h3 class="ops-section-title" id="evidence-title">Decision evidence</h3>
+            <div id="decision-evidence">
+              <dl>
+                <dt>Selected change</dt><dd><strong>L2 → L3</strong> on 12 Sep 2026</dd>
+                <dt>Decision type</dt><dd><span class="ops-chip purple">auto promotion</span></dd>
+                <dt>Policy / actor</dt><dd class="ops-mono">promotion-v1 · CRCR agent</dd>
+                <dt>Trigger</dt><dd>All promotion criteria stayed healthy for the evaluation window.</dd>
+                <dt>Evidence</dt><dd><a href="https://github.com/pytorch/test-infra/issues/8806">Criteria snapshot</a> · <a href="https://github.com/pytorch/test-infra/issues/8806">Audit record</a></dd>
+              </dl>
+              <ul>
+                <li>418 of 421 callback jobs completed successfully.</li>
+                <li>Median callback latency: 43 seconds.</li>
+                <li>No zombie-sweeper or authentication incidents in the review window.</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+
+        <section class="history-log" aria-labelledby="decision-log-title">
+          <div class="ops-heading history-log-heading">
+            <div>
+              <h3 class="ops-section-title" id="decision-log-title">Decision log</h3>
+              <p class="ops-note" id="range-summary">All recorded level changes for this repository.</p>
+            </div>
+            <div class="ops-controls" role="group" aria-label="Decision type filter">
+              <button class="ops-tab active" data-filter="all">All</button>
+              <button class="ops-tab" data-filter="manual">Manual</button>
+              <button class="ops-tab" data-filter="auto_promotion">Auto promotion</button>
+              <button class="ops-tab" data-filter="auto_demotion">Auto demotion</button>
+            </div>
+          </div>
+
+          <div class="history-events" id="history-events">
+            <button class="history-event-row selected" data-event="promotion" data-kind="auto_promotion">
+              <span class="history-event-main"><strong>12 Sep 2026 · L2 → L3</strong><span class="ops-chip purple">auto promotion</span></span>
+              <span class="history-event-meta">promotion-v1 · 99.4% reliability for 14d · no overdue callbacks</span>
+            </button>
+            <button class="history-event-row" data-event="demotion" data-kind="auto_demotion">
+              <span class="history-event-main"><strong>28 Aug 2026 · L3 → L2</strong><span class="ops-chip warn">auto demotion</span></span>
+              <span class="history-event-meta">demotion-v1 · two timeout incidents exceeded the seven-day risk threshold</span>
+            </button>
+            <button class="history-event-row" data-event="recovery" data-kind="auto_promotion">
+              <span class="history-event-main"><strong>12 Aug 2026 · L2 → L3</strong><span class="ops-chip purple">auto promotion</span></span>
+              <span class="history-event-meta">promotion-v1 · 99.1% reliability for 14d · owner acknowledgement recorded</span>
+            </button>
+            <button class="history-event-row" data-event="onboarding" data-kind="manual">
+              <span class="history-event-main"><strong>03 Jun 2026 · L1 → L2</strong><span class="ops-chip info">manual</span></span>
+              <span class="history-event-meta">allowlist change · callback validation complete · HUD reporting enabled</span>
+            </button>
+          </div>
+          <p class="history-empty" id="history-empty">No decisions match this filter.</p>
+        </section>
       </div>
     </section>
 
@@ -88,180 +206,22 @@
     </section>
 
     <section class="ops-grid history-secondary-grid" aria-label="Current dashboard performance metrics">
-      <div class="ops-card">
-        <span class="ops-card-label">Avg Queue Time</span>
-        <strong class="ops-card-value">31.0s</strong>
-        <span class="ops-card-note">dispatch to start</span>
-      </div>
-      <div class="ops-card">
-        <span class="ops-card-label">Avg Execution Time</span>
-        <strong class="ops-card-value">6.8m</strong>
-        <span class="ops-card-note">start to completion</span>
-      </div>
-      <div class="ops-card">
-        <span class="ops-card-label">Overrun Rate ⓘ</span>
-        <strong class="ops-card-value good">0.0%</strong>
-        <span class="ops-card-note">max: 39.8m · p95: 10.4m</span>
-      </div>
-      <div class="ops-card">
-        <span class="ops-card-label">End-to-End Time (P50) ⓘ</span>
-        <strong class="ops-card-value">35.8m</strong>
-        <span class="ops-card-note">p95: 1.0h</span>
-      </div>
-      <div class="ops-card">
-        <span class="ops-card-label">Timeout Rate</span>
-        <strong class="ops-card-value warn">0.1%</strong>
-        <span class="ops-card-note">4 timed out / 2782 jobs</span>
-      </div>
+      <div class="ops-card"><span class="ops-card-label">Avg Queue Time</span><strong class="ops-card-value">31.0s</strong><span class="ops-card-note">dispatch to start</span></div>
+      <div class="ops-card"><span class="ops-card-label">Avg Execution Time</span><strong class="ops-card-value">6.8m</strong><span class="ops-card-note">start to completion</span></div>
+      <div class="ops-card"><span class="ops-card-label">Overrun Rate ⓘ</span><strong class="ops-card-value good">0.0%</strong><span class="ops-card-note">max: 39.8m · p95: 10.4m</span></div>
+      <div class="ops-card"><span class="ops-card-label">End-to-End Time (P50) ⓘ</span><strong class="ops-card-value">35.8m</strong><span class="ops-card-note">p95: 1.0h</span></div>
+      <div class="ops-card"><span class="ops-card-label">Timeout Rate</span><strong class="ops-card-value warn">0.1%</strong><span class="ops-card-note">4 timed out / 2782 jobs</span></div>
     </section>
 
-    <section class="history-addition" aria-labelledby="history-title">
-      <div class="history-addition-header">
-        <div>
-          <h2 class="ops-section-title" id="history-title">Level history</h2>
-          <p class="history-note">Proposed addition to the existing per-repository page. Historical decisions are illustrative until the audit data source is introduced.</p>
-        </div>
-        <button class="ops-button-primary" id="history-toggle" aria-controls="history-details" aria-expanded="true">Hide history⌃</button>
-      </div>
-      <div id="history-details">
-
-    <div class="history-layout">
-      <section class="ops-section" aria-labelledby="tier-timeline-title">
-        <h2 class="ops-section-title" id="tier-timeline-title">Trust-tier history</h2>
-        <div class="history-levels" role="img" aria-label="Level one from June 3 to June 20, level two from June 20 to September 12, level three from September 12 to the present">
-          <div class="history-level">
-            <span class="history-level-label">L4</span>
-            <div class="history-level-track"></div>
-            <span class="history-level-date">blocking</span>
-          </div>
-          <div class="history-level">
-            <span class="history-level-label">L3</span>
-            <div class="history-level-track"><span class="history-level-segment l3">L3</span></div>
-            <span class="history-level-date">12 Sep → now</span>
-          </div>
-          <div class="history-level">
-            <span class="history-level-label">L2</span>
-            <div class="history-level-track"><span class="history-level-segment l2">L2 · callback observability</span></div>
-            <span class="history-level-date">20 Jun → 12 Sep</span>
-          </div>
-          <div class="history-level">
-            <span class="history-level-label">L1</span>
-            <div class="history-level-track"><span class="history-level-segment l1">L1</span></div>
-            <span class="history-level-date">03 Jun → 20 Jun</span>
-          </div>
-        </div>
-        <p class="ops-note" style="margin-top:12px">Tier changes are discrete audit decisions. This timeline is intentionally separate from reliability metrics so a user can see both the level and the evidence that supported it.</p>
-
-        <h2 class="ops-section-title" style="margin-top:22px">Reliability used by the selected decision</h2>
-        <svg class="history-chart" viewBox="0 0 820 154" role="img" aria-label="Fourteen-day callback reliability trending from 98.7 to 99.4 percent">
-          <title>Fourteen-day callback reliability</title>
-          <line class="history-gridline" x1="68" y1="28" x2="790" y2="28" />
-          <line class="history-gridline" x1="68" y1="78" x2="790" y2="78" />
-          <line class="history-gridline" x1="68" y1="128" x2="790" y2="128" />
-          <text x="12" y="32">100%</text>
-          <text x="20" y="82">99%</text>
-          <text x="20" y="132">98%</text>
-          <line class="history-marker" x1="68" y1="53" x2="790" y2="53" />
-          <text class="history-marker-label" x="612" y="48">promotion threshold · 99%</text>
-          <path class="history-path" d="M68 109 L123 103 L178 98 L234 88 L289 92 L344 76 L400 69 L455 73 L510 62 L566 64 L621 54 L677 58 L733 43 L790 45" />
-          <circle cx="790" cy="45" r="5" fill="#4caf50" />
-          <text x="68" y="150">day -14</text>
-          <text x="397" y="150">day -7</text>
-          <text x="752" y="150">today</text>
-        </svg>
-      </section>
-
-      <aside class="ops-section history-evidence" aria-live="polite" aria-labelledby="evidence-title">
-        <h2 class="ops-section-title" id="evidence-title">Decision evidence</h2>
-        <div id="decision-evidence">
-          <dl>
-            <dt>Selected change</dt><dd><strong>L2 → L3</strong> on 12 Sep 2026</dd>
-            <dt>Decision type</dt><dd><span class="ops-chip purple">auto promotion</span></dd>
-            <dt>Policy / actor</dt><dd class="ops-mono">promotion-v1 · CRCR agent</dd>
-            <dt>Trigger</dt><dd>All promotion criteria stayed healthy for the evaluation window.</dd>
-            <dt>Evidence</dt><dd><a href="https://github.com/pytorch/test-infra/issues/8806">Criteria snapshot</a> · <a href="https://github.com/pytorch/test-infra/issues/8806">Audit record</a></dd>
-          </dl>
-          <ul>
-            <li>418 of 421 callback jobs completed successfully.</li>
-            <li>Median callback latency: 43 seconds.</li>
-            <li>No zombie-sweeper or authentication incidents in the review window.</li>
-          </ul>
-        </div>
-      </aside>
-    </div>
-
-    <section class="ops-section" aria-labelledby="decision-log-title">
-      <div class="ops-heading" style="margin:0 0 12px">
-        <div>
-          <h2 class="ops-section-title" id="decision-log-title">Decision log</h2>
-          <p class="ops-note" id="range-summary">All recorded level changes for this repository.</p>
-        </div>
-        <div class="ops-controls" role="group" aria-label="Decision type filter">
-          <button class="ops-tab active" data-filter="all">All</button>
-          <button class="ops-tab" data-filter="manual">Manual</button>
-          <button class="ops-tab" data-filter="auto_promotion">Auto promotion</button>
-          <button class="ops-tab" data-filter="auto_demotion">Auto demotion</button>
-        </div>
-      </div>
-
-      <div class="history-events" id="history-events">
-        <button class="history-event-row selected" data-event="promotion" data-kind="auto_promotion">
-          <span class="history-event-main"><strong>12 Sep 2026 · L2 → L3</strong><span class="ops-chip purple">auto promotion</span></span>
-          <span class="history-event-meta">promotion-v1 · 99.4% reliability for 14d · no overdue callbacks</span>
-        </button>
-        <button class="history-event-row" data-event="demotion" data-kind="auto_demotion">
-          <span class="history-event-main"><strong>28 Aug 2026 · L3 → L2</strong><span class="ops-chip warn">auto demotion</span></span>
-          <span class="history-event-meta">demotion-v1 · two timeout incidents exceeded the seven-day risk threshold</span>
-        </button>
-        <button class="history-event-row" data-event="recovery" data-kind="auto_promotion">
-          <span class="history-event-main"><strong>12 Aug 2026 · L2 → L3</strong><span class="ops-chip purple">auto promotion</span></span>
-          <span class="history-event-meta">promotion-v1 · 99.1% reliability for 14d · owner acknowledgement recorded</span>
-        </button>
-        <button class="history-event-row" data-event="onboarding" data-kind="manual">
-          <span class="history-event-main"><strong>03 Jun 2026 · L1 → L2</strong><span class="ops-chip info">manual</span></span>
-          <span class="history-event-meta">allowlist change · callback validation complete · HUD reporting enabled</span>
-        </button>
-      </div>
-      <p class="history-empty" id="history-empty">No decisions match this filter.</p>
-    </section>
-      </div>
-    </section>
+    <p class="ops-note results-caption">The existing PyTorch PR matrix follows unchanged below these panels.</p>
   </main>
 
   <script>
     const evidence = {
-      promotion: {
-        change: "L2 → L3 on 12 Sep 2026",
-        type: "auto promotion",
-        chip: "purple",
-        policy: "promotion-v1 · CRCR agent",
-        trigger: "All promotion criteria stayed healthy for the evaluation window.",
-        facts: ["418 of 421 callback jobs completed successfully.", "Median callback latency: 43 seconds.", "No zombie-sweeper or authentication incidents in the review window."],
-      },
-      demotion: {
-        change: "L3 → L2 on 28 Aug 2026",
-        type: "auto demotion",
-        chip: "warn",
-        policy: "demotion-v1 · CRCR agent",
-        trigger: "Timeout incidents exceeded the seven-day demotion risk threshold.",
-        facts: ["Two distinct callback timeout incidents were confirmed.", "Partner on-call acknowledgement was recorded.", "The L3 check remained informational while reliability recovered."],
-      },
-      recovery: {
-        change: "L2 → L3 on 12 Aug 2026",
-        type: "auto promotion",
-        chip: "purple",
-        policy: "promotion-v1 · CRCR agent",
-        trigger: "The fourteen-day success rate recovered above the promotion threshold.",
-        facts: ["Reliability returned to 99.1% after the demotion window.", "No new timeouts occurred during the recovery period.", "Owner acknowledgement completed before promotion."],
-      },
-      onboarding: {
-        change: "L1 → L2 on 03 Jun 2026",
-        type: "manual",
-        chip: "info",
-        policy: "allowlist-review · human reviewer",
-        trigger: "Callback validation and HUD observability were approved by a reviewer.",
-        facts: ["OIDC issuer and audience validation passed.", "The partner completed callback and latest-attempt fixtures.", "The allowlist change enabled L2 HUD reporting."],
-      },
+      promotion: { change: "L2 → L3 on 12 Sep 2026", type: "auto promotion", chip: "purple", policy: "promotion-v1 · CRCR agent", trigger: "All promotion criteria stayed healthy for the evaluation window.", facts: ["418 of 421 callback jobs completed successfully.", "Median callback latency: 43 seconds.", "No zombie-sweeper or authentication incidents in the review window."] },
+      demotion: { change: "L3 → L2 on 28 Aug 2026", type: "auto demotion", chip: "warn", policy: "demotion-v1 · CRCR agent", trigger: "Timeout incidents exceeded the seven-day demotion risk threshold.", facts: ["Two distinct callback timeout incidents were confirmed.", "Partner on-call acknowledgement was recorded.", "The L3 check remained informational while reliability recovered."] },
+      recovery: { change: "L2 → L3 on 12 Aug 2026", type: "auto promotion", chip: "purple", policy: "promotion-v1 · CRCR agent", trigger: "The fourteen-day success rate recovered above the promotion threshold.", facts: ["Reliability returned to 99.1% after the demotion window.", "No new timeouts occurred during the recovery period.", "Owner acknowledgement completed before promotion."] },
+      onboarding: { change: "L1 → L2 on 03 Jun 2026", type: "manual", chip: "info", policy: "allowlist-review · human reviewer", trigger: "Callback validation and HUD observability were approved by a reviewer.", facts: ["OIDC issuer and audience validation passed.", "The partner completed callback and latest-attempt fixtures.", "The allowlist change enabled L2 HUD reporting."] },
     };
 
     const detail = document.getElementById("decision-evidence");
@@ -269,33 +229,25 @@
     const filters = [...document.querySelectorAll("[data-filter]")];
     const empty = document.getElementById("history-empty");
 
-    function bindDisclosure(buttonId, contentId, hideLabel, showLabel) {
+    function bindDisclosure(buttonId, contentId) {
       const button = document.getElementById(buttonId);
       const content = document.getElementById(contentId);
       button.addEventListener("click", () => {
         const expanded = button.getAttribute("aria-expanded") === "true";
         button.setAttribute("aria-expanded", String(!expanded));
-        button.textContent = expanded ? showLabel : hideLabel;
+        button.textContent = expanded ? "Details⌄" : "Hide details⌃";
         content.hidden = expanded;
       });
     }
 
-    bindDisclosure("readiness-toggle", "readiness-details", "Hide details⌃", "Show details⌄");
-    bindDisclosure("history-toggle", "history-details", "Hide history⌃", "Show history⌄");
+    bindDisclosure("readiness-toggle", "readiness-details");
+    bindDisclosure("history-toggle", "history-details");
 
     rows.forEach((row) => row.addEventListener("click", () => {
       rows.forEach((item) => item.classList.remove("selected"));
       row.classList.add("selected");
       const selected = evidence[row.dataset.event];
-      detail.innerHTML = `
-        <dl>
-          <dt>Selected change</dt><dd><strong>${selected.change}</strong></dd>
-          <dt>Decision type</dt><dd><span class="ops-chip ${selected.chip}">${selected.type}</span></dd>
-          <dt>Policy / actor</dt><dd class="ops-mono">${selected.policy}</dd>
-          <dt>Trigger</dt><dd>${selected.trigger}</dd>
-          <dt>Evidence</dt><dd><a href="https://github.com/pytorch/test-infra/issues/8806">Criteria snapshot</a> · <a href="https://github.com/pytorch/test-infra/issues/8806">Audit record</a></dd>
-        </dl>
-        <ul>${selected.facts.map((fact) => `<li>${fact}</li>`).join("")}</ul>`;
+      detail.innerHTML = `<dl><dt>Selected change</dt><dd><strong>${selected.change}</strong></dd><dt>Decision type</dt><dd><span class="ops-chip ${selected.chip}">${selected.type}</span></dd><dt>Policy / actor</dt><dd class="ops-mono">${selected.policy}</dd><dt>Trigger</dt><dd>${selected.trigger}</dd><dt>Evidence</dt><dd><a href="https://github.com/pytorch/test-infra/issues/8806">Criteria snapshot</a> · <a href="https://github.com/pytorch/test-infra/issues/8806">Audit record</a></dd></dl><ul>${selected.facts.map((fact) => `<li>${fact}</li>`).join("")}</ul>`;
     }));
 
     filters.forEach((filter) => filter.addEventListener("click", () => {
@@ -308,9 +260,7 @@
         if (matches) visible += 1;
       });
       empty.style.display = visible ? "none" : "block";
-      document.getElementById("range-summary").textContent = kind === "all"
-        ? "All recorded level changes for this repository."
-        : `${visible} ${kind.replace("_", " ")} decision${visible === 1 ? "" : "s"} in this history.`;
+      document.getElementById("range-summary").textContent = kind === "all" ? "All recorded level changes for this repository." : `${visible} ${kind.replace("_", " ")} decision${visible === 1 ? "" : "s"} in this history.`;
     }));
   </script>
 </body>
