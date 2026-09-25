@@ -4,7 +4,7 @@ Issue [pytorch/test-infra#8806](https://github.com/pytorch/test-infra/issues/880
 
 ## HUD integration
 
-History is an additional, collapsible panel in the existing repository dashboard, not a replacement dashboard or a PR/nightly tab. It is rendered directly after the expanded L3 readiness panel and before the current KPI cards. Its header follows the same disclosure pattern as L3 Readiness: a title, a compact Details chip, and right-aligned summary chips. The panel supplies a decision timeline, a reliability signal, and an evidence-backed decision log; the existing PR matrix remains unchanged below the current dashboard cards.
+History is an additional, collapsible panel in the existing repository dashboard, not a replacement dashboard or a PR/nightly tab. It is rendered directly after L3 Readiness and before the current KPI cards. Both panels are collapsed initially and use the same title, compact Details chip, and right-aligned summary-chip pattern. The panel supplies a chronological decision timeline, a decision-specific supporting signal, and an evidence-backed decision log; the existing PR matrix remains unchanged below the current dashboard cards.
 
 The timeline deliberately does not overlay tier transitions and reliability in a single chart. A tier is a discrete policy state; reliability is a supporting signal evaluated over a window. Showing them separately makes it clear which value changed and why.
 
