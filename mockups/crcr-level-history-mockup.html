@@ -87,10 +87,21 @@
 
         <div class="history-layout">
           <section aria-labelledby="tier-timeline-title">
-            <h3 class="ops-section-title" id="tier-timeline-title">Level transitions</h3>
+            <div class="history-transitions-heading">
+              <div>
+                <h3 class="ops-section-title" id="tier-timeline-title">Level transitions</h3>
+                <p class="ops-note" id="range-summary">All recorded level changes for this repository.</p>
+              </div>
+              <div class="ops-controls" role="group" aria-label="Decision type filter">
+                <button class="ops-tab active" data-filter="all">All</button>
+                <button class="ops-tab" data-filter="manual">Manual</button>
+                <button class="ops-tab" data-filter="auto_promotion">Auto promotion</button>
+                <button class="ops-tab" data-filter="auto_demotion">Auto demotion</button>
+              </div>
+            </div>
             <ol class="decision-journey" aria-label="Four recorded transitions from June 3 through September 12">
               <li class="journey-transition">
-                <button class="journey-event" data-event="onboarding" aria-pressed="false">
+                <button class="journey-event" data-event="onboarding" data-kind="manual" aria-pressed="false">
                   <time datetime="2026-06-03">03 Jun 2026</time>
                   <strong>L1 → L2</strong>
                   <span>Manual onboarding · callback validation completed</span>
@@ -98,7 +109,7 @@
                 <span class="journey-duration">70 days at L2</span>
               </li>
               <li class="journey-transition">
-                <button class="journey-event" data-event="recovery" aria-pressed="false">
+                <button class="journey-event" data-event="recovery" data-kind="auto_promotion" aria-pressed="false">
                   <time datetime="2026-08-12">12 Aug 2026</time>
                   <strong>L2 → L3</strong>
                   <span>Auto promotion · 99.1% reliability for 14 days</span>
@@ -106,7 +117,7 @@
                 <span class="journey-duration">16 days at L3</span>
               </li>
               <li class="journey-transition demotion">
-                <button class="journey-event demotion" data-event="demotion" aria-pressed="false">
+                <button class="journey-event demotion" data-event="demotion" data-kind="auto_demotion" aria-pressed="false">
                   <time datetime="2026-08-28">28 Aug 2026</time>
                   <strong>L3 → L2</strong>
                   <span>Auto demotion · timeout risk threshold exceeded</span>
@@ -114,7 +125,7 @@
                 <span class="journey-duration">15 days at L2</span>
               </li>
               <li class="journey-transition current">
-                <button class="journey-event selected" data-event="promotion" aria-pressed="true">
+                <button class="journey-event selected" data-event="promotion" data-kind="auto_promotion" aria-pressed="true">
                   <time datetime="2026-09-12">12 Sep 2026</time>
                   <strong>L2 → L3</strong>
                   <span>Auto promotion · 99.4% reliability for 14 days</span>
@@ -122,7 +133,8 @@
                 <span class="journey-duration">Current L3 · 13 days so far</span>
               </li>
             </ol>
-            <p class="ops-note history-explainer">Select a transition or a decision-log row to inspect its supporting window and evidence.</p>
+            <p class="history-empty" id="history-empty" hidden>No decisions match this filter.</p>
+            <p class="ops-note history-explainer">Select a transition to inspect its supporting window and evidence.</p>
 
             <h3 class="ops-section-title history-chart-title" id="supporting-signal-title">14-day callback reliability</h3>
             <div id="supporting-signal">
@@ -164,40 +176,6 @@
           </aside>
         </div>
 
-        <section class="history-log" aria-labelledby="decision-log-title">
-          <div class="ops-heading history-log-heading">
-            <div>
-              <h3 class="ops-section-title" id="decision-log-title">Decision log</h3>
-              <p class="ops-note" id="range-summary">All recorded level changes for this repository.</p>
-            </div>
-            <div class="ops-controls" role="group" aria-label="Decision type filter">
-              <button class="ops-tab active" data-filter="all">All</button>
-              <button class="ops-tab" data-filter="manual">Manual</button>
-              <button class="ops-tab" data-filter="auto_promotion">Auto promotion</button>
-              <button class="ops-tab" data-filter="auto_demotion">Auto demotion</button>
-            </div>
-          </div>
-
-          <div class="history-events" id="history-events">
-            <button class="history-event-row selected" data-event="promotion" data-kind="auto_promotion" aria-pressed="true">
-              <span class="history-event-main"><strong>12 Sep 2026 · L2 → L3</strong><span class="ops-chip purple">auto promotion</span></span>
-              <span class="history-event-meta">promotion-v1 · 99.4% reliability for 14d · no overdue callbacks</span>
-            </button>
-            <button class="history-event-row" data-event="demotion" data-kind="auto_demotion" aria-pressed="false">
-              <span class="history-event-main"><strong>28 Aug 2026 · L3 → L2</strong><span class="ops-chip warn">auto demotion</span></span>
-              <span class="history-event-meta">demotion-v1 · two timeout incidents exceeded the seven-day risk threshold</span>
-            </button>
-            <button class="history-event-row" data-event="recovery" data-kind="auto_promotion" aria-pressed="false">
-              <span class="history-event-main"><strong>12 Aug 2026 · L2 → L3</strong><span class="ops-chip purple">auto promotion</span></span>
-              <span class="history-event-meta">promotion-v1 · 99.1% reliability for 14d · owner acknowledgement recorded</span>
-            </button>
-            <button class="history-event-row" data-event="onboarding" data-kind="manual" aria-pressed="false">
-              <span class="history-event-main"><strong>03 Jun 2026 · L1 → L2</strong><span class="ops-chip info">manual</span></span>
-              <span class="history-event-meta">allowlist change · callback validation complete · HUD reporting enabled</span>
-            </button>
-          </div>
-          <p class="history-empty" id="history-empty">No decisions match this filter.</p>
-        </section>
       </div>
     </section>
 
@@ -239,7 +217,7 @@
     };
 
     const detail = document.getElementById("decision-evidence");
-    const rows = [...document.querySelectorAll(".history-event-row")];
+    const transitions = [...document.querySelectorAll(".journey-transition")];
     const eventControls = [...document.querySelectorAll("[data-event]")];
     const filters = [...document.querySelectorAll("[data-filter]")];
     const empty = document.getElementById("history-empty");
@@ -286,17 +264,19 @@
       const kind = filter.dataset.filter;
       let visible = 0;
       filters.forEach((item) => item.classList.toggle("active", item === filter));
-      rows.forEach((row) => {
-        const matches = kind === "all" || row.dataset.kind === kind;
-        row.hidden = !matches;
+      transitions.forEach((transition) => {
+        const event = transition.querySelector(".journey-event");
+        const matches = kind === "all" || event.dataset.kind === kind;
+        transition.hidden = !matches;
+        transition.querySelector(".journey-duration").hidden = kind !== "all";
         if (matches) visible += 1;
       });
-      const selectedVisibleRow = rows.find((row) => !row.hidden && row.classList.contains("selected"));
-      if (!selectedVisibleRow && visible) {
-        selectEvent(rows.find((row) => !row.hidden).dataset.event);
+      const selectedVisibleTransition = transitions.find((transition) => !transition.hidden && transition.querySelector(".journey-event").classList.contains("selected"));
+      if (!selectedVisibleTransition && visible) {
+        selectEvent(transitions.find((transition) => !transition.hidden).querySelector(".journey-event").dataset.event);
       }
-      empty.style.display = visible ? "none" : "block";
-      document.getElementById("range-summary").textContent = kind === "all" ? "All recorded level changes for this repository." : `${visible} ${kind.replace("_", " ")} decision${visible === 1 ? "" : "s"} in this history.`;
+      empty.hidden = Boolean(visible);
+      document.getElementById("range-summary").textContent = kind === "all" ? "All recorded level changes for this repository." : `${visible} ${kind.replace("_", " ")} transition${visible === 1 ? "" : "s"} in this history.`;
     }));
   </script>
 </body>
