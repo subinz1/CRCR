@@ -98,6 +98,15 @@ button:hover { border-color: var(--ops-blue); }
 .history-note { margin: 0 0 16px; color: var(--ops-muted); font-size: 12px; }
 .history-status { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .history-status strong { font-size: 22px; }
+.history-context { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; margin-top: 5px; color: var(--ops-muted); font-size: 12px; }
+.history-context .separator { color: var(--ops-border); }
+.history-primary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.history-secondary-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 12px; }
+.history-secondary-grid .ops-card { padding: 13px; text-align: center; }
+.history-secondary-grid .ops-card-value { font-size: 22px; }
+.history-readiness { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.history-readiness h2 { margin: 0; font-size: 16px; font-weight: 500; }
+.history-readiness .ops-controls { justify-content: flex-end; }
 .history-layout { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .8fr); gap: 16px; }
 .history-chart { width: 100%; height: auto; display: block; overflow: visible; }
 .history-chart text { fill: var(--ops-muted); font: 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
@@ -127,6 +136,6 @@ button:hover { border-color: var(--ops-blue); }
 .history-evidence dd { margin: 0; }
 .history-evidence ul { margin: 9px 0 0; padding-left: 18px; color: var(--ops-muted); }
 .history-empty { display: none; color: var(--ops-muted); padding: 10px 0; }
-@media (max-width: 900px) { .history-layout { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .history-layout { grid-template-columns: 1fr; } .history-primary-grid, .history-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .ops-grid, .ops-grid.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ops-heading { display: block; } .ops-controls { margin-top: 14px; } }
 @media (max-width: 620px) { .ops-nav { gap: 10px; padding: 0 14px; font-size: 12px; } .ops-nav .optional { display: none; } .ops-page { padding: 18px; } .ops-grid, .ops-grid.two, .ops-grid.three { grid-template-columns: 1fr; } .ops-section { overflow-x: auto; } h1 { font-size: 23px; } }
