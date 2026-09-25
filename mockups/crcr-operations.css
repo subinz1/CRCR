@@ -90,5 +90,43 @@ button:hover { border-color: var(--ops-blue); }
 .ops-callout.warning { border-color: var(--ops-orange); background: rgba(255, 152, 0, .08); color: #ffd493; }
 .ops-callout.error { border-color: var(--ops-red); background: rgba(244, 67, 54, .08); color: #ffb1ad; }
 .ops-kbd { border: 1px solid var(--ops-border); border-radius: 3px; padding: 1px 4px; background: #171717; font-family: monospace; }
+.ops-button-primary { background: #1769aa; border-color: #2e8bcb; color: #fff; }
+.ops-button-primary:hover { background: #2182c6; }
+.ops-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--ops-border); }
+.ops-tab { border: 0; border-bottom: 2px solid transparent; border-radius: 0; padding: 10px 13px; background: transparent; color: var(--ops-muted); }
+.ops-tab.active { border-bottom-color: var(--ops-blue); color: var(--ops-text); }
+.history-note { margin: 0 0 16px; color: var(--ops-muted); font-size: 12px; }
+.history-status { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.history-status strong { font-size: 22px; }
+.history-layout { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .8fr); gap: 16px; }
+.history-chart { width: 100%; height: auto; display: block; overflow: visible; }
+.history-chart text { fill: var(--ops-muted); font: 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.history-gridline { stroke: var(--ops-border); stroke-width: 1; }
+.history-path { fill: none; stroke: var(--ops-green); stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+.history-marker { stroke: var(--ops-blue); stroke-dasharray: 3 4; }
+.history-marker-label { fill: #b6dafd !important; }
+.history-levels { display: grid; gap: 8px; }
+.history-level { display: grid; grid-template-columns: 34px minmax(0, 1fr) 80px; gap: 10px; align-items: center; }
+.history-level-label { color: var(--ops-muted); font-size: 12px; font-weight: 700; }
+.history-level-track { min-height: 29px; border: 1px solid var(--ops-border); border-radius: 4px; background: #1b1b1b; overflow: hidden; }
+.history-level-segment { display: flex; align-items: center; height: 100%; min-height: 29px; padding: 0 9px; color: #fff; font-size: 12px; white-space: nowrap; }
+.history-level-segment.l1 { width: 31%; background: #57616e; }
+.history-level-segment.l2 { width: 44%; margin-left: 13%; background: #1976a8; }
+.history-level-segment.l3 { width: 25%; margin-left: 75%; background: #7b4ca8; }
+.history-level-date { color: var(--ops-muted); font-size: 11px; text-align: right; }
+.history-events { display: grid; gap: 8px; }
+.history-event-row { width: 100%; border: 1px solid var(--ops-border); border-left: 3px solid var(--ops-blue); border-radius: 5px; padding: 11px 12px; background: var(--ops-panel-alt); color: var(--ops-text); text-align: left; }
+.history-event-row:hover, .history-event-row.selected { border-color: var(--ops-blue); background: rgba(66, 165, 245, .09); }
+.history-event-row[data-kind="auto_demotion"] { border-left-color: var(--ops-orange); }
+.history-event-main { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.history-event-main strong { font-weight: 600; }
+.history-event-meta { margin-top: 3px; color: var(--ops-muted); font-size: 12px; }
+.history-evidence { min-height: 244px; }
+.history-evidence dl { display: grid; grid-template-columns: 105px minmax(0, 1fr); gap: 9px 12px; margin: 0; font-size: 13px; }
+.history-evidence dt { color: var(--ops-muted); }
+.history-evidence dd { margin: 0; }
+.history-evidence ul { margin: 9px 0 0; padding-left: 18px; color: var(--ops-muted); }
+.history-empty { display: none; color: var(--ops-muted); padding: 10px 0; }
+@media (max-width: 900px) { .history-layout { grid-template-columns: 1fr; } }
 @media (max-width: 900px) { .ops-grid, .ops-grid.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ops-heading { display: block; } .ops-controls { margin-top: 14px; } }
 @media (max-width: 620px) { .ops-nav { gap: 10px; padding: 0 14px; font-size: 12px; } .ops-nav .optional { display: none; } .ops-page { padding: 18px; } .ops-grid, .ops-grid.two, .ops-grid.three { grid-template-columns: 1fr; } .ops-section { overflow-x: auto; } h1 { font-size: 23px; } }
