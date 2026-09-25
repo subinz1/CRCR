@@ -32,6 +32,7 @@ mockups in [`../mockups/`](../mockups/).
 - [Incident triage](incident-triage.md)
 - [Partner operator runbook](partner-operator-runbook.md)
 - [Promotion readiness](promotion-readiness.md)
+- [Repository level-history design](level-history-design.md)
 - [Release checklist](release-checklist.md)
 - [Write-once guard](write-once-guard.md)
 - [xFail / xCancel policy notes](xfail-xcancel-policy-notes.md)
