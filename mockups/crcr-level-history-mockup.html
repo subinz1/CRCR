@@ -42,12 +42,30 @@
       </label>
     </div>
 
-    <section class="ops-section history-readiness" aria-labelledby="readiness-title">
-      <h2 id="readiness-title">L3 Readiness</h2>
-      <div class="ops-controls">
-        <span class="ops-chip good">Promotion: 6/6 met</span>
-        <span class="ops-chip">Demotion: 0/3 at risk</span>
-        <button class="ops-button-primary">Details⌄</button>
+    <section class="ops-section readiness-panel" aria-labelledby="readiness-title">
+      <div class="readiness-header">
+        <h2 id="readiness-title">L3 Readiness</h2>
+        <div class="ops-controls">
+          <span class="ops-chip good">Promotion: 6/6 met</span>
+          <span class="ops-chip">Demotion: 0/3 at risk</span>
+        </div>
+      </div>
+      <button class="ops-button-primary readiness-toggle" id="readiness-toggle" aria-controls="readiness-details" aria-expanded="true">Hide details⌃</button>
+      <div id="readiness-details">
+        <p class="ops-note">Promotion is evaluated over the last 14 days, demotion over the last 7 days.</p>
+        <table class="ops-table readiness-table">
+          <thead>
+            <tr><th>Criterion</th><th>Target</th><th>Promotion (14d)</th><th>Demotion (7d)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Time at L2</td><td>≥ 1 month</td><td><strong class="good">88 days</strong></td><td>n/a</td></tr>
+            <tr><td>End-to-End Time (P50)</td><td>&lt; 3 h</td><td><strong class="good">36.4m</strong></td><td>35.8m</td></tr>
+            <tr><td>Overrun Rate</td><td>&lt; 1% of jobs over 3h</td><td><strong class="good">0.0%</strong></td><td>n/a</td></tr>
+            <tr><td>Avg Queue Time</td><td>&lt; 30 min</td><td><strong class="good">32.0s</strong></td><td>n/a</td></tr>
+            <tr><td>Timeout Rate</td><td>&lt; 1%</td><td><strong class="good">0.1%</strong></td><td>0.1%</td></tr>
+            <tr><td>Job Pass Rate</td><td>≥ 90%</td><td><strong class="good">97.9%</strong></td><td>97.4%</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -97,14 +115,15 @@
       </div>
     </section>
 
-    <div class="ops-tabs" aria-label="Repository dashboard views">
-      <button class="ops-tab">Pull requests</button>
-      <button class="ops-tab">Nightly</button>
-      <button class="ops-tab">Metrics</button>
-      <button class="ops-tab active" aria-current="page">History</button>
-    </div>
-
-    <p class="history-note">Proposed History tab addition. The repository header, readiness panel, range control, and KPI cards retain the active HUD layout; history records below are illustrative until the audit data source is introduced.</p>
+    <section class="history-addition" aria-labelledby="history-title">
+      <div class="history-addition-header">
+        <div>
+          <h2 class="ops-section-title" id="history-title">Level history</h2>
+          <p class="history-note">Proposed addition to the existing per-repository page. Historical decisions are illustrative until the audit data source is introduced.</p>
+        </div>
+        <button class="ops-button-primary" id="history-toggle" aria-controls="history-details" aria-expanded="true">Hide history⌃</button>
+      </div>
+      <div id="history-details">
 
     <div class="history-layout">
       <section class="ops-section" aria-labelledby="tier-timeline-title">
@@ -205,6 +224,8 @@
       </div>
       <p class="history-empty" id="history-empty">No decisions match this filter.</p>
     </section>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -247,6 +268,20 @@
     const rows = [...document.querySelectorAll(".history-event-row")];
     const filters = [...document.querySelectorAll("[data-filter]")];
     const empty = document.getElementById("history-empty");
+
+    function bindDisclosure(buttonId, contentId, hideLabel, showLabel) {
+      const button = document.getElementById(buttonId);
+      const content = document.getElementById(contentId);
+      button.addEventListener("click", () => {
+        const expanded = button.getAttribute("aria-expanded") === "true";
+        button.setAttribute("aria-expanded", String(!expanded));
+        button.textContent = expanded ? showLabel : hideLabel;
+        content.hidden = expanded;
+      });
+    }
+
+    bindDisclosure("readiness-toggle", "readiness-details", "Hide details⌃", "Show details⌄");
+    bindDisclosure("history-toggle", "history-details", "Hide history⌃", "Show history⌄");
 
     rows.forEach((row) => row.addEventListener("click", () => {
       rows.forEach((item) => item.classList.remove("selected"));

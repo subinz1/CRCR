@@ -4,7 +4,7 @@ Issue [pytorch/test-infra#8806](https://github.com/pytorch/test-infra/issues/880
 
 ## HUD integration
 
-History is an additional tab in the existing repository dashboard, not a replacement dashboard. It keeps the active page's repository header, time-range control, L3 readiness panel, and current KPI cards. Only the lower PR or nightly results area changes to a decision timeline, a reliability signal, and an evidence-backed decision log.
+History is an additional, collapsible panel in the existing repository dashboard, not a replacement dashboard or a PR/nightly tab. It keeps the active page's repository header, time-range control, expanded L3 readiness panel, and current KPI cards. The history panel sits alongside the existing results matrix and supplies a decision timeline, a reliability signal, and an evidence-backed decision log.
 
 The timeline deliberately does not overlay tier transitions and reliability in a single chart. A tier is a discrete policy state; reliability is a supporting signal evaluated over a window. Showing them separately makes it clear which value changed and why.
 
