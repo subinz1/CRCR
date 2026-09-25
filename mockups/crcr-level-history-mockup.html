@@ -88,29 +88,26 @@
         <div class="history-layout">
           <section aria-labelledby="tier-timeline-title">
             <h3 class="ops-section-title" id="tier-timeline-title">Trust-tier timeline</h3>
-            <div class="history-levels" role="img" aria-label="Level one from June 3 to June 20, level two from June 20 to September 12, and level three from September 12 to the present">
-              <div class="history-level">
-                <span class="history-level-label">L4</span>
-                <div class="history-level-track"></div>
-                <span class="history-level-date">blocking</span>
-              </div>
-              <div class="history-level">
-                <span class="history-level-label">L3</span>
-                <div class="history-level-track"><span class="history-level-segment l3">L3</span></div>
-                <span class="history-level-date">12 Sep → now</span>
-              </div>
-              <div class="history-level">
-                <span class="history-level-label">L2</span>
-                <div class="history-level-track"><span class="history-level-segment l2">L2 · callback observability</span></div>
-                <span class="history-level-date">20 Jun → 12 Sep</span>
-              </div>
-              <div class="history-level">
-                <span class="history-level-label">L1</span>
-                <div class="history-level-track"><span class="history-level-segment l1">L1</span></div>
-                <span class="history-level-date">03 Jun → 20 Jun</span>
-              </div>
-            </div>
-            <p class="ops-note history-explainer">The tier is a discrete policy state. The reliability signal is shown separately so the evidence behind a change remains clear.</p>
+            <ol class="level-journey" aria-label="Level one onboarding on June 3, level two observability on June 20, and level three PR checks on September 12">
+              <li class="journey-stage journey-l1">
+                <span class="journey-step">1</span>
+                <strong>L1 · event dispatch</strong>
+                <span>03 Jun · manual onboarding</span>
+              </li>
+              <li class="journey-connector"><span>17 days</span></li>
+              <li class="journey-stage journey-l2">
+                <span class="journey-step">2</span>
+                <strong>L2 · observability</strong>
+                <span>20 Jun · callback validation</span>
+              </li>
+              <li class="journey-connector"><span>84 days</span></li>
+              <li class="journey-stage journey-l3 current">
+                <span class="journey-step">3</span>
+                <strong>L3 · PR check</strong>
+                <span>12 Sep · current for 13 days</span>
+              </li>
+            </ol>
+            <p class="ops-note history-explainer">Each stage is an auditable tier transition. Select a decision below to inspect its evidence and supporting reliability window.</p>
 
             <h3 class="ops-section-title history-chart-title">Reliability used by the selected decision</h3>
             <svg class="history-chart" viewBox="0 0 820 154" role="img" aria-label="Fourteen-day callback reliability trending from 98.7 to 99.4 percent">
