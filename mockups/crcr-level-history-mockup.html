@@ -3,311 +3,245 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PyTorch CI HUD · CRCR level history</title>
+  <title>CRCR · Ascend/pytorch readiness mockup</title>
   <style>
     :root {
-      --bg: #1e1e1e;
-      --surface: #292929;
-      --surface-raised: #303030;
-      --surface-hover: #353535;
-      --border: rgba(255, 255, 255, .2);
-      --border-soft: rgba(255, 255, 255, .12);
-      --text: #e0e0e0;
-      --muted: #a8a8a8;
-      --faint: #838383;
-      --link: #4a90e2;
-      --green: #66bb6a;
-      --orange: #ff9800;
-      --red: #ef5350;
-      --blue: #42a5f5;
-      --purple: #b388ff;
-      color-scheme: dark;
+      --background: #fafafa;
+      --paper: #fff;
+      --ink: rgba(0, 0, 0, .87);
+      --muted: rgba(0, 0, 0, .6);
+      --faint: rgba(0, 0, 0, .38);
+      --line: rgba(0, 0, 0, .12);
+      --link: #1976d2;
+      --success: #2e7d32;
+      --warning: #ed6c02;
+      --error: #d32f2f;
+      color-scheme: light;
     }
 
     * { box-sizing: border-box; }
-    html { background: var(--bg); }
+    html { background: var(--background); }
     body {
       min-width: 320px;
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--background);
+      color: var(--ink);
+      font: 14px/1.43 Roboto, Helvetica, Arial, sans-serif;
     }
+    button, select { font: inherit; }
     a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    button, select { font: inherit; }
-    button { color: inherit; }
 
-    .navbar {
+    .topbar {
       display: flex;
-      min-height: 48px;
+      min-height: 64px;
       align-items: center;
-      gap: 18px;
-      padding: 0 28px;
-      border-bottom: 1px solid #303030;
-      background: linear-gradient(326deg, rgba(42, 42, 42, .9), rgba(45, 45, 45, .9));
-      box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
+      gap: 25px;
+      padding: 0 31px;
+      background: var(--paper);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .14);
     }
-    .nav-group { display: flex; align-items: center; gap: 23px; }
-    .nav-group:last-child { margin-left: auto; gap: 18px; }
-    .nav-item { color: var(--link); font-size: 14px; white-space: nowrap; }
-    .nav-brand { font-weight: 700; }
-    .nav-icon {
-      display: grid;
-      width: 28px;
-      height: 28px;
-      place-items: center;
-      border: 1px solid transparent;
-      border-radius: 50%;
-      color: var(--text);
-      font-size: 15px;
+    .topbar a { font-size: 16px; font-weight: 500; white-space: nowrap; }
+    .topbar .brand { font-weight: 700; }
+    .topbar .right { display: flex; align-items: center; gap: 24px; margin-left: auto; }
+    .topbar .icon { display: grid; width: 26px; height: 26px; place-items: center; color: var(--ink); font-size: 18px; }
+    .sign-in {
+      padding: 8px 19px;
+      border: 1px solid rgba(25, 118, 210, .45);
+      border-radius: 4px;
+      background: #1976d2;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .24);
+      color: white !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      letter-spacing: .03em;
+      text-transform: uppercase;
     }
-    .nav-icon:hover { border-color: var(--border); text-decoration: none; }
 
-    .page { max-width: 1260px; margin: 0 auto; padding: 25px 26px 48px; }
-    .page-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 24px;
-      margin: 0 0 20px;
-    }
-    h1 {
-      margin: 0 0 5px;
-      font-size: 30px;
-      font-weight: 400;
-      letter-spacing: -.2px;
-      line-height: 1.2;
-    }
-    .repo-context { display: flex; flex-wrap: wrap; gap: 11px; align-items: center; font-size: 13px; }
-    .repo-context .divider { color: #666; }
-    .tenure { color: var(--muted); }
-    .range-control { position: relative; min-width: 146px; }
+    .page { max-width: 1500px; margin: 0 auto; padding: 29px 30px 56px; }
+    .page-header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; }
+    h1 { margin: 0 0 4px; font-size: 30px; font-weight: 400; line-height: 1.2; }
+    .repo-context { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; color: var(--muted); font-size: 14px; }
+    .range-control { position: relative; min-width: 132px; padding-top: 6px; }
     .range-control label {
       position: absolute;
       z-index: 1;
-      top: -8px;
-      left: 10px;
-      padding: 0 4px;
-      background: var(--bg);
+      top: 0;
+      left: 9px;
+      padding: 0 3px;
+      background: var(--background);
       color: var(--muted);
       font-size: 11px;
-      letter-spacing: .02em;
     }
     .range-control select {
       width: 100%;
-      padding: 9px 30px 9px 12px;
-      border: 1px solid var(--border);
+      padding: 8px 30px 8px 12px;
+      border: 1px solid rgba(0, 0, 0, .56);
       border-radius: 4px;
-      outline: none;
-      background: var(--surface);
-      color: var(--text);
-      cursor: pointer;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 16px;
     }
 
-    .surface {
-      overflow: hidden;
-      margin: 14px 0;
-      border: 1px solid var(--border-soft);
+    .panel {
+      margin-top: 26px;
+      border: 1px solid rgba(0, 0, 0, .04);
       border-radius: 4px;
-      background: var(--surface);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, .34);
+      background: var(--paper);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .18);
     }
-    .accordion-summary {
+    .readiness-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 20px 16px 16px;
+      cursor: pointer;
+    }
+    .readiness-heading { display: grid; gap: 8px; }
+    .panel h2 { margin: 0; font-size: 20px; font-weight: 400; }
+    .details-button {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 26px;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border: 1px solid rgba(25, 118, 210, .55);
+      border-radius: 14px;
+      background: var(--link);
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .details-button .arrow { display: inline-block; font-size: 18px; line-height: 12px; transition: transform .2s; }
+    .readiness-header[aria-expanded="false"] .details-button { background: transparent; color: var(--link); }
+    .readiness-header[aria-expanded="false"] .arrow { transform: rotate(-90deg); }
+    .chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .chip {
+      display: inline-flex;
+      min-height: 24px;
+      align-items: center;
+      padding: 2px 9px;
+      border: 1px solid currentColor;
+      border-radius: 13px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .chip.success { color: var(--success); }
+    .chip.neutral { color: var(--muted); }
+    .chip.error { color: var(--error); }
+    .readiness-content { padding: 0 16px 16px; }
+    .readiness-content[hidden] { display: none; }
+    .explanation { max-width: 1050px; margin: 0 0 14px; color: var(--muted); font-size: 12px; }
+
+    .criteria-wrap { overflow-x: auto; }
+    .criteria { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 14px; }
+    .criteria th, .criteria td { padding: 10px 16px; border-bottom: 1px solid var(--line); }
+    .criteria th { color: var(--ink); font-weight: 500; text-align: left; }
+    .criteria th:nth-child(n+2), .criteria td:nth-child(n+2) { text-align: right; }
+    .criteria tbody tr:last-child td { border-bottom: 0; }
+    .criteria .target { color: var(--muted); }
+    .criteria .good { color: var(--success); font-weight: 600; }
+    .criteria .bad { color: var(--error); font-weight: 600; }
+    .criteria .na { color: var(--faint); }
+
+    .history { margin-top: 23px; overflow: hidden; }
+    .history-summary {
       display: flex;
       width: 100%;
-      min-height: 62px;
+      min-height: 58px;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
-      padding: 13px 18px;
+      gap: 16px;
+      padding: 0 16px;
       border: 0;
-      background: transparent;
-      color: var(--text);
+      background: var(--paper);
+      color: var(--ink);
       cursor: pointer;
       text-align: left;
     }
-    .accordion-summary:hover { background: rgba(255, 255, 255, .025); }
-    .accordion-title { font-size: 16px; font-weight: 500; }
-    .accordion-right { display: flex; align-items: center; gap: 12px; }
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      min-height: 24px;
-      padding: 2px 9px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      color: #d1d1d1;
-      font-size: 12px;
-      font-weight: 500;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
-    .chip.good { border-color: rgba(102, 187, 106, .8); color: #9de4a1; }
-    .chip.risk { border-color: rgba(255, 152, 0, .8); color: #ffc56a; }
-    .chevron {
-      display: grid;
-      width: 28px;
-      height: 28px;
-      place-items: center;
-      border-radius: 50%;
-      color: var(--muted);
-      font-size: 21px;
-      line-height: 1;
-      transition: transform .16s ease, background .16s ease;
-    }
-    .accordion-summary:hover .chevron { background: rgba(255, 255, 255, .08); }
-    .accordion-summary[aria-expanded="true"] .chevron { transform: rotate(180deg); }
-    .accordion-content { padding: 0 18px 18px; border-top: 1px solid var(--border-soft); }
-    .accordion-content[hidden] { display: none; }
+    .history-summary:hover { background: #fafafa; }
+    .history-right { display: flex; align-items: center; gap: 8px; }
+    .history-chevron { color: var(--muted); font-size: 24px; transition: transform .2s; }
+    .history-summary[aria-expanded="true"] .history-chevron { transform: rotate(180deg); }
+    .history-content { border-top: 1px solid var(--line); padding: 16px; }
+    .history-content[hidden] { display: none; }
+    .history-content p { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
+    .timeline { margin: 0; padding: 0; list-style: none; }
+    .timeline li { position: relative; display: grid; grid-template-columns: 22px 1fr; gap: 8px; min-height: 72px; }
+    .timeline li:not(:last-child)::before { position: absolute; top: 12px; bottom: 0; left: 5px; width: 1px; background: var(--line); content: ""; }
+    .timeline-dot { z-index: 1; width: 11px; height: 11px; margin-top: 4px; border-radius: 50%; background: var(--link); }
+    .timeline time, .timeline small { display: block; color: var(--muted); font-size: 12px; }
+    .timeline strong { display: block; margin: 3px 0; font-size: 14px; }
 
-    .readiness-row {
-      display: grid;
-      grid-template-columns: 1.2fr repeat(3, minmax(125px, .65fr));
-      gap: 0;
-      margin-top: 15px;
-      overflow: hidden;
-      border: 1px solid var(--border-soft);
-      border-radius: 4px;
-      background: #272727;
-    }
-    .readiness-cell { min-height: 72px; padding: 12px 14px; border-right: 1px solid var(--border-soft); }
-    .readiness-cell:last-child { border-right: 0; }
-    .readiness-label { display: block; color: var(--muted); font-size: 12px; }
-    .readiness-value { display: block; margin-top: 5px; font-size: 18px; font-weight: 600; }
-    .readiness-value.good { color: var(--green); }
-    .readiness-caption { margin: 2px 0 0; color: var(--faint); font-size: 11px; }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; margin-top: 23px; }
+    .metric { min-height: 108px; padding: 17px 14px; border: 1px solid rgba(0, 0, 0, .06); border-radius: 4px; background: var(--paper); box-shadow: 0 1px 3px rgba(0, 0, 0, .18); text-align: center; }
+    .metric.pass { border-top: 3px solid var(--warning); }
+    .metric.failures { border-top: 3px solid var(--error); }
+    .metric-label, .metric-note { display: block; color: var(--muted); font-size: 12px; }
+    .metric-value { display: block; margin: 3px 0; color: #303030; font-size: 23px; font-weight: 600; }
+    .metric.pass .metric-value { color: var(--warning); }
+    .metric.failures .metric-value { color: var(--error); }
 
-    .history-intro {
-      max-width: 950px;
-      margin: 15px 0 18px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .history-intro strong { color: #d6d6d6; font-weight: 600; }
-    .history-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 272px;
-      gap: 22px;
-      align-items: start;
-    }
-    .timeline {
-      position: relative;
-      margin: 0;
-      padding: 2px 0 2px 34px;
-      list-style: none;
-    }
-    .timeline::before {
-      position: absolute;
-      top: 12px;
-      bottom: 14px;
-      left: 9px;
-      width: 1px;
-      background: #5a5a5a;
-      content: "";
-    }
-    .timeline-item { position: relative; min-height: 68px; padding: 0 0 17px; }
-    .timeline-item:last-child { padding-bottom: 0; }
-    .timeline-marker {
-      position: absolute;
-      top: 6px;
-      left: -30px;
-      width: 11px;
-      height: 11px;
-      border: 2px solid var(--blue);
-      border-radius: 50%;
-      background: var(--surface);
-    }
-    .timeline-item.current .timeline-marker {
-      border-color: var(--purple);
-      background: var(--purple);
-      box-shadow: 0 0 0 4px rgba(179, 136, 255, .17);
-    }
-    .timeline-time { display: block; color: var(--muted); font-size: 12px; }
-    .timeline-change { display: block; margin-top: 2px; color: var(--text); font-size: 14px; font-weight: 600; }
-    .timeline-source { display: block; margin-top: 2px; color: var(--faint); font-size: 12px; }
-    .audit-note {
-      border: 1px solid var(--border-soft);
-      border-radius: 4px;
-      padding: 15px;
-      background: #262626;
-    }
-    .audit-eyebrow { margin: 0 0 7px; color: #b3d5f6; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-    .audit-note h2 { margin: 0; font-size: 15px; font-weight: 500; }
-    .audit-note p { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
-    .audit-note ul { margin: 12px 0 0; padding: 0; list-style: none; }
-    .audit-note li { display: flex; gap: 8px; align-items: flex-start; padding: 7px 0; border-top: 1px solid var(--border-soft); color: var(--muted); font-size: 12px; }
-    .audit-note li::before { color: var(--blue); content: "•"; }
+    .submetrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 13px; margin-top: 13px; }
+    .submetric { min-height: 109px; padding: 17px 12px; border: 1px solid rgba(0, 0, 0, .06); border-radius: 4px; background: var(--paper); box-shadow: 0 1px 3px rgba(0, 0, 0, .18); text-align: center; }
+    .submetric.good { border-top: 3px solid var(--success); }
+    .submetric strong { display: block; margin: 4px 0; color: #303030; font-size: 21px; }
+    .submetric.good strong { color: var(--success); }
 
-    .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0 16px; }
-    .metric {
-      min-height: 105px;
-      padding: 14px;
-      border: 1px solid var(--border-soft);
-      border-radius: 4px;
-      background: var(--surface);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, .24);
-      text-align: center;
+    .matrix-help { margin: 22px 0 8px; color: var(--muted); font-size: 12px; }
+    .matrix-shell { overflow-x: auto; }
+    .matrix { width: 100%; min-width: 1030px; border-collapse: collapse; font-size: 13px; }
+    .matrix th { height: 106px; padding: 0 7px 7px; border-bottom: 1px solid var(--line); color: var(--ink); font-weight: 600; text-align: left; vertical-align: bottom; }
+    .matrix th.job { width: 32px; padding: 0 4px 8px; text-align: center; }
+    .matrix th.job span { display: inline-block; transform: translate(1px, 24px) rotate(315deg); transform-origin: bottom left; color: var(--muted); font-size: 10px; font-weight: 400; white-space: nowrap; }
+    .matrix td { padding: 5px 7px; white-space: nowrap; }
+    .matrix tbody tr:hover { background: rgba(25, 118, 210, .04); }
+    .matrix .time { color: var(--muted); }
+    .matrix .sha { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .matrix .commit { max-width: 245px; overflow: hidden; text-overflow: ellipsis; }
+    .cell { width: 30px; padding: 4px 1px !important; color: var(--success); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 15px; font-weight: 700; text-align: center; }
+    .cell.fail { color: var(--error); }
+    .cell.missing { color: var(--faint); }
+    .footer { margin: 16px 0 0; color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 900px) {
+      .topbar { gap: 16px; padding: 0 16px; }
+      .topbar .optional { display: none; }
+      .page { padding: 27px 16px 40px; }
+      .submetrics { grid-template-columns: repeat(3, 1fr); }
     }
-    .metric.rate { border-top: 3px solid var(--orange); }
-    .metric.failures { border-top: 3px solid var(--red); }
-    .metric-label { display: block; color: var(--muted); font-size: 12px; }
-    .metric-value { display: block; margin: 3px 0; font-size: 24px; font-weight: 650; }
-    .metric-value.warn { color: var(--orange); }
-    .metric-value.bad { color: var(--red); }
-    .metric-note { display: block; color: var(--faint); font-size: 11px; }
-
-    .matrix-help { margin: 0 0 9px; color: var(--muted); font-size: 12px; }
-    .matrix-shell { overflow-x: auto; border: 1px solid var(--border-soft); border-radius: 4px; background: var(--surface); }
-    .matrix { width: 100%; min-width: 940px; border-collapse: collapse; font-size: 12px; }
-    .matrix th { height: 94px; padding: 0 8px 7px; border-bottom: 1px solid var(--border-soft); color: #c7c7c7; font-weight: 600; text-align: left; vertical-align: bottom; white-space: nowrap; }
-    .matrix th.job { width: 32px; padding: 0 7px 6px; text-align: center; }
-    .matrix th.job > span { display: inline-block; transform: translate(1px, 18px) rotate(315deg); transform-origin: bottom left; color: var(--muted); font-size: 10px; font-weight: 400; }
-    .matrix td { padding: 6px 8px; border-bottom: 1px solid var(--border-soft); white-space: nowrap; }
-    .matrix tbody tr:last-child td { border-bottom: 0; }
-    .matrix tbody tr:hover { background: var(--surface-hover); }
-    .matrix .commit { max-width: 230px; overflow: hidden; text-overflow: ellipsis; }
-    .cell { width: 32px; padding: 5px 2px !important; color: var(--green); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 15px; font-weight: 700; text-align: center; }
-    .cell.fail { color: var(--red); }
-    .cell.wait { color: #ffc107; }
-    .time { color: var(--muted); }
-    .sha { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
-    .footer-note { margin: 13px 0 0; color: var(--faint); font-size: 12px; }
-
-    @media (max-width: 760px) {
-      .navbar { padding: 0 14px; }
-      .nav-group { gap: 14px; }
-      .nav-group .optional { display: none; }
-      .page { padding: 20px 16px 36px; }
+    @media (max-width: 650px) {
       .page-header { display: block; }
-      .range-control { width: 150px; margin-top: 22px; }
-      .history-grid { grid-template-columns: 1fr; }
-      .metrics { grid-template-columns: 1fr; }
-      .readiness-row { grid-template-columns: 1fr 1fr; }
-      .readiness-cell:nth-child(2) { border-right: 0; }
-      .readiness-cell:nth-child(-n+2) { border-bottom: 1px solid var(--border-soft); }
+      .range-control { width: 140px; margin-top: 24px; }
+      .readiness-header { align-items: flex-start; }
+      .chips { justify-content: flex-start; }
+      .metrics, .submetrics { grid-template-columns: 1fr; }
+      .history-summary { align-items: flex-start; padding-top: 15px; padding-bottom: 15px; }
     }
   </style>
 </head>
 <body>
-  <nav class="navbar" aria-label="PyTorch CI HUD navigation">
-    <div class="nav-group">
-      <a class="nav-item nav-brand" href="oot-hud-mockup-crcr-summary.html">PyTorch CI HUD</a>
-      <a class="nav-item optional" href="#">PyTorch</a>
-      <a class="nav-item optional" href="#">ExecuTorch</a>
-      <a class="nav-item optional" href="#">TorchVision</a>
-      <a class="nav-item optional" href="#">Helion</a>
-      <a class="nav-item" href="oot-hud-mockup-crcr-summary.html">CRCR</a>
-    </div>
-    <div class="nav-group">
-      <a class="nav-item optional" href="#">Help</a>
-      <a class="nav-item optional" href="#">Requests</a>
-      <a class="nav-item optional" href="#">KPIs</a>
-      <a class="nav-item optional" href="#">Benchmarks ▾</a>
-      <a class="nav-item optional" href="#">Metrics ▾</a>
-      <a class="nav-item optional" href="#">Dev Infra ▾</a>
-      <a class="nav-icon" href="#" aria-label="GitHub">◉</a>
-      <a class="nav-icon" href="#" aria-label="Toggle colour mode">◔</a>
+  <nav class="topbar" aria-label="PyTorch CI HUD navigation">
+    <a class="brand" href="oot-hud-mockup-crcr-summary.html">PyTorch CI HUD</a>
+    <a class="optional" href="#">PyTorch</a>
+    <a class="optional" href="#">ExecuTorch</a>
+    <a class="optional" href="#">TorchVision</a>
+    <a class="optional" href="#">Helion</a>
+    <a href="oot-hud-mockup-crcr-summary.html">CRCR</a>
+    <div class="right">
+      <a class="optional" href="#">Help</a>
+      <a class="optional" href="#">Requests</a>
+      <a class="optional" href="#">KPIs</a>
+      <a class="optional" href="#">Benchmarks ▾</a>
+      <a class="optional" href="#">Metrics ▾</a>
+      <a class="optional" href="#">Dev Infra ▾</a>
+      <a class="icon optional" href="#" aria-label="GitHub">◉</a>
+      <a class="icon optional" href="#" aria-label="Toggle color theme">☼</a>
+      <a class="sign-in" href="#">Sign in</a>
     </div>
   </nav>
 
@@ -317,132 +251,119 @@
         <h1>Ascend/pytorch</h1>
         <div class="repo-context">
           <a href="oot-hud-mockup-crcr-summary.html">← Back to CRCR Summary</a>
-          <span class="divider">|</span>
           <a href="https://github.com/Ascend/pytorch">GitHub ↗</a>
-          <span class="divider">|</span>
-          <span class="tenure">L3 since 13 days ago · 87 days of data</span>
+          <span>L3 since 31 days ago · 105 days of data</span>
         </div>
       </div>
       <div class="range-control">
         <label for="range">Time Range</label>
         <select id="range" aria-label="Time range">
           <option>Last 24 hours</option>
-          <option>Last 7 days</option>
+          <option selected>Last 7 days</option>
           <option>Last 14 days</option>
-          <option selected>Last 30 days</option>
+          <option>Last 30 days</option>
+          <option>Last 90 days</option>
         </select>
       </div>
     </header>
 
-    <section class="surface" aria-labelledby="readiness-title">
-      <button class="accordion-summary" type="button" aria-controls="readiness-content" aria-expanded="false">
-        <span class="accordion-title" id="readiness-title">L3 Readiness</span>
-        <span class="accordion-right">
-          <span class="chip good">Promotion: 6/6 met</span>
-          <span class="chip risk">Temporary protection: 1/3 at risk</span>
-          <span class="chevron" aria-hidden="true">⌄</span>
-        </span>
-      </button>
-      <div class="accordion-content" id="readiness-content" hidden>
-        <p class="history-intro">Promotion uses the fixed 14-day window. Temporary protection is a separate 7-day health evaluation.</p>
-        <div class="readiness-row">
-          <div class="readiness-cell"><span class="readiness-label">Current configured level</span><strong class="readiness-value good">L3</strong><p class="readiness-caption">from the allowlist</p></div>
-          <div class="readiness-cell"><span class="readiness-label">Time at L2</span><strong class="readiness-value">88 days</strong><p class="readiness-caption">target ≥ 1 month</p></div>
-          <div class="readiness-cell"><span class="readiness-label">Job pass rate</span><strong class="readiness-value good">97.4%</strong><p class="readiness-caption">target ≥ 90%</p></div>
-          <div class="readiness-cell"><span class="readiness-label">Timeout rate</span><strong class="readiness-value">0.1%</strong><p class="readiness-caption">target &lt; 1%</p></div>
+    <section class="panel" aria-labelledby="readiness-title">
+      <div class="readiness-header" id="readiness-toggle" role="button" tabindex="0" aria-controls="readiness-content" aria-expanded="true">
+        <div class="readiness-heading">
+          <h2 id="readiness-title">L3 Readiness</h2>
+          <span class="details-button" aria-hidden="true">Hide details <span class="arrow">⌄</span></span>
+        </div>
+        <div class="chips" aria-label="L3 readiness summary">
+          <span class="chip success">Protection clear</span>
+          <span class="chip success">Promotion: 6/6 met</span>
+          <span class="chip neutral">Demotion: 0/3 at risk</span>
+        </div>
+      </div>
+      <div class="readiness-content" id="readiness-content">
+        <p class="explanation">Promotion is evaluated over the last 14 days, demotion over the last 7 days. A failed demotion criterion moves an L3 backend to the separate temporary-protection section on the CRCR summary; it remains configured as L3 until an allowlist change is merged.</p>
+        <div class="criteria-wrap">
+          <table class="criteria" aria-label="L3 promotion and demotion criteria">
+            <thead>
+              <tr><th>Criterion</th><th>Target</th><th>Promotion (14d)</th><th>Demotion (7d)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Time at L2</td><td class="target">≥ 1 month</td><td class="good">105 days</td><td class="na">n/a</td></tr>
+              <tr><td>End-to-End Time (P50)</td><td class="target">&lt; 3 h</td><td class="good">55m 3s</td><td>48m 19s</td></tr>
+              <tr><td>Overrun Rate</td><td class="target">&lt; 1% of jobs over 3h</td><td class="good">0.0%</td><td class="na">n/a</td></tr>
+              <tr><td>Avg Queue Time</td><td class="target">&lt; 30 min</td><td class="good">23s</td><td class="na">n/a</td></tr>
+              <tr><td>Timeout Rate</td><td class="target">&lt; 1%</td><td class="good">0.0%</td><td>0.0%</td></tr>
+              <tr><td>Job Pass Rate</td><td class="target">≥ 90%</td><td class="good">97.2%</td><td>97.8%</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
-    <section class="surface" aria-labelledby="history-title">
-      <button class="accordion-summary" type="button" aria-controls="history-content" aria-expanded="true">
-        <span class="accordion-title" id="history-title">Observed Configured-Level History</span>
-        <span class="accordion-right">
-          <span class="chip">4 observed configured-level events</span>
-          <span class="chevron" aria-hidden="true">⌄</span>
-        </span>
+    <section class="panel history" aria-labelledby="history-title">
+      <button class="history-summary" id="history-toggle" type="button" aria-controls="history-content" aria-expanded="false">
+        <h2 id="history-title">Observed Configured-Level History</h2>
+        <span class="history-right"><span class="chip neutral">2 observed configured-level events</span><span class="history-chevron">⌄</span></span>
       </button>
-      <div class="accordion-content" id="history-content">
-        <p class="history-intro">
-          Shows configured levels observed when CRCR dispatches work. The separate <strong>temporary-protection</strong> state above is a rolling health evaluation, not a level change: an L3 backend stays L3 until an allowlist change is merged.
-        </p>
-        <div class="history-grid">
-          <ol class="timeline" aria-label="Observed configured-level timeline">
-            <li class="timeline-item">
-              <span class="timeline-marker" aria-hidden="true"></span>
-              <time class="timeline-time" datetime="2026-06-03T10:24:00Z">Jun 3, 2026, 10:24 AM</time>
-              <strong class="timeline-change">L1 → L2</strong>
-              <span class="timeline-source">Observed configured level in CRCR dispatch records</span>
-            </li>
-            <li class="timeline-item">
-              <span class="timeline-marker" aria-hidden="true"></span>
-              <time class="timeline-time" datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time>
-              <strong class="timeline-change">L2 → L3</strong>
-              <span class="timeline-source">Observed configured level in CRCR dispatch records</span>
-            </li>
-            <li class="timeline-item">
-              <span class="timeline-marker" aria-hidden="true"></span>
-              <time class="timeline-time" datetime="2026-08-28T11:42:00Z">Aug 28, 2026, 11:42 AM</time>
-              <strong class="timeline-change">L3 → L2</strong>
-              <span class="timeline-source">Observed configured level in CRCR dispatch records</span>
-            </li>
-            <li class="timeline-item current">
-              <span class="timeline-marker" aria-hidden="true"></span>
-              <time class="timeline-time" datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time>
-              <strong class="timeline-change">L2 → L3</strong>
-              <span class="timeline-source">Observed configured level in CRCR dispatch records</span>
-            </li>
-          </ol>
-          <aside class="audit-note">
-            <p class="audit-eyebrow">What this panel proves</p>
-            <h2>Observed configuration, not an audit ledger</h2>
-            <p>The HUD can report only what it sees in retained dispatch records.</p>
-            <ul>
-              <li>It does not infer why a level changed.</li>
-              <li>Temporary protection is not recorded as a level transition.</li>
-              <li>Persistent PR links and decision criteria need a dedicated audit ledger.</li>
-            </ul>
-          </aside>
-        </div>
+      <div class="history-content" id="history-content" hidden>
+        <p>Shows configured levels observed when CRCR dispatches work. The separate temporary-protection state on the CRCR summary is a rolling health evaluation, not a level change: an L3 backend stays L3 until an allowlist change is merged. Persistent PR links, decision criteria, and protection episodes require a dedicated audit ledger.</p>
+        <ol class="timeline">
+          <li><span class="timeline-dot"></span><div><time datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time><strong>L2 → L3</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
+          <li><span class="timeline-dot"></span><div><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L1 → L2</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
+        </ol>
       </div>
     </section>
 
-    <section class="metrics" aria-label="PR dashboard statistics">
-      <article class="metric rate"><span class="metric-label">Pass Rate</span><strong class="metric-value warn">97.4%</strong><span class="metric-note">2711 / 2782 jobs</span></article>
-      <article class="metric"><span class="metric-label">Total PRs</span><strong class="metric-value">536</strong><span class="metric-note">unique PRs tested</span></article>
-      <article class="metric failures"><span class="metric-label">Failures</span><strong class="metric-value bad">67</strong><span class="metric-note">+ 4 timed out</span></article>
+    <section class="metrics" aria-label="PR dashboard metrics">
+      <article class="metric pass"><span class="metric-label">Pass Rate</span><strong class="metric-value">97.2%</strong><span class="metric-note">1461/1503 jobs</span></article>
+      <article class="metric"><span class="metric-label">Total PRs</span><strong class="metric-value">270</strong><span class="metric-note">unique PRs tested</span></article>
+      <article class="metric failures"><span class="metric-label">Failures</span><strong class="metric-value">42</strong><span class="metric-note">no jobs timed out</span></article>
+    </section>
+    <section class="submetrics" aria-label="PR timing metrics">
+      <article class="submetric"><span class="metric-label">Avg Queue Time</span><strong>23.0s</strong><span class="metric-note">dispatch to start</span></article>
+      <article class="submetric"><span class="metric-label">Avg Execution Time</span><strong>9.7m</strong><span class="metric-note">start to completion</span></article>
+      <article class="submetric good"><span class="metric-label">Overrun Rate ⓘ</span><strong>0.0%</strong><span class="metric-note">max: 56.8m · p95: 31.4m</span></article>
+      <article class="submetric"><span class="metric-label">End-to-End Time (P50) ⓘ</span><strong>55.3m</strong><span class="metric-note">p95: 1.3h</span></article>
+      <article class="submetric"><span class="metric-label">Timeout Rate</span><strong>0.0%</strong><span class="metric-note">0 timed out / 1503 jobs</span></article>
     </section>
 
-    <p class="matrix-help">Rows = PyTorch PRs (50 per page), columns = downstream CI jobs. Click a cell to pin its tooltip, click a column header to highlight the column, or click a row to highlight it.</p>
+    <p class="matrix-help">Rows = PyTorch PRs (50 per page), columns = downstream CI jobs. Click a cell to pin its tooltip, click a column header to highlight the column, or click a row to highlight it. Press Escape to dismiss.</p>
     <div class="matrix-shell">
       <table class="matrix" aria-label="CRCR pull request result matrix">
-        <thead>
-          <tr>
-            <th>Time</th><th>SHA</th><th>Commit</th><th>PR</th><th>Author</th>
-            <th class="job"><span>build</span></th><th class="job"><span>test / cpu</span></th><th class="job"><span>test / sgpu</span></th><th class="job"><span>test / distributed</span></th><th class="job"><span>lint</span></th>
-          </tr>
-        </thead>
+        <thead><tr><th>Time</th><th>SHA</th><th>Commit</th><th>PR</th><th>Author</th><th class="job"><span>linux-aarch64-8.0-a3-0001-2-001</span></th><th class="job"><span>linux-aarch64-8.0-a3-0001-2-001 / build</span></th><th class="job"><span>linux-aarch64-8.0-a3-0001-2-001 / test</span></th><th class="job"><span>linux-aarch64-8.0-a3-0001-2-001 / test (gpu)</span></th><th class="job"><span>linux-aarch64-8.0-a3-0001-2-001 / nightly</span></th></tr></thead>
         <tbody>
-          <tr><td class="time">18m ago</td><td class="sha"><a href="#">a42f18c</a></td><td class="commit"><a href="#">[inductor] Improve fusion for dynamic shapes</a></td><td><a href="#">#198809</a></td><td><a href="#">laithsakka</a></td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td></tr>
-          <tr><td class="time">31m ago</td><td class="sha"><a href="#">d2f91ea</a></td><td class="commit"><a href="#">[distributed] Reuse workers for DTensor</a></td><td><a href="#">#199791</a></td><td><a href="#">d4lk3</a></td><td class="cell">O</td><td class="cell">O</td><td class="cell fail">X</td><td class="cell">O</td><td class="cell">O</td></tr>
-          <tr><td class="time">52m ago</td><td class="sha"><a href="#">0bc2656</a></td><td class="commit"><a href="#">[CDP][CUDA] Remove stale build target</a></td><td><a href="#">#199792</a></td><td><a href="#">nWElida</a></td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td><td class="cell wait">?</td><td class="cell">O</td></tr>
-          <tr><td class="time">1h ago</td><td class="sha"><a href="#">a47564c</a></td><td class="commit"><a href="#">[FSDP] Reduce testParityWithDDP CPU duration</a></td><td><a href="#">#199769</a></td><td><a href="#">d4lk3</a></td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td></tr>
-          <tr><td class="time">2h ago</td><td class="sha"><a href="#">ef166fb</a></td><td class="commit"><a href="#">[Rel-land] Allow horizontal fusions</a></td><td><a href="#">#199701</a></td><td><a href="#">ezyang</a></td><td class="cell">O</td><td class="cell fail">X</td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td></tr>
+          <tr><td class="time">8:56 pm</td><td class="sha"><a href="#">fdf6958</a></td><td class="commit"><a href="#">[MPS] Fix precision loss in complex sqrt</a></td><td><a href="#">#200734</a></td><td><a href="#">malfet</a></td><td class="cell missing">–</td><td class="cell missing">–</td><td class="cell missing">–</td><td class="cell">O</td><td class="cell">O</td></tr>
+          <tr><td class="time">8:13 pm</td><td class="sha"><a href="#">eb26677</a></td><td class="commit"><a href="#">[Stable-ABI] Add torch::stable::masked_select</a></td><td><a href="#">#198048</a></td><td><a href="#">adabeyta</a></td><td class="cell missing">–</td><td class="cell missing">–</td><td class="cell missing">–</td><td class="cell">O</td><td class="cell">O</td></tr>
+          <tr><td class="time">8:01 pm</td><td class="sha"><a href="#">5b90d4b</a></td><td class="commit"><a href="#">[TEST] xfail some flex-flash tests on sm80</a></td><td><a href="#">#200439</a></td><td><a href="#">eqy</a></td><td class="cell missing">–</td><td class="cell missing">–</td><td class="cell missing">–</td><td class="cell">O</td><td class="cell">O</td></tr>
+          <tr><td class="time">7:26 pm</td><td class="sha"><a href="#">ad8e0c3</a></td><td class="commit"><a href="#">[CUDA] Migrate UVA memcpy to Python</a></td><td><a href="#">#199639</a></td><td><a href="#">karthiskai</a></td><td class="cell missing">–</td><td class="cell fail">X</td><td class="cell missing">–</td><td class="cell">O</td><td class="cell">O</td></tr>
+          <tr><td class="time">6:11 pm</td><td class="sha"><a href="#">01af4fa</a></td><td class="commit"><a href="#">reland [inductor-perf] allow fusion into templates</a></td><td><a href="#">#200591</a></td><td><a href="#">laithsakka</a></td><td class="cell missing">–</td><td class="cell missing">–</td><td class="cell">O</td><td class="cell">O</td><td class="cell">O</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="footer-note">Static mockup based on the CRCR per-repository dashboard proposed in PR #8894. Values are illustrative.</p>
+    <p class="footer">Static mockup aligned with the CRCR per-repository dashboard in test-infra. The displayed measurements and events are illustrative.</p>
   </main>
 
   <script>
-    for (const summary of document.querySelectorAll(".accordion-summary")) {
-      summary.addEventListener("click", () => {
-        const panel = document.getElementById(summary.getAttribute("aria-controls"));
-        const expanded = summary.getAttribute("aria-expanded") === "true";
-        summary.setAttribute("aria-expanded", String(!expanded));
-        panel.hidden = expanded;
-      });
-    }
+    const readinessToggle = document.getElementById("readiness-toggle");
+    const readinessContent = document.getElementById("readiness-content");
+    const detailsButton = readinessToggle.querySelector(".details-button");
+    const updateReadiness = () => {
+      const expanded = readinessToggle.getAttribute("aria-expanded") === "true";
+      readinessToggle.setAttribute("aria-expanded", String(!expanded));
+      readinessContent.hidden = expanded;
+      detailsButton.innerHTML = `${expanded ? "Details" : "Hide details"} <span class="arrow">⌄</span>`;
+    };
+    readinessToggle.addEventListener("click", updateReadiness);
+    readinessToggle.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); updateReadiness(); }
+    });
+
+    const historyToggle = document.getElementById("history-toggle");
+    const historyContent = document.getElementById("history-content");
+    historyToggle.addEventListener("click", () => {
+      const expanded = historyToggle.getAttribute("aria-expanded") === "true";
+      historyToggle.setAttribute("aria-expanded", String(!expanded));
+      historyContent.hidden = expanded;
+    });
   </script>
 </body>
 </html>
