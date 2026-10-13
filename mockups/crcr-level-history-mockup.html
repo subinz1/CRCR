@@ -274,9 +274,9 @@
           <span class="details-button" aria-hidden="true">Hide details <span class="arrow">⌄</span></span>
         </div>
         <div class="chips" aria-label="L3 readiness summary">
-          <span class="chip success">Protection clear</span>
+          <span class="chip error">Temporary protection active</span>
           <span class="chip success">Promotion: 6/6 met</span>
-          <span class="chip neutral">Demotion: 0/3 at risk</span>
+          <span class="chip error">Demotion: 1/3 at risk</span>
         </div>
       </div>
       <div class="readiness-content" id="readiness-content">
@@ -288,7 +288,7 @@
             </thead>
             <tbody>
               <tr><td>Time at L2</td><td class="target">≥ 1 month</td><td class="good">105 days</td><td class="na">n/a</td></tr>
-              <tr><td>End-to-End Time (P50)</td><td class="target">&lt; 3 h</td><td class="good">55m 3s</td><td>48m 19s</td></tr>
+              <tr><td>End-to-End Time (P50)</td><td class="target">&lt; 3 h</td><td class="good">55m 3s</td><td class="bad">3h 18m</td></tr>
               <tr><td>Overrun Rate</td><td class="target">&lt; 1% of jobs over 3h</td><td class="good">0.0%</td><td class="na">n/a</td></tr>
               <tr><td>Avg Queue Time</td><td class="target">&lt; 30 min</td><td class="good">23s</td><td class="na">n/a</td></tr>
               <tr><td>Timeout Rate</td><td class="target">&lt; 1%</td><td class="good">0.0%</td><td>0.0%</td></tr>
@@ -322,7 +322,7 @@
       <article class="submetric"><span class="metric-label">Avg Queue Time</span><strong>23.0s</strong><span class="metric-note">dispatch to start</span></article>
       <article class="submetric"><span class="metric-label">Avg Execution Time</span><strong>9.7m</strong><span class="metric-note">start to completion</span></article>
       <article class="submetric good"><span class="metric-label">Overrun Rate ⓘ</span><strong>0.0%</strong><span class="metric-note">max: 56.8m · p95: 31.4m</span></article>
-      <article class="submetric"><span class="metric-label">End-to-End Time (P50) ⓘ</span><strong>55.3m</strong><span class="metric-note">p95: 1.3h</span></article>
+      <article class="submetric"><span class="metric-label">End-to-End Time (P50) ⓘ</span><strong>3.3h</strong><span class="metric-note">p95: 4.6h</span></article>
       <article class="submetric"><span class="metric-label">Timeout Rate</span><strong>0.0%</strong><span class="metric-note">0 timed out / 1503 jobs</span></article>
     </section>
 
