@@ -192,12 +192,18 @@
     .timeline li.selected .timeline-dot { margin-left: 9px; }
 
     .audit-card { border: 1px solid var(--line); border-radius: 4px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .08); }
+    .audit-tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--line); }
+    .audit-tab { flex: 0 0 auto; padding: 11px 13px 9px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; }
+    .audit-tab:hover { background: rgba(25, 118, 210, .04); }
+    .audit-tab[aria-selected="true"] { border-bottom-color: var(--link); color: var(--link); font-weight: 600; }
+    .audit-panel[hidden] { display: none; }
     .audit-card-header { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; padding: 15px 16px 12px; border-bottom: 1px solid var(--line); }
     .audit-eyebrow { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
     .audit-card h3 { margin: 0; font-size: 16px; font-weight: 500; }
     .audit-body { padding: 14px 16px 16px; }
     .audit-reason { margin: 0 0 14px; padding: 10px 11px; border-left: 3px solid var(--error); background: rgba(211, 47, 47, .05); color: var(--ink) !important; font-size: 13px !important; }
     .audit-reason.manual { border-color: var(--link); background: rgba(25, 118, 210, .05); }
+    .audit-reason.success { border-color: var(--success); background: rgba(46, 125, 50, .05); }
     .audit-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 22px; margin: 0 0 15px; }
     .audit-facts div { min-width: 0; }
     .audit-facts dt { color: var(--muted); font-size: 11px; }
@@ -371,30 +377,93 @@
             </li>
           </ol>
 
-          <article class="audit-card" aria-labelledby="audit-title">
-            <header class="audit-card-header">
-              <div><span class="audit-eyebrow">Selected audit record</span><h3 id="audit-title">Manual configured promotion: L2 → L3</h3></div>
-              <span class="chip info">Manual</span>
-            </header>
+          <article class="audit-card" aria-label="Selected audit record details">
+            <div class="audit-tabs" role="tablist" aria-label="Audit record examples">
+              <button class="audit-tab" id="manual-tab" type="button" role="tab" aria-selected="true" aria-controls="manual-panel">Manual promotion</button>
+              <button class="audit-tab" id="demotion-tab" type="button" role="tab" aria-selected="false" aria-controls="demotion-panel">Automated demotion</button>
+              <button class="audit-tab" id="promotion-tab" type="button" role="tab" aria-selected="false" aria-controls="promotion-panel">Automated promotion</button>
+            </div>
+
+            <section class="audit-panel" id="manual-panel" role="tabpanel" aria-labelledby="manual-tab">
+              <header class="audit-card-header">
+                <div><span class="audit-eyebrow">Selected audit record</span><h3>Manual configured promotion: L2 → L3</h3></div>
+                <span class="chip info">Manual</span>
+              </header>
+              <div class="audit-body">
+                <p class="audit-reason manual"><strong>Reason:</strong> Maintainers approved the promotion after a release-readiness review. This decision was not triggered by automated metric thresholds.</p>
+                <dl class="audit-facts">
+                  <div><dt>Decision source</dt><dd>Manual maintainer decision</dd></div>
+                  <div><dt>Approval record</dt><dd><a href="#demo-manual-promote-042">#demo-manual-promote-042 ↗</a></dd></div>
+                  <div><dt>Decision state</dt><dd>Approved and merged</dd></div>
+                  <div><dt>Applied configuration</dt><dd><a href="#demo-config-a42f">a42f18c ↗</a></dd></div>
+                  <div><dt>Recorded by</dt><dd>CRCR configuration audit workflow</dd></div>
+                  <div><dt>Effective at</dt><dd>Oct 12, 2026, 7:10 AM</dd></div>
+                </dl>
+                <table class="audit-table" aria-label="Manual promotion decision record">
+                  <thead><tr><th>Decision input</th><th>Requirement</th><th>Recorded value</th><th>State</th></tr></thead>
+                  <tbody>
+                    <tr><td>Automated policy evaluation</td><td>Optional context</td><td>Not used for this decision</td><td>not applicable</td></tr>
+                    <tr><td>Maintainer justification</td><td>Required for manual changes</td><td>Release-readiness review approved</td><td>recorded</td></tr>
+                    <tr><td>Approval and merge</td><td>Required</td><td>Configuration PR merged</td><td>applied</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="audit-panel" id="demotion-panel" role="tabpanel" aria-labelledby="demotion-tab" hidden>
+              <header class="audit-card-header">
+                <div><span class="audit-eyebrow">Selected audit record</span><h3>Automated configured demotion: L3 → L2</h3></div>
+                <span class="chip error">Applied</span>
+              </header>
+              <div class="audit-body">
+                <p class="audit-reason"><strong>Reason:</strong> The 7-day P50 end-to-end time was 3h 18m, exceeding the &lt; 3h demotion threshold.</p>
+                <dl class="audit-facts">
+                  <div><dt>Evaluation window</dt><dd>Sep 22 – Sep 29, 2026 · 7 days</dd></div>
+                  <div><dt>Bot proposal</dt><dd><a href="#demo-demote-041">#demo-demote-041 ↗</a></dd></div>
+                  <div><dt>Proposal state</dt><dd>Approved and merged</dd></div>
+                  <div><dt>Applied configuration</dt><dd><a href="#demo-config-9f3a">9f3a2c1 ↗</a></dd></div>
+                  <div><dt>Recorded by</dt><dd>CRCR promotion/demotion bot</dd></div>
+                  <div><dt>Effective at</dt><dd>Sep 29, 2026, 1:40 PM</dd></div>
+                </dl>
+                <table class="audit-table" aria-label="Automated demotion evaluation snapshot">
+                  <thead><tr><th>Demotion criterion</th><th>Target</th><th>Observed</th><th>Verdict</th></tr></thead>
+                  <tbody>
+                    <tr><td>End-to-End Time (P50)</td><td>&lt; 3h</td><td class="bad">3h 18m</td><td class="bad">failed</td></tr>
+                    <tr><td>Timeout Rate</td><td>&lt; 1%</td><td>0.0%</td><td>met</td></tr>
+                    <tr><td>Job Pass Rate</td><td>≥ 90%</td><td>97.8%</td><td>met</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="audit-panel" id="promotion-panel" role="tabpanel" aria-labelledby="promotion-tab" hidden>
+              <header class="audit-card-header">
+                <div><span class="audit-eyebrow">Selected audit record</span><h3>Automated configured promotion: L2 → L3</h3></div>
+                <span class="chip success">Applied</span>
+              </header>
+              <div class="audit-body">
+                <p class="audit-reason success"><strong>Reason:</strong> All six promotion criteria qualified across the fixed 14-day evaluation window, so the bot opened a promotion proposal.</p>
+                <dl class="audit-facts">
+                  <div><dt>Evaluation window</dt><dd>Aug 29 – Sep 12, 2026 · 14 days</dd></div>
+                  <div><dt>Bot proposal</dt><dd><a href="#demo-promote-040">#demo-promote-040 ↗</a></dd></div>
+                  <div><dt>Proposal state</dt><dd>Approved and merged</dd></div>
+                  <div><dt>Applied configuration</dt><dd><a href="#demo-config-4de3">4de3b2f ↗</a></dd></div>
+                  <div><dt>Recorded by</dt><dd>CRCR promotion/demotion bot</dd></div>
+                  <div><dt>Effective at</dt><dd>Sep 12, 2026, 8:55 AM</dd></div>
+                </dl>
+                <table class="audit-table" aria-label="Automated promotion evaluation snapshot">
+                  <thead><tr><th>Promotion criterion</th><th>Target</th><th>Observed</th><th>Verdict</th></tr></thead>
+                  <tbody>
+                    <tr><td>Time at L2</td><td>≥ 1 month</td><td>105 days</td><td>met</td></tr>
+                    <tr><td>End-to-End Time (P50)</td><td>&lt; 3h</td><td>55m 3s</td><td>met</td></tr>
+                    <tr><td>Job Pass Rate</td><td>≥ 90%</td><td>97.2%</td><td>met</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
             <div class="audit-body">
-              <p class="audit-reason manual"><strong>Reason:</strong> Maintainers approved the promotion after a release-readiness review. This decision was not triggered by the automated metric thresholds.</p>
-              <dl class="audit-facts">
-                <div><dt>Decision source</dt><dd>Manual maintainer decision</dd></div>
-                <div><dt>Approval record</dt><dd><a href="#demo-manual-promote-042">#demo-manual-promote-042 ↗</a></dd></div>
-                <div><dt>Decision state</dt><dd>Approved and merged</dd></div>
-                <div><dt>Applied configuration</dt><dd><a href="#demo-config-a42f">a42f18c ↗</a></dd></div>
-                <div><dt>Recorded by</dt><dd>CRCR configuration audit workflow</dd></div>
-                <div><dt>Effective at</dt><dd>Oct 12, 2026, 7:10 AM</dd></div>
-              </dl>
-              <table class="audit-table" aria-label="Manual promotion decision record">
-                <thead><tr><th>Decision input</th><th>Requirement</th><th>Recorded value</th><th>State</th></tr></thead>
-                <tbody>
-                  <tr><td>Automated policy evaluation</td><td>Optional context</td><td>Not used for this decision</td><td>not applicable</td></tr>
-                  <tr><td>Maintainer justification</td><td>Required for manual changes</td><td>Release-readiness review approved</td><td>recorded</td></tr>
-                  <tr><td>Approval and merge</td><td>Required</td><td>Configuration PR merged</td><td>applied</td></tr>
-                </tbody>
-              </table>
-              <div class="automation-note"><strong>Automated counterpart:</strong> Bot-created promotion and demotion records use the same audit shape, but preserve the metric snapshot and bot PR that triggered the proposed change.</div>
+              <div class="automation-note"><strong>Automation contract:</strong> Bot-created promotion and demotion records preserve the criterion snapshot and source PR. Manual changes require a maintainer justification and approval record instead.</div>
               <div class="protection-note"><strong>Separate event:</strong> Temporary protection may activate or clear from a later 7-day evaluation without creating another configured-level history entry.</div>
             </div>
           </article>
@@ -452,6 +521,27 @@
       const expanded = historyToggle.getAttribute("aria-expanded") === "true";
       historyToggle.setAttribute("aria-expanded", String(!expanded));
       historyContent.hidden = expanded;
+    });
+
+    const auditTabs = [...document.querySelectorAll(".audit-tab")];
+    const auditPanels = [...document.querySelectorAll(".audit-panel")];
+    const activateAuditTab = (tab) => {
+      for (const candidate of auditTabs) {
+        candidate.setAttribute("aria-selected", String(candidate === tab));
+      }
+      for (const panel of auditPanels) {
+        panel.hidden = panel.id !== tab.getAttribute("aria-controls");
+      }
+    };
+    auditTabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activateAuditTab(tab));
+      tab.addEventListener("keydown", (event) => {
+        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? auditTabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + auditTabs.length) % auditTabs.length;
+        auditTabs[nextIndex].focus();
+        activateAuditTab(auditTabs[nextIndex]);
+      });
     });
   </script>
 </body>
