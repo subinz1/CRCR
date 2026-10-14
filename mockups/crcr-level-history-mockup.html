@@ -173,8 +173,11 @@
     .history-content p { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
     .history-audit-grid { display: grid; grid-template-columns: minmax(300px, .85fr) minmax(0, 1.35fr); gap: 26px; align-items: start; }
     .timeline { margin: 0; padding: 0; list-style: none; }
-    .timeline li { position: relative; display: grid; grid-template-columns: 22px 1fr; gap: 8px; min-height: 72px; }
+    .timeline li { position: relative; min-height: 72px; }
     .timeline li:not(:last-child)::before { position: absolute; top: 12px; bottom: 0; left: 5px; width: 1px; background: var(--line); content: ""; }
+    .timeline-event { position: relative; z-index: 1; display: grid; width: 100%; grid-template-columns: 22px 1fr; gap: 8px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--ink); cursor: pointer; text-align: left; }
+    .timeline-event:hover { background: rgba(25, 118, 210, .04); }
+    .timeline-event:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
     .timeline-dot { z-index: 1; width: 11px; height: 11px; margin-top: 4px; border-radius: 50%; background: var(--link); }
     .timeline-dot.promotion { background: var(--success); }
     .timeline-dot.demotion { background: var(--error); }
@@ -186,17 +189,13 @@
     .event-kind.demotion { color: var(--error); }
     .event-kind.manual { color: var(--link); }
     .event-kind.foundation { color: var(--muted); }
-    .timeline li.selected { margin-left: -9px; padding: 8px 9px 0; border-radius: 4px; background: rgba(211, 47, 47, .05); }
-    .timeline li.selected.manual { background: rgba(25, 118, 210, .05); }
+    .timeline li.selected .timeline-event { margin-left: -9px; width: calc(100% + 9px); padding: 8px 9px; background: rgba(211, 47, 47, .05); }
+    .timeline li.selected.manual .timeline-event { background: rgba(25, 118, 210, .05); }
+    .timeline li.selected.promotion .timeline-event { background: rgba(46, 125, 50, .05); }
     .timeline li.selected::before { left: 14px; }
     .timeline li.selected .timeline-dot { margin-left: 9px; }
 
     .audit-card { border: 1px solid var(--line); border-radius: 4px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .08); }
-    .audit-tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--line); }
-    .audit-tab { flex: 0 0 auto; padding: 11px 13px 9px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; }
-    .audit-tab:hover { background: rgba(25, 118, 210, .04); }
-    .audit-tab[aria-selected="true"] { border-bottom-color: var(--link); color: var(--link); font-weight: 600; }
-    .audit-panel[hidden] { display: none; }
     .audit-card-header { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; padding: 15px 16px 12px; border-bottom: 1px solid var(--line); }
     .audit-eyebrow { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
     .audit-card h3 { margin: 0; font-size: 16px; font-weight: 500; }
@@ -204,6 +203,7 @@
     .audit-reason { margin: 0 0 14px; padding: 10px 11px; border-left: 3px solid var(--error); background: rgba(211, 47, 47, .05); color: var(--ink) !important; font-size: 13px !important; }
     .audit-reason.manual { border-color: var(--link); background: rgba(25, 118, 210, .05); }
     .audit-reason.success { border-color: var(--success); background: rgba(46, 125, 50, .05); }
+    .audit-reason.neutral { border-color: var(--muted); background: rgba(0, 0, 0, .03); }
     .audit-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 22px; margin: 0 0 15px; }
     .audit-facts div { min-width: 0; }
     .audit-facts dt { color: var(--muted); font-size: 11px; }
@@ -352,117 +352,55 @@
         <div class="history-audit-grid">
           <ol class="timeline" aria-label="Configured level event timeline">
             <li class="selected manual">
-              <span class="timeline-dot manual"></span>
-              <div><time datetime="2026-10-12T07:10:00Z">Oct 12, 2026, 7:10 AM</time><strong>L2 → L3</strong><span class="event-kind manual">Manual promotion applied</span><small>Maintainer-authored configured level event</small></div>
+              <button class="timeline-event" type="button" data-record="manual-promotion" aria-pressed="true">
+                <span class="timeline-dot manual"></span>
+                <span><time datetime="2026-10-12T07:10:00Z">Oct 12, 2026, 7:10 AM</time><strong>L2 → L3</strong><span class="event-kind manual">Manual promotion applied</span><small>Maintainer-authored configured level event</small></span>
+              </button>
+            </li>
+            <li class="demotion">
+              <button class="timeline-event" type="button" data-record="sep-demotion" aria-pressed="false">
+                <span class="timeline-dot demotion"></span>
+                <span><time datetime="2026-09-29T13:40:00Z">Sep 29, 2026, 1:40 PM</time><strong>L3 → L2</strong><span class="event-kind demotion">Automated demotion applied</span><small>Bot-created configured level event</small></span>
+              </button>
+            </li>
+            <li class="promotion">
+              <button class="timeline-event" type="button" data-record="sep-promotion" aria-pressed="false">
+                <span class="timeline-dot promotion"></span>
+                <span><time datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Automated promotion applied</span><small>Bot-created configured level event</small></span>
+              </button>
+            </li>
+            <li class="demotion">
+              <button class="timeline-event" type="button" data-record="aug-demotion" aria-pressed="false">
+                <span class="timeline-dot demotion"></span>
+                <span><time datetime="2026-08-28T11:42:00Z">Aug 28, 2026, 11:42 AM</time><strong>L3 → L2</strong><span class="event-kind demotion">Automated demotion applied</span><small>Bot-created configured level event</small></span>
+              </button>
+            </li>
+            <li class="promotion">
+              <button class="timeline-event" type="button" data-record="aug-promotion" aria-pressed="false">
+                <span class="timeline-dot promotion"></span>
+                <span><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Automated promotion applied</span><small>Bot-created configured level event</small></span>
+              </button>
             </li>
             <li>
-              <span class="timeline-dot demotion"></span>
-              <div><time datetime="2026-09-29T13:40:00Z">Sep 29, 2026, 1:40 PM</time><strong>L3 → L2</strong><span class="event-kind demotion">Automated demotion applied</span><small>Bot-created configured level event</small></div>
-            </li>
-            <li>
-              <span class="timeline-dot promotion"></span>
-              <div><time datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Automated promotion applied</span><small>Bot-created configured level event</small></div>
-            </li>
-            <li>
-              <span class="timeline-dot demotion"></span>
-              <div><time datetime="2026-08-28T11:42:00Z">Aug 28, 2026, 11:42 AM</time><strong>L3 → L2</strong><span class="event-kind demotion">Automated demotion applied</span><small>Bot-created configured level event</small></div>
-            </li>
-            <li>
-              <span class="timeline-dot promotion"></span>
-              <div><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Automated promotion applied</span><small>Bot-created configured level event</small></div>
-            </li>
-            <li>
-              <span class="timeline-dot"></span>
-              <div><time datetime="2026-07-07T10:05:00Z">Jul 7, 2026, 10:05 AM</time><strong>L1 → L2</strong><span class="event-kind foundation">Initial level change</span><small>Audit-backed configured level event</small></div>
+              <button class="timeline-event" type="button" data-record="initial-level" aria-pressed="false">
+                <span class="timeline-dot"></span>
+                <span><time datetime="2026-07-07T10:05:00Z">Jul 7, 2026, 10:05 AM</time><strong>L1 → L2</strong><span class="event-kind foundation">Initial level change</span><small>Audit-backed configured level event</small></span>
+              </button>
             </li>
           </ol>
 
-          <article class="audit-card" aria-label="Selected audit record details">
-            <div class="audit-tabs" role="tablist" aria-label="Audit record examples">
-              <button class="audit-tab" id="manual-tab" type="button" role="tab" aria-selected="true" aria-controls="manual-panel">Manual promotion</button>
-              <button class="audit-tab" id="demotion-tab" type="button" role="tab" aria-selected="false" aria-controls="demotion-panel">Automated demotion</button>
-              <button class="audit-tab" id="promotion-tab" type="button" role="tab" aria-selected="false" aria-controls="promotion-panel">Automated promotion</button>
-            </div>
-
-            <section class="audit-panel" id="manual-panel" role="tabpanel" aria-labelledby="manual-tab">
-              <header class="audit-card-header">
-                <div><span class="audit-eyebrow">Selected audit record</span><h3>Manual configured promotion: L2 → L3</h3></div>
-                <span class="chip info">Manual</span>
-              </header>
-              <div class="audit-body">
-                <p class="audit-reason manual"><strong>Reason:</strong> Maintainers approved the promotion after a release-readiness review. This decision was not triggered by automated metric thresholds.</p>
-                <dl class="audit-facts">
-                  <div><dt>Decision source</dt><dd>Manual maintainer decision</dd></div>
-                  <div><dt>Approval record</dt><dd><a href="#demo-manual-promote-042">#demo-manual-promote-042 ↗</a></dd></div>
-                  <div><dt>Decision state</dt><dd>Approved and merged</dd></div>
-                  <div><dt>Applied configuration</dt><dd><a href="#demo-config-a42f">a42f18c ↗</a></dd></div>
-                  <div><dt>Recorded by</dt><dd>CRCR configuration audit workflow</dd></div>
-                  <div><dt>Effective at</dt><dd>Oct 12, 2026, 7:10 AM</dd></div>
-                </dl>
-                <table class="audit-table" aria-label="Manual promotion decision record">
-                  <thead><tr><th>Decision input</th><th>Requirement</th><th>Recorded value</th><th>State</th></tr></thead>
-                  <tbody>
-                    <tr><td>Automated policy evaluation</td><td>Optional context</td><td>Not used for this decision</td><td>not applicable</td></tr>
-                    <tr><td>Maintainer justification</td><td>Required for manual changes</td><td>Release-readiness review approved</td><td>recorded</td></tr>
-                    <tr><td>Approval and merge</td><td>Required</td><td>Configuration PR merged</td><td>applied</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
-
-            <section class="audit-panel" id="demotion-panel" role="tabpanel" aria-labelledby="demotion-tab" hidden>
-              <header class="audit-card-header">
-                <div><span class="audit-eyebrow">Selected audit record</span><h3>Automated configured demotion: L3 → L2</h3></div>
-                <span class="chip error">Applied</span>
-              </header>
-              <div class="audit-body">
-                <p class="audit-reason"><strong>Reason:</strong> The 7-day P50 end-to-end time was 3h 18m, exceeding the &lt; 3h demotion threshold.</p>
-                <dl class="audit-facts">
-                  <div><dt>Evaluation window</dt><dd>Sep 22 – Sep 29, 2026 · 7 days</dd></div>
-                  <div><dt>Bot proposal</dt><dd><a href="#demo-demote-041">#demo-demote-041 ↗</a></dd></div>
-                  <div><dt>Proposal state</dt><dd>Approved and merged</dd></div>
-                  <div><dt>Applied configuration</dt><dd><a href="#demo-config-9f3a">9f3a2c1 ↗</a></dd></div>
-                  <div><dt>Recorded by</dt><dd>CRCR promotion/demotion bot</dd></div>
-                  <div><dt>Effective at</dt><dd>Sep 29, 2026, 1:40 PM</dd></div>
-                </dl>
-                <table class="audit-table" aria-label="Automated demotion evaluation snapshot">
-                  <thead><tr><th>Demotion criterion</th><th>Target</th><th>Observed</th><th>Verdict</th></tr></thead>
-                  <tbody>
-                    <tr><td>End-to-End Time (P50)</td><td>&lt; 3h</td><td class="bad">3h 18m</td><td class="bad">failed</td></tr>
-                    <tr><td>Timeout Rate</td><td>&lt; 1%</td><td>0.0%</td><td>met</td></tr>
-                    <tr><td>Job Pass Rate</td><td>≥ 90%</td><td>97.8%</td><td>met</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
-
-            <section class="audit-panel" id="promotion-panel" role="tabpanel" aria-labelledby="promotion-tab" hidden>
-              <header class="audit-card-header">
-                <div><span class="audit-eyebrow">Selected audit record</span><h3>Automated configured promotion: L2 → L3</h3></div>
-                <span class="chip success">Applied</span>
-              </header>
-              <div class="audit-body">
-                <p class="audit-reason success"><strong>Reason:</strong> All six promotion criteria qualified across the fixed 14-day evaluation window, so the bot opened a promotion proposal.</p>
-                <dl class="audit-facts">
-                  <div><dt>Evaluation window</dt><dd>Aug 29 – Sep 12, 2026 · 14 days</dd></div>
-                  <div><dt>Bot proposal</dt><dd><a href="#demo-promote-040">#demo-promote-040 ↗</a></dd></div>
-                  <div><dt>Proposal state</dt><dd>Approved and merged</dd></div>
-                  <div><dt>Applied configuration</dt><dd><a href="#demo-config-4de3">4de3b2f ↗</a></dd></div>
-                  <div><dt>Recorded by</dt><dd>CRCR promotion/demotion bot</dd></div>
-                  <div><dt>Effective at</dt><dd>Sep 12, 2026, 8:55 AM</dd></div>
-                </dl>
-                <table class="audit-table" aria-label="Automated promotion evaluation snapshot">
-                  <thead><tr><th>Promotion criterion</th><th>Target</th><th>Observed</th><th>Verdict</th></tr></thead>
-                  <tbody>
-                    <tr><td>Time at L2</td><td>≥ 1 month</td><td>105 days</td><td>met</td></tr>
-                    <tr><td>End-to-End Time (P50)</td><td>&lt; 3h</td><td>55m 3s</td><td>met</td></tr>
-                    <tr><td>Job Pass Rate</td><td>≥ 90%</td><td>97.2%</td><td>met</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
-
+          <article class="audit-card" aria-live="polite" aria-label="Selected audit record details">
+            <header class="audit-card-header">
+              <div><span class="audit-eyebrow">Selected audit record</span><h3 id="audit-title">Manual configured promotion: L2 → L3</h3></div>
+              <span class="chip info" id="audit-kind">Manual</span>
+            </header>
             <div class="audit-body">
+              <p class="audit-reason manual" id="audit-reason"><strong>Reason:</strong> Maintainers approved the promotion after a release-readiness review. This decision was not triggered by automated metric thresholds.</p>
+              <dl class="audit-facts" id="audit-facts"></dl>
+              <table class="audit-table" aria-label="Selected audit evaluation snapshot">
+                <thead><tr><th id="audit-criterion-heading">Decision input</th><th>Requirement</th><th>Recorded value</th><th>State</th></tr></thead>
+                <tbody id="audit-rows"></tbody>
+              </table>
               <div class="automation-note"><strong>Automation contract:</strong> Bot-created promotion and demotion records preserve the criterion snapshot and source PR. Manual changes require a maintainer justification and approval record instead.</div>
               <div class="protection-note"><strong>Separate event:</strong> Temporary protection may activate or clear from a later 7-day evaluation without creating another configured-level history entry.</div>
             </div>
@@ -523,26 +461,169 @@
       historyContent.hidden = expanded;
     });
 
-    const auditTabs = [...document.querySelectorAll(".audit-tab")];
-    const auditPanels = [...document.querySelectorAll(".audit-panel")];
-    const activateAuditTab = (tab) => {
-      for (const candidate of auditTabs) {
-        candidate.setAttribute("aria-selected", String(candidate === tab));
-      }
-      for (const panel of auditPanels) {
-        panel.hidden = panel.id !== tab.getAttribute("aria-controls");
-      }
+    const auditRecords = {
+      "manual-promotion": {
+        title: "Manual configured promotion: L2 → L3",
+        kind: "Manual",
+        kindClass: "info",
+        tone: "manual",
+        criterionHeading: "Decision input",
+        reason: "Maintainers approved the promotion after a release-readiness review. This decision was not triggered by automated metric thresholds.",
+        facts: [
+          ["Decision source", "Manual maintainer decision"],
+          ["Approval record", '<a href="#demo-manual-promote-042">#demo-manual-promote-042 ↗</a>'],
+          ["Decision state", "Approved and merged"],
+          ["Applied configuration", '<a href="#demo-config-a42f">a42f18c ↗</a>'],
+          ["Recorded by", "CRCR configuration audit workflow"],
+          ["Effective at", "Oct 12, 2026, 7:10 AM"],
+        ],
+        rows: [
+          ["Automated policy evaluation", "Optional context", "Not used for this decision", "not applicable"],
+          ["Maintainer justification", "Required for manual changes", "Release-readiness review approved", "recorded"],
+          ["Approval and merge", "Required", "Configuration PR merged", "applied"],
+        ],
+      },
+      "sep-demotion": {
+        title: "Automated configured demotion: L3 → L2",
+        kind: "Applied",
+        kindClass: "error",
+        tone: "",
+        criterionHeading: "Demotion criterion",
+        reason: "The 7-day P50 end-to-end time was 3h 18m, exceeding the < 3h demotion threshold.",
+        facts: [
+          ["Evaluation window", "Sep 22 – Sep 29, 2026 · 7 days"],
+          ["Bot proposal", '<a href="#demo-demote-041">#demo-demote-041 ↗</a>'],
+          ["Proposal state", "Approved and merged"],
+          ["Applied configuration", '<a href="#demo-config-9f3a">9f3a2c1 ↗</a>'],
+          ["Recorded by", "CRCR promotion/demotion bot"],
+          ["Effective at", "Sep 29, 2026, 1:40 PM"],
+        ],
+        rows: [
+          ["End-to-End Time (P50)", "< 3h", '<span class="bad">3h 18m</span>', '<span class="bad">failed</span>'],
+          ["Timeout Rate", "< 1%", "0.0%", "met"],
+          ["Job Pass Rate", "≥ 90%", "97.8%", "met"],
+        ],
+      },
+      "sep-promotion": {
+        title: "Automated configured promotion: L2 → L3",
+        kind: "Applied",
+        kindClass: "success",
+        tone: "success",
+        criterionHeading: "Promotion criterion",
+        reason: "All six promotion criteria qualified across the fixed 14-day evaluation window, so the bot opened a promotion proposal.",
+        facts: [
+          ["Evaluation window", "Aug 29 – Sep 12, 2026 · 14 days"],
+          ["Bot proposal", '<a href="#demo-promote-040">#demo-promote-040 ↗</a>'],
+          ["Proposal state", "Approved and merged"],
+          ["Applied configuration", '<a href="#demo-config-4de3">4de3b2f ↗</a>'],
+          ["Recorded by", "CRCR promotion/demotion bot"],
+          ["Effective at", "Sep 12, 2026, 8:55 AM"],
+        ],
+        rows: [
+          ["Time at L2", "≥ 1 month", "105 days", "met"],
+          ["End-to-End Time (P50)", "< 3h", "55m 3s", "met"],
+          ["Job Pass Rate", "≥ 90%", "97.2%", "met"],
+        ],
+      },
+      "aug-demotion": {
+        title: "Automated configured demotion: L3 → L2",
+        kind: "Applied",
+        kindClass: "error",
+        tone: "",
+        criterionHeading: "Demotion criterion",
+        reason: "The 7-day timeout rate was 1.4%, exceeding the < 1% demotion threshold.",
+        facts: [
+          ["Evaluation window", "Aug 21 – Aug 28, 2026 · 7 days"],
+          ["Bot proposal", '<a href="#demo-demote-038">#demo-demote-038 ↗</a>'],
+          ["Proposal state", "Approved and merged"],
+          ["Applied configuration", '<a href="#demo-config-c13e">c13e9f7 ↗</a>'],
+          ["Recorded by", "CRCR promotion/demotion bot"],
+          ["Effective at", "Aug 28, 2026, 11:42 AM"],
+        ],
+        rows: [
+          ["End-to-End Time (P50)", "< 3h", "2h 22m", "met"],
+          ["Timeout Rate", "< 1%", '<span class="bad">1.4%</span>', '<span class="bad">failed</span>'],
+          ["Job Pass Rate", "≥ 90%", "96.1%", "met"],
+        ],
+      },
+      "aug-promotion": {
+        title: "Automated configured promotion: L2 → L3",
+        kind: "Applied",
+        kindClass: "success",
+        tone: "success",
+        criterionHeading: "Promotion criterion",
+        reason: "All six promotion criteria qualified across the fixed 14-day evaluation window, so the bot opened a promotion proposal.",
+        facts: [
+          ["Evaluation window", "Jul 29 – Aug 12, 2026 · 14 days"],
+          ["Bot proposal", '<a href="#demo-promote-037">#demo-promote-037 ↗</a>'],
+          ["Proposal state", "Approved and merged"],
+          ["Applied configuration", '<a href="#demo-config-77a4">77a4d6b ↗</a>'],
+          ["Recorded by", "CRCR promotion/demotion bot"],
+          ["Effective at", "Aug 12, 2026, 9:18 AM"],
+        ],
+        rows: [
+          ["Time at L2", "≥ 1 month", "36 days", "met"],
+          ["End-to-End Time (P50)", "< 3h", "1h 08m", "met"],
+          ["Job Pass Rate", "≥ 90%", "94.8%", "met"],
+        ],
+      },
+      "initial-level": {
+        title: "Initial configured level: L1 → L2",
+        kind: "Initial",
+        kindClass: "neutral",
+        tone: "neutral",
+        criterionHeading: "Onboarding input",
+        reason: "The backend completed callback-only onboarding and maintainers approved its initial L2 configuration.",
+        facts: [
+          ["Decision source", "Initial onboarding review"],
+          ["Approval record", '<a href="#demo-onboard-031">#demo-onboard-031 ↗</a>'],
+          ["Decision state", "Approved and merged"],
+          ["Applied configuration", '<a href="#demo-config-49d1">49d1ab4 ↗</a>'],
+          ["Recorded by", "CRCR configuration audit workflow"],
+          ["Effective at", "Jul 7, 2026, 10:05 AM"],
+        ],
+        rows: [
+          ["Repository ownership", "Verified", "Verified", "met"],
+          ["Callback integration", "Validated", "Validated", "met"],
+          ["Maintainer approval", "Required", "Recorded", "applied"],
+        ],
+      },
     };
-    auditTabs.forEach((tab, index) => {
-      tab.addEventListener("click", () => activateAuditTab(tab));
-      tab.addEventListener("keydown", (event) => {
-        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+
+    const timelineEvents = [...document.querySelectorAll(".timeline-event")];
+    const auditTitle = document.getElementById("audit-title");
+    const auditKind = document.getElementById("audit-kind");
+    const auditReason = document.getElementById("audit-reason");
+    const auditFacts = document.getElementById("audit-facts");
+    const auditCriterionHeading = document.getElementById("audit-criterion-heading");
+    const auditRows = document.getElementById("audit-rows");
+    const selectAuditRecord = (eventButton) => {
+      const record = auditRecords[eventButton.dataset.record];
+      for (const candidate of timelineEvents) {
+        const selected = candidate === eventButton;
+        candidate.setAttribute("aria-pressed", String(selected));
+        candidate.closest("li").classList.toggle("selected", selected);
+      }
+      auditTitle.textContent = record.title;
+      auditKind.textContent = record.kind;
+      auditKind.className = `chip ${record.kindClass}`;
+      auditReason.className = `audit-reason ${record.tone}`;
+      auditReason.innerHTML = `<strong>Reason:</strong> ${record.reason}`;
+      auditFacts.innerHTML = record.facts.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join("");
+      auditCriterionHeading.textContent = record.criterionHeading;
+      auditRows.innerHTML = record.rows.map((row) => `<tr>${row.map((value) => `<td>${value}</td>`).join("")}</tr>`).join("");
+    };
+    timelineEvents.forEach((eventButton, index) => {
+      eventButton.addEventListener("click", () => selectAuditRecord(eventButton));
+      eventButton.addEventListener("keydown", (event) => {
+        if (!["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
         event.preventDefault();
-        const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? auditTabs.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + auditTabs.length) % auditTabs.length;
-        auditTabs[nextIndex].focus();
-        activateAuditTab(auditTabs[nextIndex]);
+        const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? timelineEvents.length - 1 : (index + (event.key === "ArrowDown" ? 1 : -1) + timelineEvents.length) % timelineEvents.length;
+        timelineEvents[nextIndex].focus();
+        selectAuditRecord(timelineEvents[nextIndex]);
       });
     });
+    selectAuditRecord(timelineEvents[0]);
   </script>
 </body>
 </html>
