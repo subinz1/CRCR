@@ -252,7 +252,7 @@
         <div class="repo-context">
           <a href="oot-hud-mockup-crcr-summary.html">← Back to CRCR Summary</a>
           <a href="https://github.com/pytorch/crcr-test">GitHub ↗</a>
-          <span>L3 since 31 days ago · 105 days of data</span>
+          <span>L3 since 2 days ago · 105 days of data</span>
         </div>
       </div>
       <div class="range-control">
@@ -302,13 +302,17 @@
     <section class="panel history" aria-labelledby="history-title">
       <button class="history-summary" id="history-toggle" type="button" aria-controls="history-content" aria-expanded="false">
         <h2 id="history-title">Observed Configured-Level History</h2>
-        <span class="history-right"><span class="chip neutral">2 observed configured-level events</span><span class="history-chevron">⌄</span></span>
+        <span class="history-right"><span class="chip neutral">6 observed configured-level events</span><span class="history-chevron">⌄</span></span>
       </button>
       <div class="history-content" id="history-content" hidden>
         <p>Shows configured levels observed when CRCR dispatches work. The separate temporary-protection state on the CRCR summary is a rolling health evaluation, not a level change: an L3 backend stays L3 until an allowlist change is merged. Persistent PR links, decision criteria, and protection episodes require a dedicated audit ledger.</p>
         <ol class="timeline">
+          <li><span class="timeline-dot"></span><div><time datetime="2026-10-12T07:10:00Z">Oct 12, 2026, 7:10 AM</time><strong>L2 → L3</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
+          <li><span class="timeline-dot"></span><div><time datetime="2026-09-29T13:40:00Z">Sep 29, 2026, 1:40 PM</time><strong>L3 → L2</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
           <li><span class="timeline-dot"></span><div><time datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time><strong>L2 → L3</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
-          <li><span class="timeline-dot"></span><div><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L1 → L2</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
+          <li><span class="timeline-dot"></span><div><time datetime="2026-08-28T11:42:00Z">Aug 28, 2026, 11:42 AM</time><strong>L3 → L2</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
+          <li><span class="timeline-dot"></span><div><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L2 → L3</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
+          <li><span class="timeline-dot"></span><div><time datetime="2026-07-07T10:05:00Z">Jul 7, 2026, 10:05 AM</time><strong>L1 → L2</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
         </ol>
       </div>
     </section>
