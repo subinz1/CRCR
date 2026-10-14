@@ -133,6 +133,7 @@
     .chip.success { color: var(--success); }
     .chip.neutral { color: var(--muted); }
     .chip.error { color: var(--error); }
+    .chip.info { color: var(--link); }
     .readiness-content { padding: 0 16px 16px; }
     .readiness-content[hidden] { display: none; }
     .explanation { max-width: 1050px; margin: 0 0 14px; color: var(--muted); font-size: 12px; }
@@ -177,13 +178,16 @@
     .timeline-dot { z-index: 1; width: 11px; height: 11px; margin-top: 4px; border-radius: 50%; background: var(--link); }
     .timeline-dot.promotion { background: var(--success); }
     .timeline-dot.demotion { background: var(--error); }
+    .timeline-dot.manual { background: var(--link); }
     .timeline time, .timeline small { display: block; color: var(--muted); font-size: 12px; }
     .timeline strong { display: block; margin: 3px 0; font-size: 14px; }
     .event-kind { display: inline-flex; margin-top: 4px; padding: 1px 6px; border: 1px solid currentColor; border-radius: 10px; font-size: 10px; font-weight: 600; }
     .event-kind.promotion { color: var(--success); }
     .event-kind.demotion { color: var(--error); }
+    .event-kind.manual { color: var(--link); }
     .event-kind.foundation { color: var(--muted); }
     .timeline li.selected { margin-left: -9px; padding: 8px 9px 0; border-radius: 4px; background: rgba(211, 47, 47, .05); }
+    .timeline li.selected.manual { background: rgba(25, 118, 210, .05); }
     .timeline li.selected::before { left: 14px; }
     .timeline li.selected .timeline-dot { margin-left: 9px; }
 
@@ -193,6 +197,7 @@
     .audit-card h3 { margin: 0; font-size: 16px; font-weight: 500; }
     .audit-body { padding: 14px 16px 16px; }
     .audit-reason { margin: 0 0 14px; padding: 10px 11px; border-left: 3px solid var(--error); background: rgba(211, 47, 47, .05); color: var(--ink) !important; font-size: 13px !important; }
+    .audit-reason.manual { border-color: var(--link); background: rgba(25, 118, 210, .05); }
     .audit-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 22px; margin: 0 0 15px; }
     .audit-facts div { min-width: 0; }
     .audit-facts dt { color: var(--muted); font-size: 11px; }
@@ -204,6 +209,8 @@
     .audit-table .bad { color: var(--error); font-weight: 600; }
     .protection-note { margin: 17px 0 0; padding: 11px 12px; border: 1px dashed rgba(211, 47, 47, .55); border-radius: 4px; color: var(--muted); font-size: 12px; }
     .protection-note strong { color: var(--error); }
+    .automation-note { margin: 17px 0 0; padding: 11px 12px; border: 1px dashed rgba(25, 118, 210, .45); border-radius: 4px; color: var(--muted); font-size: 12px; }
+    .automation-note strong { color: var(--link); }
 
     .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; margin-top: 23px; }
     .metric { min-height: 108px; padding: 17px 14px; border: 1px solid rgba(0, 0, 0, .06); border-radius: 4px; background: var(--paper); box-shadow: 0 1px 3px rgba(0, 0, 0, .18); text-align: center; }
@@ -338,25 +345,25 @@
         <p>Shows configured levels observed when CRCR dispatches work. In the proposed audit-backed design, each applied change preserves its criterion snapshot, bot proposal, and configuration commit. Temporary protection remains a separate operational event, not a level change.</p>
         <div class="history-audit-grid">
           <ol class="timeline" aria-label="Configured level event timeline">
-            <li>
-              <span class="timeline-dot promotion"></span>
-              <div><time datetime="2026-10-12T07:10:00Z">Oct 12, 2026, 7:10 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Promotion applied</span><small>Audit-backed configured level event</small></div>
-            </li>
-            <li class="selected">
-              <span class="timeline-dot demotion"></span>
-              <div><time datetime="2026-09-29T13:40:00Z">Sep 29, 2026, 1:40 PM</time><strong>L3 → L2</strong><span class="event-kind demotion">Configured demotion applied</span><small>Selected audit record</small></div>
-            </li>
-            <li>
-              <span class="timeline-dot promotion"></span>
-              <div><time datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Promotion applied</span><small>Audit-backed configured level event</small></div>
+            <li class="selected manual">
+              <span class="timeline-dot manual"></span>
+              <div><time datetime="2026-10-12T07:10:00Z">Oct 12, 2026, 7:10 AM</time><strong>L2 → L3</strong><span class="event-kind manual">Manual promotion applied</span><small>Maintainer-authored configured level event</small></div>
             </li>
             <li>
               <span class="timeline-dot demotion"></span>
-              <div><time datetime="2026-08-28T11:42:00Z">Aug 28, 2026, 11:42 AM</time><strong>L3 → L2</strong><span class="event-kind demotion">Configured demotion applied</span><small>Audit-backed configured level event</small></div>
+              <div><time datetime="2026-09-29T13:40:00Z">Sep 29, 2026, 1:40 PM</time><strong>L3 → L2</strong><span class="event-kind demotion">Automated demotion applied</span><small>Bot-created configured level event</small></div>
             </li>
             <li>
               <span class="timeline-dot promotion"></span>
-              <div><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Promotion applied</span><small>Audit-backed configured level event</small></div>
+              <div><time datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Automated promotion applied</span><small>Bot-created configured level event</small></div>
+            </li>
+            <li>
+              <span class="timeline-dot demotion"></span>
+              <div><time datetime="2026-08-28T11:42:00Z">Aug 28, 2026, 11:42 AM</time><strong>L3 → L2</strong><span class="event-kind demotion">Automated demotion applied</span><small>Bot-created configured level event</small></div>
+            </li>
+            <li>
+              <span class="timeline-dot promotion"></span>
+              <div><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Automated promotion applied</span><small>Bot-created configured level event</small></div>
             </li>
             <li>
               <span class="timeline-dot"></span>
@@ -366,27 +373,28 @@
 
           <article class="audit-card" aria-labelledby="audit-title">
             <header class="audit-card-header">
-              <div><span class="audit-eyebrow">Selected audit record</span><h3 id="audit-title">Configured demotion: L3 → L2</h3></div>
-              <span class="chip error">Applied</span>
+              <div><span class="audit-eyebrow">Selected audit record</span><h3 id="audit-title">Manual configured promotion: L2 → L3</h3></div>
+              <span class="chip info">Manual</span>
             </header>
             <div class="audit-body">
-              <p class="audit-reason"><strong>Reason:</strong> 7-day P50 end-to-end time was 3h 18m, exceeding the &lt; 3h demotion threshold.</p>
+              <p class="audit-reason manual"><strong>Reason:</strong> Maintainers approved the promotion after a release-readiness review. This decision was not triggered by the automated metric thresholds.</p>
               <dl class="audit-facts">
-                <div><dt>Evaluation window</dt><dd>Sep 22 – Sep 29, 2026 · 7 days</dd></div>
-                <div><dt>Bot proposal</dt><dd><a href="#demo-demote-041">#demo-demote-041 ↗</a></dd></div>
-                <div><dt>Proposal state</dt><dd>Approved and merged</dd></div>
-                <div><dt>Applied configuration</dt><dd><a href="#demo-config-9f3a">9f3a2c1 ↗</a></dd></div>
-                <div><dt>Recorded by</dt><dd>CRCR promotion/demotion bot</dd></div>
-                <div><dt>Effective at</dt><dd>Sep 29, 2026, 1:40 PM</dd></div>
+                <div><dt>Decision source</dt><dd>Manual maintainer decision</dd></div>
+                <div><dt>Approval record</dt><dd><a href="#demo-manual-promote-042">#demo-manual-promote-042 ↗</a></dd></div>
+                <div><dt>Decision state</dt><dd>Approved and merged</dd></div>
+                <div><dt>Applied configuration</dt><dd><a href="#demo-config-a42f">a42f18c ↗</a></dd></div>
+                <div><dt>Recorded by</dt><dd>CRCR configuration audit workflow</dd></div>
+                <div><dt>Effective at</dt><dd>Oct 12, 2026, 7:10 AM</dd></div>
               </dl>
-              <table class="audit-table" aria-label="Demotion evaluation snapshot">
-                <thead><tr><th>Demotion criterion</th><th>Target</th><th>Observed</th><th>Verdict</th></tr></thead>
+              <table class="audit-table" aria-label="Manual promotion decision record">
+                <thead><tr><th>Decision input</th><th>Requirement</th><th>Recorded value</th><th>State</th></tr></thead>
                 <tbody>
-                  <tr><td>End-to-End Time (P50)</td><td>&lt; 3h</td><td class="bad">3h 18m</td><td class="bad">failed</td></tr>
-                  <tr><td>Timeout Rate</td><td>&lt; 1%</td><td>0.0%</td><td>met</td></tr>
-                  <tr><td>Job Pass Rate</td><td>≥ 90%</td><td>97.8%</td><td>met</td></tr>
+                  <tr><td>Automated policy evaluation</td><td>Optional context</td><td>Not used for this decision</td><td>not applicable</td></tr>
+                  <tr><td>Maintainer justification</td><td>Required for manual changes</td><td>Release-readiness review approved</td><td>recorded</td></tr>
+                  <tr><td>Approval and merge</td><td>Required</td><td>Configuration PR merged</td><td>applied</td></tr>
                 </tbody>
               </table>
+              <div class="automation-note"><strong>Automated counterpart:</strong> Bot-created promotion and demotion records use the same audit shape, but preserve the metric snapshot and bot PR that triggered the proposed change.</div>
               <div class="protection-note"><strong>Separate event:</strong> Temporary protection may activate or clear from a later 7-day evaluation without creating another configured-level history entry.</div>
             </div>
           </article>
