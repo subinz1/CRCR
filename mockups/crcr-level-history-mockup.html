@@ -170,12 +170,40 @@
     .history-content { border-top: 1px solid var(--line); padding: 16px; }
     .history-content[hidden] { display: none; }
     .history-content p { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
+    .history-audit-grid { display: grid; grid-template-columns: minmax(300px, .85fr) minmax(0, 1.35fr); gap: 26px; align-items: start; }
     .timeline { margin: 0; padding: 0; list-style: none; }
     .timeline li { position: relative; display: grid; grid-template-columns: 22px 1fr; gap: 8px; min-height: 72px; }
     .timeline li:not(:last-child)::before { position: absolute; top: 12px; bottom: 0; left: 5px; width: 1px; background: var(--line); content: ""; }
     .timeline-dot { z-index: 1; width: 11px; height: 11px; margin-top: 4px; border-radius: 50%; background: var(--link); }
+    .timeline-dot.promotion { background: var(--success); }
+    .timeline-dot.demotion { background: var(--error); }
     .timeline time, .timeline small { display: block; color: var(--muted); font-size: 12px; }
     .timeline strong { display: block; margin: 3px 0; font-size: 14px; }
+    .event-kind { display: inline-flex; margin-top: 4px; padding: 1px 6px; border: 1px solid currentColor; border-radius: 10px; font-size: 10px; font-weight: 600; }
+    .event-kind.promotion { color: var(--success); }
+    .event-kind.demotion { color: var(--error); }
+    .event-kind.foundation { color: var(--muted); }
+    .timeline li.selected { margin-left: -9px; padding: 8px 9px 0; border-radius: 4px; background: rgba(211, 47, 47, .05); }
+    .timeline li.selected::before { left: 14px; }
+    .timeline li.selected .timeline-dot { margin-left: 9px; }
+
+    .audit-card { border: 1px solid var(--line); border-radius: 4px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .08); }
+    .audit-card-header { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; padding: 15px 16px 12px; border-bottom: 1px solid var(--line); }
+    .audit-eyebrow { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+    .audit-card h3 { margin: 0; font-size: 16px; font-weight: 500; }
+    .audit-body { padding: 14px 16px 16px; }
+    .audit-reason { margin: 0 0 14px; padding: 10px 11px; border-left: 3px solid var(--error); background: rgba(211, 47, 47, .05); color: var(--ink) !important; font-size: 13px !important; }
+    .audit-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 22px; margin: 0 0 15px; }
+    .audit-facts div { min-width: 0; }
+    .audit-facts dt { color: var(--muted); font-size: 11px; }
+    .audit-facts dd { margin: 2px 0 0; color: var(--ink); font-size: 13px; font-weight: 500; }
+    .audit-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .audit-table th, .audit-table td { padding: 7px 0; border-top: 1px solid var(--line); text-align: left; }
+    .audit-table th { color: var(--muted); font-size: 11px; font-weight: 500; }
+    .audit-table th:not(:first-child), .audit-table td:not(:first-child) { text-align: right; }
+    .audit-table .bad { color: var(--error); font-weight: 600; }
+    .protection-note { margin: 17px 0 0; padding: 11px 12px; border: 1px dashed rgba(211, 47, 47, .55); border-radius: 4px; color: var(--muted); font-size: 12px; }
+    .protection-note strong { color: var(--error); }
 
     .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; margin-top: 23px; }
     .metric { min-height: 108px; padding: 17px 14px; border: 1px solid rgba(0, 0, 0, .06); border-radius: 4px; background: var(--paper); box-shadow: 0 1px 3px rgba(0, 0, 0, .18); text-align: center; }
@@ -213,6 +241,7 @@
       .topbar .optional { display: none; }
       .page { padding: 27px 16px 40px; }
       .submetrics { grid-template-columns: repeat(3, 1fr); }
+      .history-audit-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 650px) {
       .page-header { display: block; }
@@ -221,6 +250,7 @@
       .chips { justify-content: flex-start; }
       .metrics, .submetrics { grid-template-columns: 1fr; }
       .history-summary { align-items: flex-start; padding-top: 15px; padding-bottom: 15px; }
+      .audit-facts { grid-template-columns: 1fr; gap: 9px; }
     }
   </style>
 </head>
@@ -305,15 +335,62 @@
         <span class="history-right"><span class="chip neutral">6 observed configured-level events</span><span class="history-chevron">⌄</span></span>
       </button>
       <div class="history-content" id="history-content" hidden>
-        <p>Shows configured levels observed when CRCR dispatches work. The separate temporary-protection state on the CRCR summary is a rolling health evaluation, not a level change: an L3 backend stays L3 until an allowlist change is merged. Persistent PR links, decision criteria, and protection episodes require a dedicated audit ledger.</p>
-        <ol class="timeline">
-          <li><span class="timeline-dot"></span><div><time datetime="2026-10-12T07:10:00Z">Oct 12, 2026, 7:10 AM</time><strong>L2 → L3</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
-          <li><span class="timeline-dot"></span><div><time datetime="2026-09-29T13:40:00Z">Sep 29, 2026, 1:40 PM</time><strong>L3 → L2</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
-          <li><span class="timeline-dot"></span><div><time datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time><strong>L2 → L3</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
-          <li><span class="timeline-dot"></span><div><time datetime="2026-08-28T11:42:00Z">Aug 28, 2026, 11:42 AM</time><strong>L3 → L2</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
-          <li><span class="timeline-dot"></span><div><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L2 → L3</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
-          <li><span class="timeline-dot"></span><div><time datetime="2026-07-07T10:05:00Z">Jul 7, 2026, 10:05 AM</time><strong>L1 → L2</strong><small>Observed configured level in CRCR dispatch records</small></div></li>
-        </ol>
+        <p>Shows configured levels observed when CRCR dispatches work. In the proposed audit-backed design, each applied change preserves its criterion snapshot, bot proposal, and configuration commit. Temporary protection remains a separate operational event, not a level change.</p>
+        <div class="history-audit-grid">
+          <ol class="timeline" aria-label="Configured level event timeline">
+            <li>
+              <span class="timeline-dot promotion"></span>
+              <div><time datetime="2026-10-12T07:10:00Z">Oct 12, 2026, 7:10 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Promotion applied</span><small>Audit-backed configured level event</small></div>
+            </li>
+            <li class="selected">
+              <span class="timeline-dot demotion"></span>
+              <div><time datetime="2026-09-29T13:40:00Z">Sep 29, 2026, 1:40 PM</time><strong>L3 → L2</strong><span class="event-kind demotion">Configured demotion applied</span><small>Selected audit record</small></div>
+            </li>
+            <li>
+              <span class="timeline-dot promotion"></span>
+              <div><time datetime="2026-09-12T08:55:00Z">Sep 12, 2026, 8:55 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Promotion applied</span><small>Audit-backed configured level event</small></div>
+            </li>
+            <li>
+              <span class="timeline-dot demotion"></span>
+              <div><time datetime="2026-08-28T11:42:00Z">Aug 28, 2026, 11:42 AM</time><strong>L3 → L2</strong><span class="event-kind demotion">Configured demotion applied</span><small>Audit-backed configured level event</small></div>
+            </li>
+            <li>
+              <span class="timeline-dot promotion"></span>
+              <div><time datetime="2026-08-12T09:18:00Z">Aug 12, 2026, 9:18 AM</time><strong>L2 → L3</strong><span class="event-kind promotion">Promotion applied</span><small>Audit-backed configured level event</small></div>
+            </li>
+            <li>
+              <span class="timeline-dot"></span>
+              <div><time datetime="2026-07-07T10:05:00Z">Jul 7, 2026, 10:05 AM</time><strong>L1 → L2</strong><span class="event-kind foundation">Initial level change</span><small>Audit-backed configured level event</small></div>
+            </li>
+          </ol>
+
+          <article class="audit-card" aria-labelledby="audit-title">
+            <header class="audit-card-header">
+              <div><span class="audit-eyebrow">Selected audit record</span><h3 id="audit-title">Configured demotion: L3 → L2</h3></div>
+              <span class="chip error">Applied</span>
+            </header>
+            <div class="audit-body">
+              <p class="audit-reason"><strong>Reason:</strong> 7-day P50 end-to-end time was 3h 18m, exceeding the &lt; 3h demotion threshold.</p>
+              <dl class="audit-facts">
+                <div><dt>Evaluation window</dt><dd>Sep 22 – Sep 29, 2026 · 7 days</dd></div>
+                <div><dt>Bot proposal</dt><dd><a href="#demo-demote-041">#demo-demote-041 ↗</a></dd></div>
+                <div><dt>Proposal state</dt><dd>Approved and merged</dd></div>
+                <div><dt>Applied configuration</dt><dd><a href="#demo-config-9f3a">9f3a2c1 ↗</a></dd></div>
+                <div><dt>Recorded by</dt><dd>CRCR promotion/demotion bot</dd></div>
+                <div><dt>Effective at</dt><dd>Sep 29, 2026, 1:40 PM</dd></div>
+              </dl>
+              <table class="audit-table" aria-label="Demotion evaluation snapshot">
+                <thead><tr><th>Demotion criterion</th><th>Target</th><th>Observed</th><th>Verdict</th></tr></thead>
+                <tbody>
+                  <tr><td>End-to-End Time (P50)</td><td>&lt; 3h</td><td class="bad">3h 18m</td><td class="bad">failed</td></tr>
+                  <tr><td>Timeout Rate</td><td>&lt; 1%</td><td>0.0%</td><td>met</td></tr>
+                  <tr><td>Job Pass Rate</td><td>≥ 90%</td><td>97.8%</td><td>met</td></tr>
+                </tbody>
+              </table>
+              <div class="protection-note"><strong>Separate event:</strong> Temporary protection may activate or clear from a later 7-day evaluation without creating another configured-level history entry.</div>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
